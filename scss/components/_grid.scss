@@ -1,0 +1,32 @@
+/* ===================================== 
+   Grid Layout
+======================================== */
+
+.container
+{
+    height: 100vh;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    grid-template-rows: 100px minmax(200px, 1fr) 100px 100px; 
+    grid-gap: 10px;
+}
+  
+header
+{
+    grid-column: 1 / -1;
+}
+  
+main
+{
+    grid-row: 2 / 3;
+}
+
+aside
+{
+    grid-row: 2 / -1;
+}
+
+footer
+{
+    grid-row: -3 / -1;
+}
