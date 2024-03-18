@@ -58,25 +58,30 @@ footer {
 .container {
   height: 100vh;
   display: grid;
-  grid-template-columns: 2fr 1fr;
-  grid-template-rows: 100px minmax(200px, 1fr) 100px 100px;
+  grid-template-columns: minmax(30px, 1fr) minmax(200px, 5fr);
+  grid-template-rows: minmax(200px, 1fr) 100px;
   grid-gap: 10px;
+  grid-template-areas: "nav header" "nav main" "nav aside" "footer footer";
 }
 
 header {
-  grid-column: 1/-1;
+  grid-area: header;
+}
+
+nav {
+  grid-area: nav;
 }
 
 main {
-  grid-row: 2/3;
+  grid-area: main;
 }
 
 aside {
-  grid-row: 2/-1;
+  grid-area: aside;
 }
 
 footer {
-  grid-row: -3/-1;
+  grid-area: footer;
 }
 
 /*# sourceMappingURL=application.css.map */
