@@ -1,3 +1,4 @@
+@charset "UTF-8";
 /* ========================================================== */
 /* Global Imports */
 /* ========================================================== */
@@ -48,6 +49,16 @@ aside {
 
 footer {
   background-color: #6e859c;
+}
+
+.comingsoon::after {
+  content: " *Coming Soon*";
+  color: blue;
+  font-size: 0.65em;
+}
+
+a[target=_blank]::after {
+  content: " ⇗";
 }
 
 /* ========================================================== */

@@ -53,3 +53,17 @@ footer
 {
     background-color: #6e859c;
 }
+
+.comingsoon::after
+{
+    content: " *Coming Soon*";
+    color: blue;
+    font-size: 0.65em;
+    //margin-left: 10px
+}
+
+a[target=_blank]::after
+{
+    content: " \21D7";
+    //margin-left: 10px;
+}
