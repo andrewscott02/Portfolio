@@ -2,3 +2,35 @@
    Navigation
 ======================================== */
 
+#Navigation
+{
+    z-index: 1;
+    position: sticky;
+    top: 150px;
+    align-self: start;
+    
+    padding: 0.15em;
+    border: 0;
+}
+
+.nav-btn
+{
+    display: block;
+    width: 100%;
+    padding: 5px 0;
+
+    color: white;
+    text-decoration: none;
+    text-align: center;
+
+    &:hover
+    {
+        //color: black;
+        background-color: $color-primary;
+    }
+}
+
+.nav-btn:not(:last-child)
+{
+    margin-bottom: 10px;
+}

@@ -9,7 +9,7 @@
 <body>
     <div class="container">
         <header id="Header">
-            <a href="#" class="profilepic-lnk">
+            <a href="index.html" class="profilepic-lnk">
                 <img class="profilepic-img" src="Images\Banner Character.jpg">
             </a>
         </header>
@@ -17,21 +17,31 @@
             <a href="#" class="nav-btn">Nav Btn</a>
         </div>
         <nav id="Navigation" class="brk-m-g">
-            <a href="#" class="nav-btn">About Me</a>
-            <a href="#" class="nav-btn">Games</a>
-            <a href="#" class="nav-btn">Projects</a>
-            <a href="#" class="nav-btn">Code Snippets</a>
-            <a href="#" class="nav-btn">SCS Scheme</a>
-            <a href="#" class="nav-btn">Contact</a>
+            <a href="#About" class="nav-btn">About Me</a>
+            <hr>
+            <a href="#Games" class="nav-btn">Games</a>
+            <a href="#Projects" class="nav-btn">Projects</a>
+            <a href="#CodeSnippets" class="nav-btn">Code Snippets</a>
+            <hr>
+            <a href="#SCS" class="nav-btn">SCS Scheme</a>
+            <hr>
+            <a href="#Contact" class="nav-btn">Contact</a>
+            <hr>
+            <div class="socials">
+                <a href="#" class="social-btn">Github</a>
+                <a href="#" class="social-btn">LinkedIn</a>
+                <a href="#" class="social-btn">Itch</a>
+            </a>
         </nav>
         <div id="HeroImage">
             <div class="heroElements">
-                <div class="background-video">
+                <!-- Implement Video Later and remove view height in #HeroImage-->
+                <!-- <div class="background-video">
                     <iframe src="https://streamable.com/e/gd6a05?autoplay=1&muted=1&nocontrols=1"></iframe>
-                </div>
+                </div> -->
                 <div class="hero-text">
-                    <h1>Andrew Scott</h1>
-                    <p>Games Programmer and Web Developer</p>
+                    <h1>My Name is Andrew Scott</h1>
+                    <p>I'm a Games Programmer and Web Developer</p>
                 </div>
             </div>
         </div>
@@ -103,7 +113,14 @@
             </div>
             <div id="Projects">
                 <h2 class="comingsoon">My Projects</h2>
-                <p>Projects Gallery</p>
+                <div class="project-collection">
+                    <div class="project">
+                        <img scr="">
+                        <h3>Project Title</h3>
+                        <p>Project description goes here</p>
+                        <a href="#" class="btn-project">View Project</a>
+                    </div>
+                </div>
             </div>
             <div id="CodeSnippets">
                 <h2 class="comingsoon">Code Snippets</h2>
@@ -148,8 +165,23 @@
         </main>
         <aside id="Aside">
             <div id="Contact">
-                <h3 class="comingsoon">Get In Touch</h3>
-                <p>Form Elements Here</p>
+                <form action="index.html" method="post">
+                    <h3 class="comingsoon">Get In Touch</h3>
+                    <fieldset>
+                        <label for="name" class="required">Your Name:</label>
+                        <input type="text" id="name" name="user_name">
+        
+                        <label for="email" class="required">Email:</label>
+                        <input type="email" id="email" name="user_email">
+        
+                        <label for="subject" class="required">Subject:</label>
+                        <input type="subject" id="subject" name="user_subject">
+        
+                        <label for="message" class="required">Message:</label>
+                        <input type="message" id="message" name="user_message">
+                    </fieldset>
+                    <button type="submit">Submit</button>
+                </form>
             </div>
         </aside>
         <footer id="Footer">

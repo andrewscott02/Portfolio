@@ -20,7 +20,7 @@
 
 .container
 {
-    height: 100vh;
+    height: auto;
     display: grid;
     grid-template-columns: 2fr 1fr;
     grid-template-rows: auto auto minmax(400px, 5fr);
@@ -36,7 +36,7 @@
 
     @media #{$brk-m}
     {
-        grid-template-columns: minmax(75px, 1fr) minmax(200px, 9fr);
+        grid-template-columns: minmax(125px, 1fr) minmax(200px, 9fr);
         grid-template-rows: auto minmax(400px, 5fr);
         grid-template-areas:
             "header hero-image"

@@ -2,25 +2,40 @@
 /* Header */
 /* ========================================================== */
 
+#Header
+{
+    z-index: 1;
+    position: sticky;
+    top:0vh;
+    align-self: start;
+    
+    padding: 0.15em;
+    border: 0;
+}
+
 header
 {
-    padding: 0.15em !important;
-    background-color: #3f8abf;
+    background-color: $color-secondary;
 }
 
 .profilepic-lnk
 {
+    display: block;
     width: 100%;
     height: 100%;
     min-height: 75px;
+    
+    margin: auto;
 }
 
 .profilepic-img
 {
+    display: block;
     border-radius: 50%;
     width: 100%;
     max-width: 65px;
     height: auto;
+
     margin: auto;
 
     @media #{$brk-m}

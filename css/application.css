@@ -49,6 +49,7 @@
 }
 
 body {
+  background-color: #3a4146;
   font-size: 1.4em;
   font-family: "Varela Round", sans-serif;
   font-weight: bold;
@@ -61,18 +62,6 @@ body {
   text-shadow: 0 2px 0 rgba(110, 133, 156, 0.12);
   padding: 0.85em;
   border: solid 1px rgba(110, 133, 156, 0.15);
-}
-
-#Navigation-Mobile {
-  background-color: #fbaea8;
-}
-
-nav {
-  background-color: #fbaea8;
-}
-
-#HeroImage {
-  background-color: #d470cc;
 }
 
 main {
@@ -154,11 +143,12 @@ a[target=_blank]::after {
   text-align: center;
 }
 .achievement img {
-  max-width: 50px;
+  max-width: 25%;
 }
 
 #Skills {
   margin: auto;
+  padding: 0;
 }
 
 .skill {
@@ -175,18 +165,29 @@ a[target=_blank]::after {
 /* ========================================================== */
 /* Header */
 /* ========================================================== */
+#Header {
+  z-index: 1;
+  position: sticky;
+  top: 0vh;
+  align-self: start;
+  padding: 0.15em;
+  border: 0;
+}
+
 header {
-  padding: 0.15em !important;
-  background-color: #3f8abf;
+  background-color: #3a4146;
 }
 
 .profilepic-lnk {
+  display: block;
   width: 100%;
   height: 100%;
   min-height: 75px;
+  margin: auto;
 }
 
 .profilepic-img {
+  display: block;
   border-radius: 50%;
   width: 100%;
   max-width: 65px;
@@ -203,12 +204,30 @@ header {
 /* Hero Image */
 /* ========================================================== */
 #HeroImage {
+  height: 100vh;
   padding: 0;
-  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url("../Images/Banner_edited.jpg") no-repeat;
-  background-position: center;
+  background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.8)), url("../Images/Banner_edited.jpg") no-repeat;
+  background-position: 85% center;
   background-repeat: no-repeat;
   background-size: cover;
   position: relative;
+}
+#HeroImage:hover {
+  background: linear-gradient(rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.4)), url("../Images/Banner_edited.jpg") no-repeat;
+  background-position: 85% center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  position: relative;
+}
+#HeroImage:hover .hero-text {
+  opacity: 0.2;
+}
+#HeroImage:hover iframe {
+  filter: brightness(1) blur(0) contrast(100%);
+}
+
+#HeroImage {
+  background-color: #d470cc;
 }
 
 .heroElements {
@@ -232,6 +251,7 @@ header {
   top: 100%;
 }
 .background-video iframe {
+  filter: brightness(0.6) blur(3px) contrast(80%);
   position: absolute;
   top: 50%;
   left: 50%;
@@ -246,7 +266,6 @@ header {
   top: 100%;
   height: 100%;
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
 }
 .hero-text h1 {
   position: relative;
@@ -265,6 +284,31 @@ header {
 /* ===================================== 
    Navigation
 ======================================== */
+#Navigation {
+  z-index: 1;
+  position: sticky;
+  top: 150px;
+  align-self: start;
+  padding: 0.15em;
+  border: 0;
+}
+
+.nav-btn {
+  display: block;
+  width: 100%;
+  padding: 5px 0;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+}
+.nav-btn:hover {
+  background-color: #0f4063;
+}
+
+.nav-btn:not(:last-child) {
+  margin-bottom: 10px;
+}
+
 /* ========================================================== */
 /* Component Imports */
 /* ========================================================== */
@@ -272,7 +316,7 @@ header {
    Grid Layout
 ======================================== */
 .container {
-  height: 100vh;
+  height: auto;
   display: grid;
   grid-template-columns: 2fr 1fr;
   grid-template-rows: auto auto minmax(400px, 5fr);
@@ -282,7 +326,7 @@ header {
 }
 @media screen and (min-width: 768px) {
   .container {
-    grid-template-columns: minmax(75px, 1fr) minmax(200px, 9fr);
+    grid-template-columns: minmax(125px, 1fr) minmax(200px, 9fr);
     grid-template-rows: auto minmax(400px, 5fr);
     grid-template-areas: "header hero-image" "nav hero-image" "nav main" "nav aside" "footer footer";
   }
