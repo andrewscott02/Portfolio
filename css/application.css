@@ -195,8 +195,52 @@ footer {
 /* ===================================== 
    Contact Form
 ======================================== */
+#Contact fieldset {
+  height: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+  grid-gap: 5px;
+  grid-template-areas: "form-name" "form-email" "form-subject" "form-message";
+}
+@media screen and (min-width: 992px) {
+  #Contact fieldset {
+    grid-template-columns: 1fr 1fr;
+    grid-template-areas: "form-name form-email" "form-subject form-subject" "form-message form-message";
+  }
+}
+
+.form-name {
+  grid-area: form-name;
+}
+
+.form-email {
+  grid-area: form-email;
+}
+
+.form-subject {
+  grid-area: form-subject;
+}
+
+.form-message {
+  grid-area: form-message;
+}
+
 aside {
-  background-color: #1e4866;
+  background-color: #2b4659;
+}
+
+[class^=form-], [class*=" form-"] {
+  width: 100%;
+}
+[class^=form-] input, [class*=" form-"] input {
+  font-size: 1.2em;
+  width: 100%;
+  height: 2em;
+}
+
+.form-message input {
+  height: 6em;
 }
 
 /* ========================================================== */
