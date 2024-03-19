@@ -6,10 +6,10 @@
 {
     height: 100vh;
     display: grid;
-    grid-template-columns: minmax(125px, 1fr) minmax(200px, 5fr);
-    grid-template-rows: auto minmax(150px, 2fr);
+    grid-template-columns: minmax(75px, 1fr) minmax(200px, 9fr);
+    grid-template-rows: auto minmax(400px, 5fr);
     grid-auto-rows: auto;
-    grid-gap: 10px;
+    grid-gap: 2px;
     grid-template-areas:
         "header hero-image"
         "nav hero-image"

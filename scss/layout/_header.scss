@@ -2,9 +2,10 @@
 /* Header */
 /* ========================================================== */
 
-#Header
+header
 {
-    padding: 0.25em;
+    padding: 0.15em !important;
+    background-color: #3f8abf;
 }
 
 .profilepic-lnk
@@ -18,6 +19,7 @@
 {
     border-radius: 50%;
     width: 100%;
+    max-width: 150px;
     height: auto;
     margin: auto;
 }
