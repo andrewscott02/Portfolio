@@ -27,7 +27,7 @@ body
 
 main
 {
-    background-color: $color-primary-dark-desat;
+    background-color: darken($color-primary-desat, 15%);
 
     // & > div:nth-child(even)
     // {

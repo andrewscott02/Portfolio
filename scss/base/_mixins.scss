@@ -22,6 +22,7 @@
 @mixin card
 {
     background-color: darken($color-primary-desat, 8%);
+    box-shadow: $btn-shadow-inset;
     padding: 10px;
     border-radius: 10px;
     text-align: center;
@@ -33,7 +34,8 @@
 
     &:hover
     {
-        background-color: $color-primary-desat;
         transition: 0.5s ease;
+        background-color: $color-primary-desat;
+        box-shadow: none;
     }
 }
