@@ -18,3 +18,17 @@
     box-shadow: $insetShadow,
                     $boxShadow;
 }
+
+@mixin card
+{
+    background-color: darken($color-primary-desat, 8%);
+    padding: 10px;
+    border-radius: 10px;
+    text-align: center;
+
+    &:hover
+    {
+        background-color: $color-primary-desat;
+        transition: 0.5s ease;
+    }
+}

@@ -13,6 +13,19 @@
     border: 0;
 }
 
+#NavigationMobile
+{
+    z-index: 1;
+    position: sticky;
+    top: 0;
+    align-self: start;
+    
+    padding: 0.15em;
+    border: 0;
+
+    background-color: $color-secondary;
+}
+
 .nav-btn
 {
     display: block;

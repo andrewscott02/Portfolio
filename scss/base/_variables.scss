@@ -8,7 +8,7 @@ $brk-m          :"screen and (min-width: 768px)";
 $brk-l          :"screen and (min-width: 992px)";
 $brk-xl         :"screen and (min-width: 1200px)";
 
-$color-primary: #0f4063;
+$color-primary: #1e4866;
 $color-primary-dark: darken($color-primary, 10%);
 $color-primary-desat: desaturate($color-primary, 20%);
 $color-primary-dark-desat: desaturate($color-primary-dark, 20%);
@@ -23,7 +23,7 @@ $color-text-dark: black;
 $color-shadow               : rgba(1, 0, 30, 0.8);
 $color-shadow-transparent   : rgba(0, 11, 30, 0.4);
 $color-border               : black;
-$btn-shadow                 : 1px 2px 3px $color-shadow;
+$btn-shadow                 : 1px 1px 2px $color-shadow;
 $btn-shadow-inset           : inset 0 0 20px 10px rgba($color-shadow, 0.2);
 $btn-shadow-inset-small     : inset 0 0 6px 4px rgba($color-shadow, 0.2);
 $shadow-none                : 0 0 0 0 $color-shadow-transparent;

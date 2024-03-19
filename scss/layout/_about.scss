@@ -72,7 +72,7 @@
     grid-auto-rows: auto;
     grid-gap: 15px;
 
-    @media #{$brk-m}
+    @media #{$brk-l}
     {
         grid-template-columns: 1fr 1fr;
     }
@@ -80,10 +80,7 @@
 
 .achievement
 {
-    background-color: darken($color-primary-desat, 8%);
-    padding: 10px;
-    border-radius: 10px;
-    text-align: center;
+    @include card;
 
     img
     {
