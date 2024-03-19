@@ -63,6 +63,62 @@ a[target=_blank]::after {
 /* ========================================================== */
 /* Layout Imports */
 /* ========================================================== */
+/* ===================================== 
+   About Me
+======================================== */
+#About {
+  height: auto;
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-auto-rows: auto;
+  grid-gap: 15px;
+  grid-template-areas: "about-intro" "achievements" "skills";
+}
+@media screen and (min-width: 992px) {
+  #About {
+    grid-template-columns: 2fr 1fr;
+    grid-template-areas: "about-intro skills" "achievements achievements";
+  }
+}
+
+.about-intro {
+  grid-area: about-intro;
+}
+
+#Achievements {
+  grid-area: achievements;
+}
+
+#Skills {
+  grid-area: skills;
+}
+
+#About {
+  text-align: center;
+}
+
+#Achievements {
+  text-align: center;
+}
+
+.achievements {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-auto-rows: auto;
+  grid-gap: 15px;
+}
+
+.achievement {
+  text-align: center;
+}
+.achievement img {
+  max-width: 50px;
+}
+
+#Skills {
+  margin: auto;
+}
+
 /* ========================================================== */
 /* Header */
 /* ========================================================== */
@@ -151,13 +207,6 @@ header {
 /* ========================================================== */
 /* Component Imports */
 /* ========================================================== */
-/* ===================================== 
-   Achievements
-======================================== */
-.achievement img {
-  max-width: 50px;
-}
-
 /* ===================================== 
    Grid Layout
 ======================================== */
