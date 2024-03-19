@@ -2,20 +2,49 @@
    Grid Layout
 ======================================== */
 
+// .container
+// {
+//     height: 100vh;
+//     display: grid;
+//     grid-template-columns: minmax(75px, 1fr) minmax(200px, 9fr);
+//     grid-template-rows: auto minmax(400px, 5fr);
+//     grid-auto-rows: auto;
+//     grid-gap: 2px;
+//     grid-template-areas:
+//         "header hero-image"
+//         "nav hero-image"
+//         "nav main"
+//         "nav aside" 
+//         "footer footer";
+// }
+
 .container
 {
     height: 100vh;
     display: grid;
-    grid-template-columns: minmax(75px, 1fr) minmax(200px, 9fr);
-    grid-template-rows: auto minmax(400px, 5fr);
+    grid-template-columns: 100%;
+    grid-template-rows: auto auto minmax(400px, 5fr);
     grid-auto-rows: auto;
     grid-gap: 2px;
     grid-template-areas:
-        "header hero-image"
-        "nav hero-image"
-        "nav main"
-        "nav aside" 
-        "footer footer";
+        "header"
+        "nav"
+        "hero-image"
+        "main"
+        "asside" 
+        "footer";
+
+    @media #{$brk-s}
+    {
+        grid-template-columns: minmax(75px, 1fr) minmax(200px, 9fr);
+        grid-template-rows: auto minmax(400px, 5fr);
+        grid-template-areas:
+            "header hero-image"
+            "nav hero-image"
+            "nav main"
+            "nav aside" 
+            "footer footer";
+    }
 }
 
 header

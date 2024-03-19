@@ -55,9 +55,14 @@
 .achievements
 {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 1fr;
     grid-auto-rows: auto;
     grid-gap: 15px;
+
+    @media #{$brk-m}
+    {
+        grid-template-columns: 1fr 1fr;
+    }
 }
 
 .achievement
@@ -74,4 +79,18 @@
 {
     margin: auto;
     //text-align: center;
+}
+
+.skill
+{
+    list-style: none;
+    font-size: 18px;
+}
+
+.top-skill
+{
+    font-weight: 800;
+    font-size: 20px;
+
+    color: rgb(0, 255, 76);
 }
