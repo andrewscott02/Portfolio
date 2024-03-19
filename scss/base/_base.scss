@@ -36,19 +36,22 @@ main
     // }
 }
 
-aside
-{
-    background-color: #6ad78a; 
-}
-
 footer
 {
-    background-color: #6e859c;
+    background-color: $color-secondary;
 }
 
 .comingsoon::after
 {
-    content: " *Coming Soon*";
+    content: " *COMING SOON*";
+    color: red;
+    font-size: 0.65em;
+    //margin-left: 10px
+}
+
+.new::after
+{
+    content: " *NEW*";
     color: red;
     font-size: 0.65em;
     //margin-left: 10px

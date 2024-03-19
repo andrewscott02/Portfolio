@@ -22,6 +22,7 @@ header
 
     @media #{$brk-m}
     {
+        background-color: transparent;
         background-image: linear-gradient(180deg, $color-primary, transparent);
     }
 }

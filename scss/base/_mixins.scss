@@ -26,6 +26,11 @@
     border-radius: 10px;
     text-align: center;
 
+    img
+    {
+        border-radius: 10px;
+    }
+
     &:hover
     {
         background-color: $color-primary-desat;

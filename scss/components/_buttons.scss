@@ -6,8 +6,9 @@
 {
     @include btnstyle($color-tertiary);
     
-    border-radius: 5px;
+    margin: 5px;
     padding: 5px;
+    border-radius: 5px;
 
     color: $color-text-light;
     text-decoration: none;
