@@ -87,7 +87,7 @@ footer {
   font-size: 0.65em;
 }
 
-a[target=_blank]::after {
+.external-link::after {
   content: " ⇗";
 }
 
@@ -161,6 +161,8 @@ a[target=_blank]::after {
   box-shadow: inset 0 0 20px 10px rgba(1, 0, 30, 0.2);
   padding: 10px;
   border-radius: 10px;
+  color: white;
+  text-decoration: none;
   text-align: center;
 }
 .achievement img {
@@ -168,8 +170,8 @@ a[target=_blank]::after {
 }
 .achievement:hover {
   transition: 0.5s ease;
-  background-color: #2b4659;
-  box-shadow: none;
+  background-color: #895830;
+  box-shadow: 0 0 10px #c76e25;
 }
 .achievement img {
   max-width: 15%;
@@ -416,6 +418,8 @@ header {
   box-shadow: inset 0 0 20px 10px rgba(1, 0, 30, 0.2);
   padding: 10px;
   border-radius: 10px;
+  color: white;
+  text-decoration: none;
   text-align: center;
 }
 .scs-element img {
@@ -423,8 +427,8 @@ header {
 }
 .scs-element:hover {
   transition: 0.5s ease;
-  background-color: #2b4659;
-  box-shadow: none;
+  background-color: #895830;
+  box-shadow: 0 0 10px #c76e25;
 }
 
 @media screen and (min-width: 1200px) {
@@ -445,8 +449,8 @@ header {
    Buttons
 ======================================== */
 .btn {
-  background-image: linear-gradient(130deg, rgba(16, 45, 40, 0.2) 0%, #328a7b 25%, rgba(23, 63, 56, 0.2) 50%, rgba(10, 26, 23, 0.2));
-  background-color: #1e5249;
+  background-image: linear-gradient(130deg, rgba(156, 86, 29, 0.2) 0%, #e09658 25%, rgba(177, 98, 33, 0.2) 50%, rgba(134, 74, 25, 0.2));
+  background-color: #c76e25;
   box-shadow: inset 0 0 20px 10px rgba(1, 0, 30, 0.2), 1px 1px 2px rgba(1, 0, 30, 0.8);
   margin: 5px;
   padding: 5px;
@@ -455,8 +459,8 @@ header {
   text-decoration: none;
 }
 .btn:hover {
-  background-image: linear-gradient(-45deg, rgba(10, 26, 23, 0.2) 0%, #2c776a 25%, rgba(16, 45, 40, 0.2) 50%, rgba(3, 7, 7, 0.2));
-  background-color: #173f38;
+  background-image: linear-gradient(-45deg, rgba(134, 74, 25, 0.2) 0%, #dc8843 25%, rgba(156, 86, 29, 0.2) 50%, rgba(113, 62, 21, 0.2));
+  background-color: #b16221;
   box-shadow: inset 0 0 20px 10px rgba(1, 0, 30, 0.2), 1px 1px 2px rgba(1, 0, 30, 0.8);
 }
 
@@ -584,6 +588,8 @@ footer {
   box-shadow: inset 0 0 20px 10px rgba(1, 0, 30, 0.2);
   padding: 10px;
   border-radius: 10px;
+  color: white;
+  text-decoration: none;
   text-align: center;
 }
 .project img {
@@ -591,8 +597,8 @@ footer {
 }
 .project:hover {
   transition: 0.5s ease;
-  background-color: #2b4659;
-  box-shadow: none;
+  background-color: #895830;
+  box-shadow: 0 0 10px #c76e25;
 }
 .project img {
   width: 100%;

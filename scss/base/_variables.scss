@@ -15,7 +15,11 @@ $color-primary-desat: desaturate($color-primary, 20%);
 $color-primary-dark-desat: desaturate($color-primary-dark, 20%);
 
 $color-secondary: #3a4146;
-$color-tertiary: #1e5249;
+
+$color-tertiary: #c76e25;
+$color-tertiary-dark: darken($color-tertiary, 10%);
+$color-tertiary-desat: desaturate($color-tertiary, 20%);
+$color-tertiary-dark-desat: desaturate($color-tertiary-dark, 20%);
 
 $color-text-light: white;
 $color-text-dark: black;
@@ -28,3 +32,6 @@ $btn-shadow                 : 1px 1px 2px $color-shadow;
 $btn-shadow-inset           : inset 0 0 20px 10px rgba($color-shadow, 0.2);
 $btn-shadow-inset-small     : inset 0 0 6px 4px rgba($color-shadow, 0.2);
 $shadow-none                : 0 0 0 0 $color-shadow-transparent;
+
+//Glows
+$btn-glow                 : 0 0 10px $color-tertiary;

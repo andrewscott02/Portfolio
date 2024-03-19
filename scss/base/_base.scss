@@ -57,7 +57,7 @@ footer
     //margin-left: 10px
 }
 
-a[target=_blank]::after
+.external-link::after
 {
     content: " \21D7";
     //margin-left: 10px;

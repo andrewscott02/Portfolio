@@ -25,6 +25,9 @@
     box-shadow: $btn-shadow-inset;
     padding: 10px;
     border-radius: 10px;
+
+    color: white;
+    text-decoration: none;
     text-align: center;
 
     img
@@ -35,7 +38,7 @@
     &:hover
     {
         transition: 0.5s ease;
-        background-color: $color-primary-desat;
-        box-shadow: none;
+        background-color: $color-tertiary-dark-desat;
+        box-shadow: $btn-glow;
     }
 }
