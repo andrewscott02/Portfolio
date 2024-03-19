@@ -19,7 +19,12 @@ header
 {
     border-radius: 50%;
     width: 100%;
-    max-width: 150px;
+    max-width: 65px;
     height: auto;
     margin: auto;
+
+    @media #{$brk-m}
+    {
+        max-width: 150px;
+    }
 }

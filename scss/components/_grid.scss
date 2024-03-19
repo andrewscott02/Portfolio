@@ -22,19 +22,19 @@
 {
     height: 100vh;
     display: grid;
-    grid-template-columns: 100%;
+    grid-template-columns: 2fr 1fr;
     grid-template-rows: auto auto minmax(400px, 5fr);
     grid-auto-rows: auto;
     grid-gap: 2px;
     grid-template-areas:
-        "header"
-        "nav"
-        "hero-image"
-        "main"
-        "asside" 
-        "footer";
+        "header nav-mobile"
+        "nav nav"
+        "hero-image hero-image"
+        "main main"
+        "aside aside" 
+        "footer footer";
 
-    @media #{$brk-s}
+    @media #{$brk-m}
     {
         grid-template-columns: minmax(75px, 1fr) minmax(200px, 9fr);
         grid-template-rows: auto minmax(400px, 5fr);
@@ -50,6 +50,11 @@
 header
 {
     grid-area: header;
+}
+
+#Nav-Mobile
+{
+    grid-area: nav-mobile;
 }
 
 nav
