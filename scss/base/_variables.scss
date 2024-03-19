@@ -17,6 +17,7 @@ $color-primary-dark-desat: desaturate($color-primary-dark, 20%);
 $color-secondary: #3a4146;
 
 $color-tertiary: #c76e25;
+$color-tertiary-light: lighten($color-tertiary, 10%);
 $color-tertiary-dark: darken($color-tertiary, 10%);
 $color-tertiary-desat: desaturate($color-tertiary, 20%);
 $color-tertiary-dark-desat: desaturate($color-tertiary-dark, 20%);
