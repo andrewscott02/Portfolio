@@ -23,6 +23,9 @@
     text-decoration: none;
     text-align: center;
 
+    font-size: 1.1em;
+    font-weight: 700;
+
     &:hover
     {
         //color: black;
@@ -47,6 +50,24 @@
     text-decoration: none;
 
     font-size: 1.5em;
+}
+
+.social-btn:hover
+{
+    &.icon-linkedin:before
+    {
+        color: #005baf;
+    }
+
+    &.icon-itch-dot-io:before
+    {
+        color: rgb(185, 14, 14);
+    }
+
+    &.icon-github:before
+    {
+        color: rgb(158, 158, 158);
+    }
 }
 
 .social-btn::after

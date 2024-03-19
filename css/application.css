@@ -42,6 +42,9 @@
 }
 
 /* ===================================== 
+   Mixins
+======================================== */
+/* ===================================== 
    Page Styles
 ======================================== */
 * {
@@ -50,9 +53,9 @@
 
 body {
   background-image: linear-gradient(180deg, #3a4146 40%, black);
-  font-size: 1.4em;
+  font-size: 1.2em;
   font-family: "Varela Round", sans-serif;
-  font-weight: bold;
+  font-weight: 400;
   padding: 0;
   margin: 0;
 }
@@ -65,7 +68,11 @@ body {
 }
 
 main {
-  background-color: #aad2ed;
+  background-color: #0f2230;
+}
+main > div:nth-child(even) {
+  border-radius: 10px;
+  background-color: #112838;
 }
 
 aside {
@@ -86,6 +93,10 @@ a[target=_blank]::after {
   content: " ⇗";
 }
 
+.inline {
+  display: inline;
+}
+
 /* ========================================================== */
 /* Layout Imports */
 /* ========================================================== */
@@ -98,13 +109,17 @@ a[target=_blank]::after {
   grid-template-columns: 1fr;
   grid-auto-rows: auto;
   grid-gap: 15px;
-  grid-template-areas: "about-intro" "achievements" "skills";
+  grid-template-areas: "about-header" "about-title" "about-intro" "achievements" "skills";
 }
 @media screen and (min-width: 992px) {
   #About {
     grid-template-columns: 2fr 1fr;
-    grid-template-areas: "about-intro skills" "achievements achievements";
+    grid-template-areas: "about-header about-header" "about-intro skills" "achievements achievements";
   }
+}
+
+.about-header {
+  grid-area: about-header;
 }
 
 .about-intro {
@@ -121,6 +136,10 @@ a[target=_blank]::after {
 
 #About {
   text-align: center;
+}
+
+.about-intro {
+  text-align: left;
 }
 
 #Achievements {
@@ -140,15 +159,17 @@ a[target=_blank]::after {
 }
 
 .achievement {
+  background-color: #112838;
+  padding: 10px;
+  border-radius: 10px;
   text-align: center;
 }
 .achievement img {
-  max-width: 25%;
+  max-width: 15%;
 }
 
 #Skills {
   margin: auto;
-  padding: 0;
 }
 
 .skill {
@@ -157,8 +178,8 @@ a[target=_blank]::after {
 }
 
 .top-skill {
-  font-weight: 800;
-  font-size: 20px;
+  font-weight: 700;
+  font-size: 1.1em;
   color: rgb(0, 255, 76);
 }
 
@@ -300,6 +321,8 @@ header {
   color: white;
   text-decoration: none;
   text-align: center;
+  font-size: 1.1em;
+  font-weight: 700;
 }
 .nav-btn:hover {
   background-color: #0f4063;
@@ -320,6 +343,16 @@ header {
   font-size: 1.5em;
 }
 
+.social-btn:hover.icon-linkedin:before {
+  color: #005baf;
+}
+.social-btn:hover.icon-itch-dot-io:before {
+  color: rgb(185, 14, 14);
+}
+.social-btn:hover.icon-github:before {
+  color: rgb(158, 158, 158);
+}
+
 .social-btn::after {
   content: "" !important;
 }
@@ -327,6 +360,24 @@ header {
 /* ========================================================== */
 /* Component Imports */
 /* ========================================================== */
+/* ===================================== 
+   Buttons
+======================================== */
+.btn {
+  background-image: linear-gradient(130deg, rgba(16, 45, 40, 0.2) 0%, #328a7b 25%, rgba(23, 63, 56, 0.2) 50%, rgba(10, 26, 23, 0.2));
+  background-color: #1e5249;
+  box-shadow: inset 0 0 20px 10px rgba(1, 0, 30, 0.2), 1px 2px 3px rgba(1, 0, 30, 0.8);
+  border-radius: 5px;
+  padding: 5px;
+  color: white;
+  text-decoration: none;
+}
+.btn:hover {
+  background-image: linear-gradient(-45deg, rgba(10, 26, 23, 0.2) 0%, #2c776a 25%, rgba(16, 45, 40, 0.2) 50%, rgba(3, 7, 7, 0.2));
+  background-color: #173f38;
+  box-shadow: inset 0 0 20px 10px rgba(1, 0, 30, 0.2), 1px 2px 3px rgba(1, 0, 30, 0.8);
+}
+
 /* ===================================== 
    Grid Layout
 ======================================== */
@@ -398,10 +449,12 @@ footer {
 
 .icon-unrealengine:before {
   content: "\e900";
+  color: white;
 }
 
 .icon-unity:before {
   content: "\e901";
+  color: white;
 }
 
 .icon-git:before {
@@ -421,6 +474,7 @@ footer {
 
 .icon-github:before {
   content: "\eab0";
+  color: white;
 }
 
 /*# sourceMappingURL=application.css.map */

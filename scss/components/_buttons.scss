@@ -1,0 +1,19 @@
+/* ===================================== 
+   Buttons
+======================================== */
+
+.btn
+{
+    @include btnstyle($color-tertiary);
+    
+    border-radius: 5px;
+    padding: 5px;
+
+    color: $color-text-light;
+    text-decoration: none;
+
+    &:hover
+    {
+        @include btnstyle(darken($color-tertiary, 5%), -45deg);
+    }
+}

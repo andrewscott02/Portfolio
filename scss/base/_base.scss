@@ -10,9 +10,9 @@
 body
 {
     background-image: linear-gradient(180deg, $color-secondary 40%, black);
-	font-size: 1.4em;
+	font-size: 1.2em;
 	font-family: 'Varela Round', sans-serif;
-    font-weight: bold;
+    font-weight: 400;
     padding: 0;
     margin: 0;
 }
@@ -27,7 +27,13 @@ body
 
 main
 {
-    background-color: #aad2ed;  
+    background-color: $color-primary-dark-desat;
+
+    & > div:nth-child(even)
+    {
+        border-radius: 10px;
+        background-color: darken($color-primary-desat, 8%);
+    }
 }
 
 aside
@@ -52,4 +58,9 @@ a[target=_blank]::after
 {
     content: " \21D7";
     //margin-left: 10px;
+}
+
+.inline
+{
+    display: inline;
 }

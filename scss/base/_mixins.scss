@@ -1,0 +1,20 @@
+/* ===================================== 
+   Mixins
+======================================== */
+
+//Buttons
+@mixin btnstyle($bkgrndCol: $color-tertiary,
+                $angle: 130deg,
+                $boxShadow: $btn-shadow,
+                $insetShadow: $btn-shadow-inset)
+{
+    background-image: linear-gradient($angle,
+                                        rgba(darken($bkgrndCol, 10%), 0.2) 0%,
+                                        lighten($bkgrndCol, 15%) 25%,
+                                        rgba(darken($bkgrndCol, 5%), 0.2) 50%,
+                                        rgba(darken($bkgrndCol, 15%), 0.2));
+    background-color: $bkgrndCol;
+
+    box-shadow: $insetShadow,
+                    $boxShadow;
+}

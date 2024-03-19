@@ -12,6 +12,8 @@
     grid-auto-rows: auto;
     grid-gap: 15px;
     grid-template-areas:
+        "about-header"
+        "about-title"
         "about-intro"
         "achievements"
         "skills";
@@ -20,9 +22,15 @@
     {
         grid-template-columns: 2fr 1fr;
         grid-template-areas:
+            "about-header about-header"
             "about-intro skills"
             "achievements achievements";
     }
+}
+
+.about-header
+{
+    grid-area: about-header;
 }
 
 .about-intro
@@ -47,6 +55,11 @@
     text-align: center;
 }
 
+.about-intro
+{
+    text-align: left;
+}
+
 #Achievements
 {
     text-align: center;
@@ -67,18 +80,20 @@
 
 .achievement
 {
+    background-color: darken($color-primary-desat, 8%);
+    padding: 10px;
+    border-radius: 10px;
     text-align: center;
 
     img
     {
-        max-width: 25%;
+        max-width: 15%;
     }
 }
 
 #Skills
 {
     margin: auto;
-    padding: 0;
 }
 
 .skill
@@ -89,8 +104,8 @@
 
 .top-skill
 {
-    font-weight: 800;
-    font-size: 20px;
+    font-weight: 700;
+    font-size: 1.1em;
 
     color: rgb(0, 255, 76);
 }
