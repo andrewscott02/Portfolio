@@ -52,7 +52,7 @@
 }
 
 body {
-  background-image: linear-gradient(180deg, #3a4146 40%, black);
+  background-image: linear-gradient(180deg, #3a4146 25%, black);
   font-size: 1.2em;
   font-family: "Varela Round", sans-serif;
   font-weight: 400;
@@ -417,7 +417,6 @@ header {
 }
 
 .nav-btn {
-  background-color: #3a4146;
   display: block;
   width: 100%;
   padding: 5px 0;
@@ -432,7 +431,6 @@ header {
 }
 
 .nav-btn-mobile {
-  background-color: #3a4146;
   display: block;
   width: 100%;
   padding: 5px 0;
@@ -458,7 +456,6 @@ header {
   background: white;
 }
 .nav-btn-mobile:hover {
-  background-color: #3a4146;
   display: block;
   width: 100%;
   padding: 5px 0;
