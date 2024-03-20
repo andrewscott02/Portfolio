@@ -43,10 +43,7 @@ footer
 
 .comingsoon::after
 {
-    content: " *COMING SOON*";
-    color: red;
-    font-size: 0.65em;
-    //margin-left: 10px
+    @include comingsoon;
 }
 
 .new::after

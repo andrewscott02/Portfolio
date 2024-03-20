@@ -41,28 +41,6 @@
     @include navbutton();
 }
 
-@mixin navbutton-mobile($bckgrndcol, $col)
-{
-    @include navbutton();
-    float: right;
-    width: 60px;
-    height: 48px;
-    padding: 10px;
-
-    background-color: $bckgrndcol;
-
-    .nav-btn-mobile-inner
-    {
-        border-top: solid 4px $col;
-        border-bottom: solid 4px $col;
-    
-        &::before
-        {
-            background: $col;
-        }
-    }
-}
-
 .nav-btn-mobile
 {
     @include navbutton-mobile(lighten($color-secondary, 10%), white);

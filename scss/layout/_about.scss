@@ -91,6 +91,7 @@
 #Skills
 {
     margin: auto;
+    padding-left: 0;
 }
 
 .skill
@@ -103,13 +104,49 @@
 {
     font-weight: 700;
     font-size: 1.1em;
+
+    &:hover
+    {
+        color: $color-tertiary-light;
+        text-shadow: 0 0 3px $color-tertiary-light,
+                    0 0 10px $color-tertiary,
+                    0 0 20px $color-tertiary,
+                    0 0 30px $color-tertiary;
+
+        .skill-overlay-container
+        {
+            display: flex;
+        }
+    }
 }
 
-.top-skill::after
-{
-    content: "*";
-    margin-left: 5px;
+// .top-skill::after
+// {
+//     content: "*";
+//     margin-left: 5px;
     
-    font-weight: 700;
-    font-size: 1.1em;
+//     font-weight: 700;
+//     font-size: 1.1em;
+// }
+
+.skill-overlay-container
+{
+    display: none;
+    position: absolute;
+    //right: 50px;
+
+    margin: auto;
+    padding: 5px 10px;
+    border-radius: 10px;
+    
+    background-color: $color-primary-desat;
+
+    color:white;
+    text-align: center;
+    text-shadow: none;
+
+    &::after
+    {
+        @include comingsoon;
+    }
 }

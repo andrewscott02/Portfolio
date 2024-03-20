@@ -173,12 +173,18 @@ footer {
   background-color: #895830;
   box-shadow: 0 0 10px #c76e25;
 }
+.achievement:hover .btn {
+  background-color: #1e4866;
+  color: #dc8843;
+  text-shadow: 0 0 3px #dc8843, 0 0 10px #dc8843, 0 0 20px #dc8843, 0 0 30px #c76e25, 0 0 40px #c76e25, 0 0 50px #c76e25;
+}
 .achievement img {
   max-width: 15%;
 }
 
 #Skills {
   margin: auto;
+  padding-left: 0;
 }
 
 .skill {
@@ -190,12 +196,29 @@ footer {
   font-weight: 700;
   font-size: 1.1em;
 }
+.top-skill:hover {
+  color: #dc8843;
+  text-shadow: 0 0 3px #dc8843, 0 0 10px #c76e25, 0 0 20px #c76e25, 0 0 30px #c76e25;
+}
+.top-skill:hover .skill-overlay-container {
+  display: flex;
+}
 
-.top-skill::after {
-  content: "*";
-  margin-left: 5px;
-  font-weight: 700;
-  font-size: 1.1em;
+.skill-overlay-container {
+  display: none;
+  position: absolute;
+  margin: auto;
+  padding: 5px 10px;
+  border-radius: 10px;
+  background-color: #2b4659;
+  color: white;
+  text-align: center;
+  text-shadow: none;
+}
+.skill-overlay-container::after {
+  content: " *COMING SOON*";
+  color: red;
+  font-size: 0.65em;
 }
 
 /* ===================================== 
@@ -596,6 +619,11 @@ header {
   background-color: #895830;
   box-shadow: 0 0 10px #c76e25;
 }
+.scs-element:hover .btn {
+  background-color: #1e4866;
+  color: #dc8843;
+  text-shadow: 0 0 3px #dc8843, 0 0 10px #dc8843, 0 0 20px #dc8843, 0 0 30px #c76e25, 0 0 40px #c76e25, 0 0 50px #c76e25;
+}
 
 @media screen and (min-width: 1200px), (orientation:landscape) {
   .scs-element:nth-child(3) {
@@ -767,6 +795,11 @@ footer {
   transition: 0.5s ease;
   background-color: #895830;
   box-shadow: 0 0 10px #c76e25;
+}
+.project:hover .btn {
+  background-color: #1e4866;
+  color: #dc8843;
+  text-shadow: 0 0 3px #dc8843, 0 0 10px #dc8843, 0 0 20px #dc8843, 0 0 30px #c76e25, 0 0 40px #c76e25, 0 0 50px #c76e25;
 }
 .project img {
   width: 100%;
