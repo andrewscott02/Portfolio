@@ -9,12 +9,12 @@
     grid-auto-rows: auto;
     grid-gap: 15px;
 
-    @media #{$brk-m}
+    @media #{$brk-xl}
     {
         grid-template-columns: 1fr 1fr;
     }
 
-    @media #{$brk-l}
+    @media #{$brk-xxl}
     {
         grid-template-columns: 1fr 1fr 1fr;
     }

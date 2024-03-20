@@ -28,6 +28,10 @@
 
 @mixin card
 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
     background-color: darken($color-primary-desat, 8%);
     box-shadow: $btn-shadow-inset;
     padding: 10px;
@@ -36,6 +40,12 @@
     color: white;
     text-decoration: none;
     text-align: center;
+
+    h3, p
+    {
+        margin-top: 10px;
+        margin-bottom: 10px;
+    }
 
     img
     {
