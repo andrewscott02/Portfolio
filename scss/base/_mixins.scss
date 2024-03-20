@@ -51,13 +51,11 @@
         .btn
         {
             background-color: $color-primary;
-            color: $color-tertiary-light;
-            text-shadow: 0 0 3px $color-tertiary-light,
-                        0 0 10px $color-tertiary-light,
-                        0 0 20px $color-tertiary-light,
-                        0 0 30px $color-tertiary,
-                        0 0 40px $color-tertiary,
-                        0 0 50px $color-tertiary;
+            color: lighten($color-tertiary, 20%);
+            text-shadow: 0 0 3px lighten($color-tertiary, 20%),
+                        0 0 10px lighten($color-tertiary, 10%),
+                        0 0 20px $color-tertiary,
+                        0 0 30px $color-tertiary;
         }
     }
 }

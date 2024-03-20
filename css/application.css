@@ -175,8 +175,8 @@ footer {
 }
 .achievement:hover .btn {
   background-color: #1e4866;
-  color: #dc8843;
-  text-shadow: 0 0 3px #dc8843, 0 0 10px #dc8843, 0 0 20px #dc8843, 0 0 30px #c76e25, 0 0 40px #c76e25, 0 0 50px #c76e25;
+  color: #e4a36e;
+  text-shadow: 0 0 3px #e4a36e, 0 0 10px #dc8843, 0 0 20px #c76e25, 0 0 30px #c76e25;
 }
 .achievement img {
   max-width: 15%;
@@ -203,8 +203,8 @@ footer {
 }
 #Skills:hover .btn {
   background-color: #1e4866;
-  color: #dc8843;
-  text-shadow: 0 0 3px #dc8843, 0 0 10px #dc8843, 0 0 20px #dc8843, 0 0 30px #c76e25, 0 0 40px #c76e25, 0 0 50px #c76e25;
+  color: #e4a36e;
+  text-shadow: 0 0 3px #e4a36e, 0 0 10px #dc8843, 0 0 20px #c76e25, 0 0 30px #c76e25;
 }
 
 .skill {
@@ -641,8 +641,8 @@ header {
 }
 .scs-element:hover .btn {
   background-color: #1e4866;
-  color: #dc8843;
-  text-shadow: 0 0 3px #dc8843, 0 0 10px #dc8843, 0 0 20px #dc8843, 0 0 30px #c76e25, 0 0 40px #c76e25, 0 0 50px #c76e25;
+  color: #e4a36e;
+  text-shadow: 0 0 3px #e4a36e, 0 0 10px #dc8843, 0 0 20px #c76e25, 0 0 30px #c76e25;
 }
 
 @media screen and (min-width: 1200px), (orientation:landscape) {
@@ -818,8 +818,8 @@ footer {
 }
 .project:hover .btn {
   background-color: #1e4866;
-  color: #dc8843;
-  text-shadow: 0 0 3px #dc8843, 0 0 10px #dc8843, 0 0 20px #dc8843, 0 0 30px #c76e25, 0 0 40px #c76e25, 0 0 50px #c76e25;
+  color: #e4a36e;
+  text-shadow: 0 0 3px #e4a36e, 0 0 10px #dc8843, 0 0 20px #c76e25, 0 0 30px #c76e25;
 }
 .project img {
   width: 100%;
