@@ -152,6 +152,7 @@
     background-color: $color-primary-desat;
 
     color:white;
+    font-size: 0.6em;
     text-align: center;
     text-shadow: none;
 
@@ -159,5 +160,7 @@
     {
         left: initial;
         right: 100%;
+        
+        font-size: 1em;
     }
 }
