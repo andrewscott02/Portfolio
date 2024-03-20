@@ -91,7 +91,8 @@
 #Skills
 {
     @include card;
-    padding: 10px 40px;
+    height: fit-content;
+    padding: 10px 40px 30px;
     margin: 0 auto;
 }
 
@@ -139,6 +140,7 @@
     position: absolute;
     z-index: 2;
     width: 40vw;
+    max-width: 500px;
     bottom: -75%;
     left: 100%;
 
