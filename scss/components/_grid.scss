@@ -45,9 +45,9 @@
             "nav aside" 
             "footer footer";
 
-        @media #{$brk-hs}
+        @media #{$brk-h-s}
         {
-            grid-template-rows: 50px minmax(400px, 5fr);
+            grid-template-rows: 50px 5fr;
             grid-template-areas:
             "header hero-image"
             "nav hero-image"

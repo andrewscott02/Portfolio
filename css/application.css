@@ -286,6 +286,11 @@ textarea:focus, input:focus {
     align-self: start;
   }
 }
+@media screen and (max-height: 395px) {
+  #Header {
+    position: relative;
+  }
+}
 
 header {
   background-color: #3a4146;
@@ -430,6 +435,11 @@ header {
 @media screen and (max-height: 576px) {
   #Navigation {
     top: 60px;
+  }
+}
+@media screen and (max-height: 395px) {
+  #Navigation {
+    top: 0;
   }
 }
 
@@ -637,7 +647,7 @@ header {
 }
 @media screen and (min-width: 768px) and (max-height: 576px) {
   .container {
-    grid-template-rows: 50px minmax(400px, 5fr);
+    grid-template-rows: 50px 5fr;
     grid-template-areas: "header hero-image" "nav hero-image" "nav main" "nav aside" "nav footer";
   }
 }

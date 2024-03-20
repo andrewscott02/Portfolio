@@ -16,6 +16,11 @@
         top:0vh;
         align-self: start;
     }
+
+    @media #{$brk-h-xs}
+    {
+        position: relative;
+    }
 }
 
 header
@@ -44,7 +49,7 @@ header
         box-shadow: $profile-glow;
     }
 
-    @media #{$brk-hs}
+    @media #{$brk-h-s}
     {
         min-height: 0;
     }
@@ -61,7 +66,7 @@ header
 
     margin: auto;
 
-    @media #{$brk-hs}
+    @media #{$brk-h-s}
     {
         max-width: 50px !important;
     }
