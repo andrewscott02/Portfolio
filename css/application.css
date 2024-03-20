@@ -189,7 +189,13 @@ footer {
 .top-skill {
   font-weight: 700;
   font-size: 1.1em;
-  color: rgb(0, 255, 76);
+}
+
+.top-skill::after {
+  content: "*";
+  margin-left: 5px;
+  font-weight: 700;
+  font-size: 1.1em;
 }
 
 /* ===================================== 
@@ -271,6 +277,7 @@ textarea:focus, input:focus {
   z-index: 1;
   padding: 0.15em;
   border: 0;
+  max-height: 100%;
 }
 @media screen and (min-width: 768px) {
   #Header {
@@ -297,6 +304,15 @@ header {
   min-height: 75px;
   margin: auto;
 }
+.profilepic-lnk:hover .profilepic-img {
+  transition: 0.5s ease;
+  box-shadow: 0 0 15px 10px #2a648d;
+}
+@media screen and (max-height: 576px) {
+  .profilepic-lnk {
+    min-height: 0;
+  }
+}
 
 .profilepic-img {
   display: block;
@@ -306,6 +322,11 @@ header {
   float: left;
   height: auto;
   margin: auto;
+}
+@media screen and (max-height: 576px) {
+  .profilepic-img {
+    max-width: 50px !important;
+  }
 }
 @media screen and (min-width: 768px) {
   .profilepic-img {
@@ -406,6 +427,11 @@ header {
   padding: 0.15em;
   border: 0;
 }
+@media screen and (max-height: 576px) {
+  #Navigation {
+    top: 60px;
+  }
+}
 
 #NavigationMobile {
   z-index: 1;
@@ -501,14 +527,16 @@ header {
 }
 
 .socials {
+  display: flex;
+  justify-content: space-evenly;
   margin: auto;
   text-align: center;
 }
 
 .social-btn {
   color: white;
-  text-decoration: none;
   font-size: 1.5em;
+  text-decoration: none;
 }
 
 .social-btn:hover.icon-linkedin:before {
@@ -519,10 +547,6 @@ header {
 }
 .social-btn:hover.icon-github:before {
   color: rgb(158, 158, 158);
-}
-
-.social-btn::after {
-  content: "" !important;
 }
 
 /* ===================================== 
@@ -609,6 +633,12 @@ header {
     grid-template-columns: minmax(125px, 1fr) minmax(200px, 9fr);
     grid-template-rows: auto minmax(400px, 5fr);
     grid-template-areas: "header hero-image" "nav hero-image" "nav main" "nav aside" "footer footer";
+  }
+}
+@media screen and (min-width: 768px) and (max-height: 576px) {
+  .container {
+    grid-template-rows: 50px minmax(400px, 5fr);
+    grid-template-areas: "header hero-image" "nav hero-image" "nav main" "nav aside" "nav footer";
   }
 }
 

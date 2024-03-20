@@ -11,6 +11,11 @@
     
     padding: 0.15em;
     border: 0;
+
+    @media #{$brk-hs}
+    {
+        top: 60px;
+    }
 }
 
 #NavigationMobile
@@ -89,6 +94,9 @@
 
 .socials
 {
+    display: flex;
+    justify-content: space-evenly;
+
     margin:auto;
     text-align: center;
 }
@@ -96,9 +104,8 @@
 .social-btn
 {
     color: white;
-    text-decoration: none;
-
     font-size: 1.5em;
+    text-decoration: none;
 }
 
 .social-btn:hover
@@ -117,9 +124,4 @@
     {
         color: rgb(158, 158, 158);
     }
-}
-
-.social-btn::after
-{
-    content: "" !important;
 }

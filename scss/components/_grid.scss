@@ -44,6 +44,17 @@
             "nav main"
             "nav aside" 
             "footer footer";
+
+        @media #{$brk-hs}
+        {
+            grid-template-rows: 50px minmax(400px, 5fr);
+            grid-template-areas:
+            "header hero-image"
+            "nav hero-image"
+            "nav main"
+            "nav aside" 
+            "nav footer";
+        }
     }
 }
 
