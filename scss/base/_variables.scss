@@ -30,6 +30,9 @@ $color-tertiary-dark-desat: desaturate($color-tertiary-dark, 20%);
 $color-text-light: white;
 $color-text-dark: black;
 
+$color-form: rgb(173, 173, 173);
+$color-form-hover: rgb(236, 236, 236);
+
 //Shadows
 $color-shadow               : rgba(1, 0, 30, 0.8);
 $color-shadow-transparent   : rgba(0, 11, 30, 0.4);

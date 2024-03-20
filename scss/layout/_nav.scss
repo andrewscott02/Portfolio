@@ -39,6 +39,14 @@
 .nav-btn
 {
     @include navbutton();
+
+    &:hover
+    {
+        color: lighten($color-tertiary, 20%);
+        text-shadow: 0 0 3px lighten($color-tertiary, 10%),
+                    0 0 10px $color-tertiary,
+                    0 0 20px $color-tertiary;
+    }
 }
 
 .nav-btn-mobile
