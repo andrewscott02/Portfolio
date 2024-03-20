@@ -98,6 +98,7 @@
 .skill
 {
     display: table;
+    position: relative;
     margin: auto;
     list-style: none;
     font-size: 18px;
@@ -136,7 +137,10 @@
 {
     display: none;
     position: absolute;
-    //right: 50px;
+    z-index: 2;
+    width: 40vw;
+    bottom: -75%;
+    left: 100%;
 
     margin: auto;
     padding: 5px 10px;
@@ -151,5 +155,11 @@
     &::after
     {
         @include message;
+    }
+
+    @media #{$brk-l}
+    {
+        left: initial;
+        right: 100%;
     }
 }
