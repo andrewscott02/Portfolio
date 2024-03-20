@@ -2,12 +2,11 @@
    Mixins
 ======================================== */
 
-@mixin comingsoon
+@mixin message($content:" *COMING SOON*", $col: red)
 {
-    content: " *COMING SOON*";
-    color: red;
+    content: $content;
+    color: $col;
     font-size: 0.65em;
-    //margin-left: 10px
 }
 
 //Button - Unused

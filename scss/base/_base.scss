@@ -43,15 +43,12 @@ footer
 
 .comingsoon::after
 {
-    @include comingsoon;
+    @include message;
 }
 
 .new::after
 {
-    content: " *NEW*";
-    color: red;
-    font-size: 0.65em;
-    //margin-left: 10px
+    @include message(" *NEW*")
 }
 
 .external-link::after
