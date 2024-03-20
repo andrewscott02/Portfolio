@@ -302,12 +302,14 @@ header {
   display: block;
   border-radius: 50%;
   width: 100%;
-  max-width: 65px;
+  max-width: 100px;
+  float: left;
   height: auto;
   margin: auto;
 }
 @media screen and (min-width: 768px) {
   .profilepic-img {
+    float: initial;
     max-width: 150px;
   }
 }
@@ -412,10 +414,10 @@ header {
   align-self: start;
   padding: 0.15em;
   border: 0;
-  background-color: #3a4146;
 }
 
 .nav-btn {
+  background-color: #3a4146;
   display: block;
   width: 100%;
   padding: 5px 0;
@@ -427,6 +429,74 @@ header {
 }
 .nav-btn:hover {
   background-color: #1e4866;
+}
+
+.nav-btn-mobile {
+  background-color: #3a4146;
+  display: block;
+  width: 100%;
+  padding: 5px 0;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  font-size: 1.1em;
+  font-weight: 700;
+  float: right;
+  width: 60px;
+  height: 48px;
+  padding: 10px;
+  background-color: #515b62;
+}
+.nav-btn-mobile:hover {
+  background-color: #1e4866;
+}
+.nav-btn-mobile .nav-btn-mobile-inner {
+  border-top: solid 4px white;
+  border-bottom: solid 4px white;
+}
+.nav-btn-mobile .nav-btn-mobile-inner::before {
+  background: white;
+}
+.nav-btn-mobile:hover {
+  background-color: #3a4146;
+  display: block;
+  width: 100%;
+  padding: 5px 0;
+  color: white;
+  text-decoration: none;
+  text-align: center;
+  font-size: 1.1em;
+  font-weight: 700;
+  float: right;
+  width: 60px;
+  height: 48px;
+  padding: 10px;
+  background-color: #1e4866;
+}
+.nav-btn-mobile:hover:hover {
+  background-color: #1e4866;
+}
+.nav-btn-mobile:hover .nav-btn-mobile-inner {
+  border-top: solid 4px #c76e25;
+  border-bottom: solid 4px #c76e25;
+}
+.nav-btn-mobile:hover .nav-btn-mobile-inner::before {
+  background: #c76e25;
+}
+
+.nav-btn-mobile-inner {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.nav-btn-mobile-inner::before {
+  display: block;
+  content: "";
+  position: absolute;
+  width: 40px;
+  height: 4px;
+  top: 47%;
+  justify-content: center;
 }
 
 .nav-btn:not(:last-child) {
@@ -514,19 +584,15 @@ header {
    Buttons
 ======================================== */
 .btn {
-  background-image: linear-gradient(130deg, rgba(156, 86, 29, 0.2) 0%, #e09658 25%, rgba(177, 98, 33, 0.2) 50%, rgba(134, 74, 25, 0.2));
-  background-color: #c76e25;
-  box-shadow: inset 0 0 20px 10px rgba(1, 0, 30, 0.2), 1px 1px 2px rgba(1, 0, 30, 0.8);
   margin: 5px;
-  padding: 5px;
+  padding: 5px 10px;
   border-radius: 5px;
   color: white;
   text-decoration: none;
+  background-color: #c76e25;
 }
 .btn:hover {
-  background-image: linear-gradient(-45deg, rgba(134, 74, 25, 0.2) 0%, #dc8843 25%, rgba(156, 86, 29, 0.2) 50%, rgba(113, 62, 21, 0.2));
   background-color: #b16221;
-  box-shadow: inset 0 0 20px 10px rgba(1, 0, 30, 0.2), 1px 1px 2px rgba(1, 0, 30, 0.8);
 }
 
 /* ===================================== 

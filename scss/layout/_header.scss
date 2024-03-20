@@ -42,13 +42,15 @@ header
     display: block;
     border-radius: 50%;
     width: 100%;
-    max-width: 65px;
+    max-width: 100px;
+    float: left;
     height: auto;
 
     margin: auto;
 
     @media #{$brk-m}
     {
+        float: initial;
         max-width: 150px;
     }
 }

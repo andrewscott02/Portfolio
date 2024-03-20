@@ -4,17 +4,17 @@
 
 .btn
 {
-    @include btnstyle($color-tertiary);
-    
     margin: 5px;
-    padding: 5px;
+    padding: 5px 10px;
     border-radius: 5px;
 
     color: $color-text-light;
     text-decoration: none;
 
+    background-color: $color-tertiary;
+
     &:hover
     {
-        @include btnstyle(darken($color-tertiary, 5%), -45deg);
+        background-color: darken($color-tertiary, 5%);
     }
 }

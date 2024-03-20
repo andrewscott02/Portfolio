@@ -23,26 +23,62 @@
     padding: 0.15em;
     border: 0;
 
-    background-color: $color-secondary;
+    //background-color: $color-secondary;
 }
 
 .nav-btn
 {
-    display: block;
-    width: 100%;
-    padding: 5px 0;
+    @include navbutton();
+}
 
-    color: white;
-    text-decoration: none;
-    text-align: center;
+@mixin navbutton-mobile($bckgrndcol, $col)
+{
+    @include navbutton();
+    float: right;
+    width: 60px;
+    height: 48px;
+    padding: 10px;
 
-    font-size: 1.1em;
-    font-weight: 700;
+    background-color: $bckgrndcol;
+
+    .nav-btn-mobile-inner
+    {
+        border-top: solid 4px $col;
+        border-bottom: solid 4px $col;
+    
+        &::before
+        {
+            background: $col;
+        }
+    }
+}
+
+.nav-btn-mobile
+{
+    @include navbutton-mobile(lighten($color-secondary, 10%), white);
 
     &:hover
     {
-        //color: black;
-        background-color: $color-primary;
+        @include navbutton-mobile($color-primary, $color-tertiary);
+    }
+}
+
+.nav-btn-mobile-inner
+{
+    display: block;
+    width: 100%;
+    height: 100%;
+
+    &::before
+    {
+        display: block;
+        content: '';
+        position: absolute;
+
+        width: 40px;
+        height: 4px;
+        top: 47%;
+        justify-content: center;
     }
 }
 
