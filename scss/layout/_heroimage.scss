@@ -138,9 +138,9 @@ video.background-video
     h1
     {
         position: relative;
-        top: 35%;
+        top: 25%;
 
-        font-size: 2.5rem;
+        font-size: 1.5em;
         line-height: 3rem;
         margin: 0 0 1.25rem;
         color: #fff;
@@ -150,11 +150,27 @@ video.background-video
     p
     {
         position: relative;
-        top: 40%;
+        top: 30%;
+        font-size: 0.8em;
     }
 
     @media #{$med-has-pointer}
     {
         display: inherit;
+    }
+
+    @media #{$brk-s}
+    {
+        h1
+        {
+            top: 35%;
+            font-size: 2em;
+        }
+
+        p
+        {
+            top: 40%;
+            font-size: initial;
+        }
     }
 }
