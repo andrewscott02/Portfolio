@@ -38,7 +38,7 @@
 
 .nav-btn
 {
-    transition: 0.25s ease;
+    transition: 0.08s ease;
     @include navbutton();
 
     &:hover
@@ -52,7 +52,7 @@
 
 .nav-btn-mobile
 {
-    transition: 0.25s ease;
+    transition: 0.08s ease;
     @include navbutton-mobile(lighten($color-secondary, 10%), white);
 
     &:hover
