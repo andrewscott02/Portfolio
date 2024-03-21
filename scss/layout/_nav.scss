@@ -38,6 +38,7 @@
 
 .nav-btn
 {
+    transition: 0.25s ease;
     @include navbutton();
 
     &:hover
@@ -51,6 +52,7 @@
 
 .nav-btn-mobile
 {
+    transition: 0.25s ease;
     @include navbutton-mobile(lighten($color-secondary, 10%), white);
 
     &:hover
@@ -97,6 +99,16 @@
     color: white;
     font-size: 1.5em;
     text-decoration: none;
+}
+
+.social-btn
+{
+    &.icon-linkedin:before,
+    &.icon-itch-dot-io:before,
+    &.icon-github:before
+    {
+        transition: 0.25s ease;
+    }
 }
 
 .social-btn:hover
