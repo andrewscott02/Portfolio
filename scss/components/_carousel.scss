@@ -2,3 +2,42 @@
    Carousel
 ======================================== */
 
+.featured-item
+{
+    @include card;
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+.featured-media-container
+{
+    //overflow: none;
+
+    width: 100%;
+    //max-width: 100%;
+    height: 100%;
+    //height: 350px;
+    --aspect-ratio: 3 / 4;
+
+    iframe
+    {
+        min-width: 100%;
+        min-height: 100%;
+        width: auto;
+        height: auto;
+    }
+}
+
+//Slick styles
+
+.slick-dots li button:before
+{
+    color:rgb(146, 146, 146);
+    font-size: 14px;
+}
+
+.slick-dots li.slick-active button:before
+{
+    color:white;
+    font-size: 14px;
+}

@@ -1,20 +1,14 @@
 $(".slides").slick({
     //fade:true,
-    //autoplay: true,
+    autoplay: true,
     autoplaySpeed: 2000,
     arrows: false,
-    dots: true,
-
-    slidesToShow: 2,
-    slidesToScroll: 1
+    dots: true
 });
 
 $(".slides").css("display", "inherit");
 
-// $(".project").on("mouseenter", (event)=>{
-//     $(event.target).addClass("show-vid");
-//     //ResizeVidBorders();
-// })
+$("iframe").fitVids();
 
 // $(".project").on("mouseleave", (event)=>{
 //     $(event.target).removeClass("show-vid");
