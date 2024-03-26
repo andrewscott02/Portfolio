@@ -11,6 +11,7 @@ $brk-s          :"screen and (min-width: 576px)";
 $brk-m          :"screen and (min-width: 768px)";
 $brk-l          :"screen and (min-width: 992px)";
 $brk-xl         :"screen and (min-width: 1200px), (orientation:landscape)";
+$brk-xl-true    :"screen and (min-width: 1200px)";
 $brk-xxl        :"screen and (min-width: 1600px)";
 
 $med-has-pointer :"(not (pointer:none)) and (not (pointer:coarse))";

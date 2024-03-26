@@ -4,12 +4,33 @@
 
 .featured-item
 {
-    @include card(false);
+    @include textStyling;
+    // @include card(false);
     display: grid;
-    grid-template-columns: 2fr 1fr;
-    grid-gap: 15px;
+    // grid-gap: 15px;
+    grid-template-columns: 100%;
+    //grid-template-rows: auto;
+    grid-auto-rows: auto 1fr;
+    height: 100%;
 
-    //min-height: 40vh;
+    @media #{$brk-xl-true}
+    {
+        grid-template-columns: 2fr 1fr;
+    }
+}
+
+.featured-info
+{
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+
+    padding: 10px;
+
+    p:last-of-type
+    {
+        margin-bottom: auto;
+    }
 }
 
 .featured-media-container
@@ -17,21 +38,38 @@
     //overflow: none;
 
     width: 100%;
-    height: 100%;
+    height: fit-content;
 
     iframe,
     embed
     {
-        min-width: 100%;
-        min-height: 100%;
-        width: auto;
+        width: 100%;
         height: auto;
 
         aspect-ratio: 16 / 9;
     }
 }
 
+.smallImages
+{
+    img
+    {
+        display: inline-block;
+        max-width: 10%;
+
+        @media #{$brk-xl-true}
+        {
+            max-width: 25%;
+        }
+    }
+}
+
 //Slick styles
+
+.slides
+{
+    background-color: $color-primary-desat;
+}
 
 .slick-dots li button:before
 {
@@ -43,4 +81,23 @@
 {
     color:white;
     font-size: 14px;
+}
+
+.slick-slide {
+    height: auto; // ← that must not be ignored
+    &>div
+    {
+        height: 100%;
+        &>div
+        {
+            height: 100%;
+        }
+    }
+}
+
+.slick-track {
+display: flex;
+flex-direction: row;
+flex-wrap: nowrap;
+align-items: stretch;
 }
