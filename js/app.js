@@ -12,30 +12,65 @@ $(".slides").slick({
 
 //#region Hero Image Effects
 
-const pContent = $("#HeroImage p").text();
-const typeTime = 25;
+const H_Content = $("#HeroImage h1").text();
+const H_scrambleTime = 16;
+const H_unscrambleTime = 35;
+const H_unscrambleDelay = 20;
 
-let currentPTimeout;
+const P_Content = $("#HeroImage p").text();
+const P_scrambleTime = 8;
+const P_unscrambleTime = 10;
+const P_unscrambleDelay = 400;
 
-// setTimeout(Test, 3000)
+const P_Timeouts = [];
 
-// function Test
-// {
-//     alert("should appear after 3 seconds");
-// }
+$( document ).ready(()=>{
+    ClearAllTimeouts()
+    ScrambleText($("#HeroImage h1"), 0); //Quickly scrambles text in case it isn't fully scrambled
+    ScrambleText($("#HeroImage p"), 0); //Quickly scrambles text in case it isn't fully scrambled
+    
+    setTimeout(UnscrambleText, H_unscrambleDelay, $("#HeroImage h1"), H_unscrambleTime, H_Content);
+    setTimeout(UnscrambleText, P_unscrambleDelay, $("#HeroImage p"), P_unscrambleTime, P_Content);
+})
 
 //Hover
 $("#HeroImage").on("mouseenter", ()=>{
-    ScrambleText($("#HeroImage p"));
+    ClearAllTimeouts()
+    ScrambleText($("#HeroImage h1"), H_scrambleTime);
+    ScrambleText($("#HeroImage p"), P_scrambleTime);
 })
 
 $("#HeroImage").on("mouseleave", ()=>{
-    UnscrambleText($("#HeroImage p"), typeTime, pContent);
+    ClearAllTimeouts()
+    ScrambleText($("#HeroImage h1"), 0); //Quickly scrambles text in case it isn't fully scrambled
+    ScrambleText($("#HeroImage p"), 0); //Quickly scrambles text in case it isn't fully scrambled
+    
+    setTimeout(UnscrambleText, H_unscrambleDelay, $("#HeroImage h1"), H_unscrambleTime, H_Content);
+    setTimeout(UnscrambleText, P_unscrambleDelay, $("#HeroImage p"), P_unscrambleTime, P_Content);
 })
 
-function ScrambleText($textObj)
+/** Clears all timeouts for writing the p element
+ */
+function ClearAllTimeouts()
 {
-    clearTimeout(currentPTimeout);
+    for(let i = 0; i < P_Timeouts.length;)
+    {
+        clearTimeout(P_Timeouts[0]);
+        P_Timeouts.shift();
+
+        if (P_Timeouts.length == 0)
+        {
+            break;
+        }
+    }
+}
+
+/** Scrambles Text
+ * @param {*} $textObj - The jQeury Object to scramble
+ * @param {*} typeTime - Inerval between each letter is typed
+ */
+function ScrambleText($textObj, typeTime)
+{
     const originalContent = $($textObj).text();
     let scrambleContent = "";
 
@@ -48,44 +83,59 @@ function ScrambleText($textObj)
     {
         let newString = BuildString(originalContent, scrambleContent, i).join("");
         unscrambleContent = newString;
-        currentPTimeout = setTimeout(DelayWrite, i * typeTime, $textObj, newString);
-        //DelayWrite($textObj, (i * 1000), newString);
+
+        let timeoutID = setTimeout(SetStringContent, i * typeTime, $textObj, newString);
+        P_Timeouts.push(timeoutID);
     }
 }
 
+/** Unscrambles Text
+ * @param {*} $textObj - The jQeury Object to scramble
+ * @param {*} typeTime - Inerval between each letter is typed
+ * @param {*} originalContent - The original text content to unscramble to
+ */
 function UnscrambleText($textObj, typeTime, originalContent)
 {
-    clearTimeout(currentPTimeout);
     let unscrambleContent = $($textObj).text();
     for (let i = 0; i < originalContent.length; i++)
     {
         let newString = BuildString(unscrambleContent, originalContent, i).join("");
         unscrambleContent = newString;
-        currentPTimeout = setTimeout(DelayWrite, i * typeTime, $textObj, newString);
-        //DelayWrite($textObj, (i * 1000), newString);
+
+        let timeoutID = setTimeout(SetStringContent, i * typeTime, $textObj, newString);
+        P_Timeouts.push(timeoutID);
     }
 }
 
-function BuildString(unscrambleContent, originalContent, index)
+/** Builds a string combining 2 strings together
+ * @param {*} fromString - Uses as the base string for the message
+ * @param {*} toString - Uses this string up to the index, then uses the fromString
+ * @param {*} index - Index up to when the toString stops being used
+ * @returns 
+ */
+function BuildString(fromString, toString, index)
 {
     let newString = [];
 
-    for (let i = 0; i < originalContent.length; i++)
+    for (let i = 0; i < toString.length; i++)
     {
-        let letterAdd = i <= index ? originalContent[i] : unscrambleContent[i];
+        let letterAdd = i <= index ? toString[i] : fromString[i];
         newString.push(letterAdd);
     }
 
     return newString;
 }
 
-function DelayWrite($textObj, newString)
+/** Sets String Content
+ * @param {*} $textObj - The jQuery Object to set content for
+ * @param {*} newString - The new string to set as content
+ */
+function SetStringContent($textObj, newString)
 {
     $($textObj).text(newString);
 }
 
-/**
- * 
+/** Random Range Function
  * @param {int} minRaw - Minimum value
  * @param {int} maxRaw - Maximum value (exclusive)
  * @returns {int} A random integer between the input values
