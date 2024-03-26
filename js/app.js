@@ -1,14 +1,25 @@
+//#region Carousel
+
 $(".slides").slick({
     //fade:true,
-    autoplay: true,
-    autoplaySpeed: 2000,
+    //autoplay: true,
+    autoplaySpeed: 15000,
     arrows: false,
     dots: true
 });
 
-$(".slides").css("display", "inherit");
+//#endregion
 
-$("iframe").fitVids();
+//#region Scale Videos
+
+//$("iframe").fitVids();
+
+// $("iframe").each((item)=>{
+//     $(item).width = $(item).contentWindow.document.body.scrollWidth;
+//     $(item).height = $(item).contentWindow.document.body.scrollHeight;
+// });
+
+//#endregion
 
 // $(".project").on("mouseleave", (event)=>{
 //     $(event.target).removeClass("show-vid");

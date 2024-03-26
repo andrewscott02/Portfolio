@@ -26,7 +26,7 @@
                     $boxShadow;
 }
 
-@mixin card
+@mixin card ($hover: true)
 {
     transition: 0.5s ease;
     display: flex;
@@ -58,19 +58,22 @@
         transition: 0.25s ease;
     }
 
-    &:hover
+    @if ($hover)
     {
-        background-color: $color-tertiary-dark-desat;
-        box-shadow: $btn-glow;
-
-        .btn
+        &:hover
         {
-            background-color: $color-primary;
-            color: lighten($color-tertiary, 20%);
-            text-shadow: 0 0 3px lighten($color-tertiary, 20%),
-                        0 0 10px lighten($color-tertiary, 10%),
-                        0 0 20px $color-tertiary,
-                        0 0 30px $color-tertiary;
+            background-color: $color-tertiary-dark-desat;
+            box-shadow: $btn-glow;
+
+            .btn
+            {
+                background-color: $color-primary;
+                color: lighten($color-tertiary, 20%);
+                text-shadow: 0 0 3px lighten($color-tertiary, 20%),
+                            0 0 10px lighten($color-tertiary, 10%),
+                            0 0 20px $color-tertiary,
+                            0 0 30px $color-tertiary;
+            }
         }
     }
 }
