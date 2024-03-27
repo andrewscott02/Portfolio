@@ -21,7 +21,7 @@ $(".nav-btn-mobile").on("click", (event)=>{
 $("#Featured").addClass("java-enabled");
 
 //Scales the overlay of the videos to their width so videos cannot be interacted with
-$(".featured-overlay-container").css("width", $(".featured-overlay-container").parent().css("width"));
+//$(".featured-overlay-container").css("width", $(".featured-overlay-container").parent().css("width"));
 
 $(".slides").slick({
     //fade:true,

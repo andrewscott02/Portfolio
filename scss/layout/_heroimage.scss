@@ -56,7 +56,7 @@
 .heroElements
 {
     margin-bottom: 0;
-    font-size: 1.25rem;
+    font-size: 1rem;
     line-height: 1.75rem;
     font-weight: 600;
 
@@ -130,6 +130,7 @@ video.background-video
 
 .hero-text
 {
+    overflow: hidden;
     transition: 0.25s ease;
     display: none;
     position: fixed;
@@ -187,6 +188,19 @@ video.background-video
         p
         {
             font-size: 2em;
+        }
+    }
+
+    @media #{$brk-xxl}
+    {
+        h1
+        {
+            font-size: 4.5em;
+        }
+
+        p
+        {
+            font-size: 3em;
         }
     }
 }

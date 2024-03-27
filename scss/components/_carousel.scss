@@ -37,6 +37,11 @@
 
     padding: 10px;
 
+    .btn
+    {
+        z-index: 1;
+    }
+
     p:last-of-type
     {
         margin-bottom: auto;
