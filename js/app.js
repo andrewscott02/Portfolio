@@ -1,3 +1,13 @@
+//#region Side Panel
+
+$(".nav-btn-mobile").on("click", ()=>{
+    $("#MainContainer").toggleClass("sideMenuOpen");
+    $("#SideMenu").toggleClass("sideMenuOpen");
+    $(".nav-btn-mobile").toggleClass("sideMenuOpen");
+})
+
+//#endregion
+
 //#region Carousel
 
 $(".slides").slick({
@@ -14,12 +24,12 @@ $(".slides").slick({
 
 const H_Content = $("#HeroImage h1").text();
 const H_scrambleTime = 16;
-const H_unscrambleTime = 35;
+const H_unscrambleTime = 40;
 const H_unscrambleDelay = 20;
 
 const P_Content = $("#HeroImage p").text();
-const P_scrambleTime = 8;
-const P_unscrambleTime = 10;
+const P_scrambleTime = 10;
+const P_unscrambleTime = 15;
 const P_unscrambleDelay = 400;
 
 const P_Timeouts = [];
