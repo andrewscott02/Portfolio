@@ -22,7 +22,7 @@
 
     @media #{$brk-xl}
     {
-        grid-template-columns: 2fr 1fr;
+        grid-template-columns: 5fr 3fr;
     }
 }
 
@@ -39,7 +39,8 @@
         z-index: 1;
     }
 
-    p:last-of-type
+    p:last-of-type,
+    .brk-xlt-l
     {
         margin-bottom: auto;
     }
