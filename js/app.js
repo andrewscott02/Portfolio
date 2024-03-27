@@ -1,9 +1,10 @@
 //#region Side Panel
 
+$("#SideMenu").css("height", $("#SideMenu").parent().css("height"));
+
 $(".nav-btn-mobile").on("click", ()=>{
-    $("#MainContainer").toggleClass("sideMenuOpen");
-    $("#SideMenu").toggleClass("sideMenuOpen");
-    $(".nav-btn-mobile").toggleClass("sideMenuOpen");
+    $(".sideMenu").toggleClass("sideMenuOpen");
+    $(".nav-btn-mobile").toggleClass("sideMenuOpen"); //class not implemented yet
 })
 
 //#endregion

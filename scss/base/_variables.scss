@@ -29,6 +29,12 @@ $color-primary-dark-desat: desaturate($color-primary-dark, 20%);
 
 $color-secondary: #3a4146;
 
+$color-secondary-desat: desaturate($color-secondary, 20%);
+
+$color-secondary-light: lighten($color-secondary, 10%);
+$color-secondary-dark: darken($color-secondary, 10%);
+$color-secondary-dark-desat: desaturate($color-secondary-dark, 20%);
+
 // $color-tertiary: #c76e25;
 // $color-tertiary-desat: desaturate($color-tertiary, 20%);
 $color-tertiary-raw: complement($color-primary);
