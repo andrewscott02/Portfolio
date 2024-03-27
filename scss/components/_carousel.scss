@@ -23,7 +23,7 @@
     grid-auto-rows: auto 1fr;
     height: 100%;
 
-    @media #{$brk-xl-true}
+    @media #{$brk-xl}
     {
         grid-template-columns: 2fr 1fr;
     }

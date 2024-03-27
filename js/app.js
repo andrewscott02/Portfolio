@@ -187,6 +187,55 @@ function RandomRange(minRaw = 0, maxRaw = 0)
 
 //#endregion
 
+//#region Form Validation
+
+/**
+ * Implement JavaScript validation on the form
+ * 
+ * Required Fields
+ * Regex checks for email and phone number formatting
+ */
+
+$(".form-sbmt").on("click", (event)=>{
+    CheckFormFields(event);
+})
+
+$("input").on("keypress", (event)=>{
+    if (event.which == 13)
+    {
+        CheckFormFields(event);
+    }
+})
+
+function CheckFormFields(event)
+{
+    let canSubmit = true;
+
+    $("input").each((index, element)=>{
+        if ($(element).prev().hasClass("required"))
+        {
+            const content = $(element).val();
+            if (content == "")
+            {
+                // alert("success: " + $(element) + " => " + content);
+                canSubmit = false
+            }
+        }
+    });
+
+    if (!canSubmit)
+    {
+        event.preventDefault();
+        alert("Form failed, please fill out all required form fields");
+    }
+}
+
+//#endregion
+
+
+
+
+
 //#region Not Implemented
 
 //#region Scale Videos
