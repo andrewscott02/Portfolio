@@ -1,13 +1,16 @@
 //#region Side Panel
 
 //Sets the height of the side panel to the height of the body
-$("#SideMenu").css("height", $("#SideMenu").parent().css("height"));
+$(".sideMenu-container").css("height", $("#SideMenu").parent().css("height"));
+
+$("#SideMenu").removeClass("sideMenuOpen"); //Shows/hides navbar
+$(".nav-btn-mobile").removeClass("sideMenuOpen"); //TODO: Styling for nav button - class not implemented yet
 
 //When the mobile nav button is clicked
 $(".nav-btn-mobile").on("click", (event)=>{
     event.preventDefault(); //Prevents the page from scrolling to the top
     $("#SideMenu").toggleClass("sideMenuOpen"); //Shows/hides navbar
-    $(".sideMenu").toggleClass("sideMenuOpen"); //Shows/hides navbar
+    $(".sideMenu-container").toggleClass("sideMenuOpen"); //Shows/hides navbar
     $(".nav-btn-mobile").toggleClass("sideMenuOpen"); //TODO: Styling for nav button - class not implemented yet
 })
 

@@ -5,36 +5,45 @@
 #SideMenu
 {
     transition: all 0.5s ease;
-    position: absolute;
+    position: sticky;
+    top: 0;
     z-index: 200;
-    width: 0;
-    //height: 100%;
-    left: 100%;
-    overflow: hidden;
-    //display: flex;
 
-    &.sideMenuOpen
-    {
-        width: 100%;
-        left: 0;
-    }
+    width: 100%;
+    height: 0;
+
+    padding: 0;
+    border: 0;
+    margin: 0;
+
+    overflow-x: clip;
 }
 
 .sideMenu-container
 {
+    display: flex;
     background-color: $color-secondary-dark;
     z-index: 200;
-    width: 100%;
-    height: 100%;
+    width: 100vw;
+    height: 100vh;
 
-    position: sticky;
-    top: 0;
-    align-self: start;
+    position: absolute;
+    // position: relative;
+    // top: 0;
+    // align-self: start;
     
     padding: 0;
     border: 0;
+    margin: 0;
 
     overflow: hidden;
+    
+    left: 100%;
+    transition: ease 0.75s;
+    &.sideMenuOpen
+    {
+        left: 0;
+    }
 }
 
 .sideMenu-items
