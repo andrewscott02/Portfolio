@@ -2,6 +2,16 @@
    Carousel
 ======================================== */
 
+#Featured
+{
+    display: none;
+
+    &.java-enabled
+    {
+        display: inherit;
+    }
+}
+
 .featured-item
 {
     @include textStyling;
@@ -49,6 +59,26 @@
         aspect-ratio: 16 / 9;
     }
 }
+
+.featured-overlay-container
+{
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.featured-overlay
+{
+    opacity: 0;
+    background-color: rgba($color: #ff0000, $alpha: 0.5);
+    position: relative;
+    top:0;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 16 / 9;
+}
+
 
 .smallImages
 {

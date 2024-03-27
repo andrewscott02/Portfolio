@@ -18,6 +18,11 @@ $(".nav-btn-mobile").on("click", (event)=>{
 
 //#region Carousel
 
+$("#Featured").addClass("java-enabled");
+
+//Scales the overlay of the videos to their width so videos cannot be interacted with
+$(".featured-overlay-container").css("width", $(".featured-overlay-container").parent().css("width"));
+
 $(".slides").slick({
     //fade:true,
     autoplay: true,
