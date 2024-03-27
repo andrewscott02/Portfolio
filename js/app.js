@@ -232,6 +232,45 @@ function CheckFormFields(event)
 
 //#endregion
 
+//#region Smooth Anchor Scroll
+
+document.querySelectorAll('a').forEach(anchor => {
+    const hashIndex = anchor.href.indexOf("#");
+    if (hashIndex >= 0)
+    {
+        const urlHIndex = window.location.href.indexOf("#");
+        const urlEnd = window.location.href.substring(urlHIndex);
+        const anchorEnd = anchor.href.substring(hashIndex);
+        
+        if (urlEnd === anchorEnd)
+        {
+            // alert("Scrolling: Anchor " + anchorEnd + " || matches url: " + urlEnd);
+            
+            //Replaces the anchor with featured so webpage
+            //still works without JavaScript but redirects
+            //to featured if JavaScript is enabled
+            const replaceAnchor = anchorEnd == "#Games" ? "#Featured" : "#Games";
+            
+            $('html, body').animate({
+                scrollTop: $(replaceAnchor).offset().top
+            }, 500);
+        }
+
+        anchor.addEventListener('click', function (e) {
+            //alert("anchor clicked");
+            //e.preventDefault();
+    
+            // document.querySelector(this.getAttribute('href')).scrollIntoView({
+            //     behavior: 'smooth'
+            // });
+            $('html, body').animate({
+                scrollTop: $(anchorEnd).offset().top
+            }, 500);
+        });
+    }
+});
+
+//#endregion
 
 
 
