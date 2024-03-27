@@ -28,6 +28,7 @@
 
 .container
 {
+    min-height: 100vh;
     height: auto;
     display: grid;
     grid-template-columns: 2fr 1fr;

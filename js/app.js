@@ -3,8 +3,15 @@
 //Sets the height of the side panel to the height of the body
 $(".sideMenu-container").css("height", $("#SideMenu").parent().css("height"));
 
-$("#SideMenu").removeClass("sideMenuOpen"); //Shows/hides navbar
-$(".nav-btn-mobile").removeClass("sideMenuOpen"); //TODO: Styling for nav button - class not implemented yet
+CloseSidePanel();
+
+function CloseSidePanel()
+{
+    //alert("Close Side Panel");
+    $("#SideMenu").removeClass("sideMenuOpen"); //Shows/hides navbar
+    $(".sideMenu-container").removeClass("sideMenuOpen"); //Shows/hides navbar
+    $(".nav-btn-mobile").removeClass("sideMenuOpen"); //TODO: Styling for nav button - class not implemented yet
+}
 
 //When the mobile nav button is clicked
 $(".nav-btn-mobile").on("click", (event)=>{
@@ -249,7 +256,7 @@ document.querySelectorAll('a').forEach(anchor => {
             //Replaces the anchor with featured so webpage
             //still works without JavaScript but redirects
             //to featured if JavaScript is enabled
-            const replaceAnchor = anchorEnd == "#Games" ? "#Featured" : "#Games";
+            const replaceAnchor = anchorEnd == "#Games" ? "#Featured" : anchorEnd;
             
             $('html, body').animate({
                 scrollTop: $(replaceAnchor).offset().top
@@ -257,12 +264,9 @@ document.querySelectorAll('a').forEach(anchor => {
         }
 
         anchor.addEventListener('click', function (e) {
-            //alert("anchor clicked");
-            //e.preventDefault();
-    
-            // document.querySelector(this.getAttribute('href')).scrollIntoView({
-            //     behavior: 'smooth'
-            // });
+
+            CloseSidePanel();
+
             $('html, body').animate({
                 scrollTop: $(anchorEnd).offset().top
             }, 500);

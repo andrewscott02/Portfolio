@@ -27,7 +27,13 @@ body
 
 main
 {
+    min-height: 500px;
     background-color: darken($color-primary-desat, 15%);
+
+    @media #{$brk-m}
+    {
+        min-height: initial;
+    }
 
     // & > div:nth-child(even)
     // {
