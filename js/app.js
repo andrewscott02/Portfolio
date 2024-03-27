@@ -6,6 +6,7 @@ $("#SideMenu").css("height", $("#SideMenu").parent().css("height"));
 //When the mobile nav button is clicked
 $(".nav-btn-mobile").on("click", (event)=>{
     event.preventDefault(); //Prevents the page from scrolling to the top
+    $("#SideMenu").toggleClass("sideMenuOpen"); //Shows/hides navbar
     $(".sideMenu").toggleClass("sideMenuOpen"); //Shows/hides navbar
     $(".nav-btn-mobile").toggleClass("sideMenuOpen"); //TODO: Styling for nav button - class not implemented yet
 })
