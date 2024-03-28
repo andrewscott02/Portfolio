@@ -18,12 +18,21 @@
 //         "footer footer";
 // }
 
+// #MainContainer.sideMenuOpen
+// {
+//     // grid-template-columns: 100vw;
+//     // grid-template-rows: 100vh;
+//     grid-template-areas:
+//         "nav-mobile nav-mobile";
+// }
+
 .container
 {
+    min-height: 100vh;
     height: auto;
     display: grid;
     grid-template-columns: 2fr 1fr;
-    grid-template-rows: auto auto minmax(400px, 5fr);
+    grid-template-rows: auto auto minmax(250px, 5fr);
     grid-auto-rows: auto;
     grid-gap: 2px;
     grid-template-areas:
@@ -37,7 +46,7 @@
     @media #{$brk-m}
     {
         grid-template-columns: minmax(125px, 1fr) minmax(200px, 9fr);
-        grid-template-rows: auto minmax(400px, 5fr);
+        grid-template-rows: auto minmax(300px, 5fr);
         grid-template-areas:
             "header hero-image"
             "nav hero-image"
