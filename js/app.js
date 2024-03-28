@@ -212,6 +212,7 @@ $("input").on("keypress", (event)=>{
 
 function CheckFormFields(event)
 {
+    event.preventDefault();
     let canSubmit = true;
     let message = "Please fill out all required form fields";
 
@@ -237,18 +238,30 @@ function CheckFormFields(event)
         }
     });
 
-    if (!canSubmit)
+    if (canSubmit)
     {
-        event.preventDefault();
+        //TODO: Submit form
+        alert("Form submission is not available yet");
+        ClearFormFields();
+    }
+    else
+    {
         alert(message);
     }
+}
+
+function ClearFormFields()
+{
+    $("input").each((index, element)=>{
+        $(element).val("");
+    });
 }
 
 function GetEmailMessage(input)
 {
     message = "";
 
-    if (!input.includes("."))
+    if (!input.match(/@+\S/))
     {
         message = "Please enter some text after the '@' in the email address";
     }
@@ -258,7 +271,7 @@ function GetEmailMessage(input)
         message = "'.' is used at the wrong position in the email address";
     }
 
-    if (!input.includes("@"))
+    if (!input.match(/\S+@/))
     {
         message = "Please include an '@' in the email address";
     }
