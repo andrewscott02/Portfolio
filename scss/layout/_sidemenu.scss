@@ -4,6 +4,7 @@
 
 #SideMenu
 {
+    // display: none;
     position: sticky;
     top: 0;
     z-index: 200;
@@ -16,6 +17,11 @@
     margin: 0;
 
     overflow-x: clip;
+
+    // &.sideMenuOpen
+    // {
+    //     display: inherit;
+    // }
 }
 
 .sideMenu-container
@@ -32,6 +38,7 @@
     
     left: 100%;
     transition: all ease 0.75s;
+
     &.sideMenuOpen
     {
         left: 0;

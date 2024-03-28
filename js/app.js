@@ -7,10 +7,24 @@ $(".requires-javascript").show();
 
 //#region Side Panel
 
-//Sets the height of the side panel to the height of the body
-$(".sideMenu-container").css("height", $("#SideMenu").parent().css("height"));
-$(".sideMenu").css("height", $("#SideMenu").parent().css("height"));
+//Resizes the side panel when page is ready
+$(document).ready(()=>{
+    SetSidePanelSize();
+});
 
+//Resizes the side panel when page is resized
+$(window).on("resize", ()=>{
+    SetSidePanelSize();
+});
+
+function SetSidePanelSize()
+{
+    //Sets the height of the side panel to the height of the body
+    $(".sideMenu-container").css("height", $("#SideMenu").parent().css("height"));
+    $(".sideMenu").css("height", $("#SideMenu").parent().css("height"));
+}
+
+//Ensures the side panel is closed at the start
 CloseSidePanel();
 
 function CloseSidePanel()
@@ -23,6 +37,7 @@ function CloseSidePanel()
 
 //When the mobile nav button is clicked
 $(".nav-btn-mobile").on("click", (event)=>{
+
     event.preventDefault(); //Prevents the page from scrolling to the top
     $("#SideMenu").toggleClass("sideMenuOpen"); //Shows/hides navbar
     $(".sideMenu-container").toggleClass("sideMenuOpen"); //Shows/hides navbar
