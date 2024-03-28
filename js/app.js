@@ -257,23 +257,63 @@ function ClearFormFields()
     });
 }
 
+const emailChecks =
+[
+    //Does not end on .
+    {
+        message: "'.' is used at the wrong position in the email address",
+        regexCheck: [/\.$/, /@+\./],
+        invertRequires: true
+    },
+
+    //Text after @
+    {
+        message: "Please enter some text after the '@' in the email address",
+        regexCheck: [/@+\S/],
+        invertRequires: false
+    },
+
+    //Includes @
+    {
+        message: "Please include an '@' in the email address",
+        regexCheck: [/\S+@/],
+        invertRequires: false
+    }
+]
+
 function GetEmailMessage(input)
 {
     message = "";
 
-    if (!input.match(/@+\S/) || input.match(/@+\./))
+    for (let i= 0; i < emailChecks.length; i++)
     {
-        message = "Please enter some text after the '@' in the email address";
-    }
+        let success = true;
 
-    if (input.match(/\.+$/))
-    {
-        message = "'.' is used at the wrong position in the email address";
-    }
+        for (let j = 0; j < emailChecks[i].regexCheck.length; j++)
+        {
+            let tempSuccess = false;
+            //alert(i + " Input matches: " + input.match(emailChecks[i].regexCheck[j]) + " | ERequired" + emailChecks[i].checkRequires)
+            if (input.match(emailChecks[i].regexCheck[j]))
+            {
+                tempSuccess = true;
+            }
 
-    if (!input.match(/\S+@/))
-    {
-        message = "Please include an '@' in the email address";
+            if (emailChecks[i].invertRequires)
+            {
+                tempSuccess = !tempSuccess;
+            }
+
+            if (tempSuccess == false)
+            {
+                success = false;
+            }
+        }
+
+        if (!success)
+        {
+            //alert(emailChecks[i].message);
+            message = emailChecks[i].message;
+        }
     }
 
     if (input === "")
