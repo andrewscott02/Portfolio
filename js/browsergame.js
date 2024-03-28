@@ -28,7 +28,7 @@ $("#GameViewport").on("click", ()=>{
 let board;
 let context;
 
-const tick = 100;
+const tick = 20;
 
 function StartGame()
 {
@@ -45,12 +45,27 @@ function StartGame()
 function Update()
 {
     context.clearRect(0, 0, board.width, board.height);
+
+    if (character.x != jumpTarget)
+    {
+        let movement = jumpSpeed;
+        if (jumpTarget < character.x)
+        {
+            movement *= -1;
+        }
+
+        character.x = Clamp(character.x+movement, 0, board.width - character.size);
+    }
+
     context.fillRect(character.x, character.y, character.size, character.size);
 }
 
 //#endregion
 
 //#region Character
+
+let jumpTarget = 0;
+const jumpSpeed = 50;
 
 let character = {
     x: 0,
@@ -70,8 +85,22 @@ function Jump()
     //alert("Jump");
     //context.fillStyle="green";
     //Change x value
-    character.x = character.x === 0 ? board.width - character.size : 0;
-    console.log("Jump " + character.x);
+    const canJump = character.x === 0 || character.x === board.width - character.size;
+
+    if (!canJump)
+    {
+        return;
+    }
+
+    jumpTarget = character.x === 0 ? board.width - character.size : 0;
+    //console.log("Jump " + character.x);
+}
+
+function Clamp(value, min, max)
+{
+    if (value > max){return max;}
+    else if (value < min){return min;}
+    else {return value;}
 }
 
 //#endregion
