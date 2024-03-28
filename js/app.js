@@ -261,12 +261,12 @@ function GetEmailMessage(input)
 {
     message = "";
 
-    if (!input.match(/@+\S/))
+    if (!input.match(/@+\S/) || input.match(/@+\./))
     {
         message = "Please enter some text after the '@' in the email address";
     }
 
-    if (input.endsWith("."))
+    if (input.match(/\.+$/))
     {
         message = "'.' is used at the wrong position in the email address";
     }
