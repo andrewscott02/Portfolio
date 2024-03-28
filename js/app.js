@@ -1,3 +1,10 @@
+//#region Enabling/Disabling JavaScript Elements
+
+$(".javascript-disabled").hide();
+$(".requires-javascript").show();
+
+//#endregion
+
 //#region Side Panel
 
 //Sets the height of the side panel to the height of the body
@@ -280,6 +287,25 @@ function RandomRange(minRaw = 0, maxRaw = 0)
 }
 
 //#endregion
+
+//#region Show/Hide Code Snippets
+$(".codeSnippet").find("a").next().hide();
+// $(".codeSnippet").find("a").next().addClass("hide");
+
+$(".codeSnippet").find("a").on("click", (event)=>{
+    if ($(event.target).next().css("display") ==="none")
+    {
+        $(".codeSnippet").find("a").next().hide(); //Hides all other snippets
+        $(event.target).next().show();
+    }
+    else
+    {
+        $(event.target).next().hide();
+    }
+})
+
+//#endregion
+
 
 
 //#region Not Implemented

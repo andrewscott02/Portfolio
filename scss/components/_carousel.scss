@@ -20,6 +20,11 @@
     grid-auto-rows: auto 1fr;
     height: 100%;
 
+    &:hover
+    {
+        cursor: grab;
+    }
+
     @media #{$brk-xl}
     {
         grid-template-columns: 5fr 3fr;
@@ -84,6 +89,10 @@
     width: 100%;
     height: auto;
     aspect-ratio: 16 / 9;
+    &:hover
+    {
+        cursor: grab;
+    }
 }
 
 

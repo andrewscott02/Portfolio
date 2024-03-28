@@ -1,10 +1,3 @@
-//#region Enable Game
-
-$(".javascript-disabled").hide();
-$(".requires-javascript").addClass("javascript-enabled");
-
-//#endregion
-
 //#region Click Input
 
 let enableInput = true;
