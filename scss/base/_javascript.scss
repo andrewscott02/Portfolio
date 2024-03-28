@@ -1,0 +1,12 @@
+/* ===================================== 
+   JavaScript
+======================================== */
+
+.requires-java
+{
+    display: none;
+    &.javascript-enabled
+    {
+        display: inherit;
+    }
+}

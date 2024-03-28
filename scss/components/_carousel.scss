@@ -120,7 +120,8 @@
     font-size: 14px;
 }
 
-.slick-slide {
+.slick-slide 
+{
     height: auto; // ← that must not be ignored
     &>div
     {
@@ -132,9 +133,10 @@
     }
 }
 
-.slick-track {
-display: flex;
-flex-direction: row;
-flex-wrap: nowrap;
-align-items: stretch;
+.slick-track
+{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
 }

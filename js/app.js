@@ -2,6 +2,7 @@
 
 //Sets the height of the side panel to the height of the body
 $(".sideMenu-container").css("height", $("#SideMenu").parent().css("height"));
+$(".sideMenu").css("height", $("#SideMenu").parent().css("height"));
 
 CloseSidePanel();
 
