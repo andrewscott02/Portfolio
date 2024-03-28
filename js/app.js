@@ -166,33 +166,6 @@ function SetStringContent($textObj, newString)
     $($textObj).text(newString);
 }
 
-/** Random Range Function
- * @param {int} minRaw - Minimum value
- * @param {int} maxRaw - Maximum value (exclusive)
- * @returns {int} A random integer between the input values
- */
-function RandomRange(minRaw = 0, maxRaw = 0)
-{
-    var min = parseInt(minRaw);
-    var max = parseInt(maxRaw);
-    
-    var range = parseInt(max) - parseInt(min);
-    var result = Math.floor(Math.random() * range) + parseInt(min);
-    return result;
-
-    // if (min && max) //This checks that the numbers are not NaN
-    // {
-    //     var range = parseInt(max) - parseInt(min);
-    //     var result = Math.floor(Math.random() * range) + parseInt(min);
-    //     return result;
-    // }
-    // else
-    // {
-    //     alert("Inputs are not valid inputs");
-    //     throw Error("Inputs are not valid inputs");
-    // }
-}
-
 //#endregion
 
 //#region Form Validation
@@ -277,7 +250,36 @@ document.querySelectorAll('a').forEach(anchor => {
 
 //#endregion
 
+//#region Helper Functions
 
+/** Random Range Function
+ * @param {int} minRaw - Minimum value
+ * @param {int} maxRaw - Maximum value (exclusive)
+ * @returns {int} A random integer between the input values
+ */
+function RandomRange(minRaw = 0, maxRaw = 0)
+{
+    var min = parseInt(minRaw);
+    var max = parseInt(maxRaw);
+    
+    var range = parseInt(max) - parseInt(min);
+    var result = Math.floor(Math.random() * range) + parseInt(min);
+    return result;
+
+    // if (min && max) //This checks that the numbers are not NaN
+    // {
+    //     var range = parseInt(max) - parseInt(min);
+    //     var result = Math.floor(Math.random() * range) + parseInt(min);
+    //     return result;
+    // }
+    // else
+    // {
+    //     alert("Inputs are not valid inputs");
+    //     throw Error("Inputs are not valid inputs");
+    // }
+}
+
+//#endregion
 
 
 //#region Not Implemented
