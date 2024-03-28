@@ -263,21 +263,21 @@ const emailChecks =
     {
         message: "'.' is used at the wrong position in the email address",
         regexCheck: [/\.$/, /@+\./],
-        invertRequires: true
+        required: false
     },
 
     //Text after @
     {
         message: "Please enter some text after the '@' in the email address",
         regexCheck: [/@+\S/],
-        invertRequires: false
+        required: true
     },
 
     //Includes @
     {
         message: "Please include an '@' in the email address",
         regexCheck: [/\S+@/],
-        invertRequires: false
+        required: true
     }
 ]
 
@@ -291,19 +291,10 @@ function GetEmailMessage(input)
 
         for (let j = 0; j < emailChecks[i].regexCheck.length; j++)
         {
-            let tempSuccess = false;
-            //alert(i + " Input matches: " + input.match(emailChecks[i].regexCheck[j]) + " | ERequired" + emailChecks[i].checkRequires)
-            if (input.match(emailChecks[i].regexCheck[j]))
-            {
-                tempSuccess = true;
-            }
+            let match = input.match(emailChecks[i].regexCheck[j]) ? true : false;
+            match = match == emailChecks[i].required;
 
-            if (emailChecks[i].invertRequires)
-            {
-                tempSuccess = !tempSuccess;
-            }
-
-            if (tempSuccess == false)
+            if (match == false)
             {
                 success = false;
             }
