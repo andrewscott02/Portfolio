@@ -222,27 +222,26 @@ function CheckFormFields(event)
 
 //#region Smooth Anchor Scroll
 
+const urlHIndex = window.location.href.indexOf("#");
+const urlEnd = window.location.href.substring(urlHIndex);
+
+//Replaces the anchor with featured so webpage
+//still works without JavaScript but redirects
+//to featured if JavaScript is enabled
+const replaceAnchor = urlEnd == "#Games" ? "#Featured" : urlEnd;
+
+//When page is loaded, scroll down to section
+$('html, body').animate({
+    scrollTop: $(replaceAnchor).offset().top
+}, 500);
+
+//If anchor links to section on same page, do not reload the page
+//Instead, scroll to section
 document.querySelectorAll('a').forEach(anchor => {
     const hashIndex = anchor.href.indexOf("#");
     if (hashIndex >= 0)
     {
-        const urlHIndex = window.location.href.indexOf("#");
-        const urlEnd = window.location.href.substring(urlHIndex);
         const anchorEnd = anchor.href.substring(hashIndex);
-        
-        if (urlEnd === anchorEnd)
-        {
-            // alert("Scrolling: Anchor " + anchorEnd + " || matches url: " + urlEnd);
-            
-            //Replaces the anchor with featured so webpage
-            //still works without JavaScript but redirects
-            //to featured if JavaScript is enabled
-            const replaceAnchor = anchorEnd == "#Games" ? "#Featured" : anchorEnd;
-            
-            $('html, body').animate({
-                scrollTop: $(replaceAnchor).offset().top
-            }, 500);
-        }
 
         anchor.addEventListener('click', function (e) {
 
@@ -254,6 +253,24 @@ document.querySelectorAll('a').forEach(anchor => {
         });
     }
 });
+
+//#endregion
+
+//#region Show/Hide Code Snippets
+
+$(".codeSnippet").find("a").next().hide();
+
+$(".codeSnippet").find("a").on("click", (event)=>{
+    if ($(event.target).next().css("display") ==="none")
+    {
+        $(".codeSnippet").find("a").next().hide(); //Hides all other snippets
+        $(event.target).next().show();
+    }
+    else
+    {
+        $(event.target).next().hide();
+    }
+})
 
 //#endregion
 
@@ -288,23 +305,9 @@ function RandomRange(minRaw = 0, maxRaw = 0)
 
 //#endregion
 
-//#region Show/Hide Code Snippets
-$(".codeSnippet").find("a").next().hide();
-// $(".codeSnippet").find("a").next().addClass("hide");
 
-$(".codeSnippet").find("a").on("click", (event)=>{
-    if ($(event.target).next().css("display") ==="none")
-    {
-        $(".codeSnippet").find("a").next().hide(); //Hides all other snippets
-        $(event.target).next().show();
-    }
-    else
-    {
-        $(event.target).next().hide();
-    }
-})
 
-//#endregion
+
 
 
 
