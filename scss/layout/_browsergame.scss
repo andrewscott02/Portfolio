@@ -48,6 +48,11 @@
     {
         display: none;
     }
+
+    #Board
+    {
+        display: inherit;
+    }
 }
 
 .gameTitle
@@ -72,4 +77,14 @@
 
         text-align: center;
     }
+}
+
+#Board
+{
+    display: none;
+
+    width: 100%;
+    height: 100%;
+
+    //background-color: red;
 }
