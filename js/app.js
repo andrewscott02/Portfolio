@@ -213,10 +213,21 @@ $("input").on("keypress", (event)=>{
 function CheckFormFields(event)
 {
     let canSubmit = true;
+    let message = "Please fill out all required form fields";
 
     $("input").each((index, element)=>{
         if ($(element).prev().hasClass("required"))
         {
+            if ($(element).attr("type") === "email")
+            {
+                let emailMessage = GetEmailMessage($(element).val());
+                if(emailMessage !== "")
+                {
+                    message = emailMessage;
+                    canSubmit = false;
+                }
+            }
+
             const content = $(element).val();
             if (content == "")
             {
@@ -229,8 +240,35 @@ function CheckFormFields(event)
     if (!canSubmit)
     {
         event.preventDefault();
-        alert("Form failed, please fill out all required form fields");
+        alert(message);
     }
+}
+
+function GetEmailMessage(input)
+{
+    message = "";
+
+    if (!input.includes("."))
+    {
+        message = "Please enter some text after the '@' in the email address";
+    }
+
+    if (input.endsWith("."))
+    {
+        message = "'.' is used at the wrong position in the email address";
+    }
+
+    if (!input.includes("@"))
+    {
+        message = "Please include an '@' in the email address";
+    }
+
+    if (input === "")
+    {
+        message = "Please include an email address";
+    }
+    
+    return message;
 }
 
 //#endregion
