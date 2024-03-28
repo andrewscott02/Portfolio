@@ -7,7 +7,10 @@ $(".requires-javascript").addClass("javascript-enabled");
 
 //#region Click Input
 
+let enableInput = true;
+
 $("#GameViewport").on("click", ()=>{
+    if (!enableInput){return};
     if(!$("#GameViewport").hasClass("game-running"))
     {
         //If game hasn't started, start game
@@ -20,6 +23,18 @@ $("#GameViewport").on("click", ()=>{
         Jump();
     }
 })
+
+/**Disables input for 0.5 seconds
+ * Prevents player from accidentaly restarting the game
+ */
+function DisableInput()
+{
+    enableInput = false;
+
+    setTimeout(() => {
+        enableInput = true;
+    }, 500);
+}
 
 //#endregion
 
@@ -34,10 +49,10 @@ function StartGame()
 {
     board = document.getElementById("Board");
     context = board.getContext("2d");
+    
+    score = 0;
 
     InitializeCharacter();
-    //Set a random interval to spawn objects
-    //Random interval to track score
 
     I_update = setInterval(()=>{Update();}, tick);
 
@@ -53,8 +68,8 @@ function Update()
     context.clearRect(0, 0, board.width, board.height);
 
     CharacterMovement();
-
     EnemyMovement();
+    UpdateScore();
 }
 
 let I_update;
@@ -75,6 +90,29 @@ function GameOver()
     context.clearRect(0, 0, board.width, board.height);
 
     $("#GameViewport").removeClass("game-running");
+
+    DisableInput();
+
+    $(".gameTitle").html(`
+    <h3>You got hit</h3>
+    <h3>Score: ${score}</h3>
+    <h3>Click or Tap to Play Again</h3>
+    `);
+}
+
+//#endregion
+
+//#region Score
+
+let score = 0;
+
+function UpdateScore()
+{
+    score++;
+
+    context.fillStyle="black";
+    context.font="10px courier";
+    context.fillText(score, 15, board.height - 10);
 }
 
 //#endregion
@@ -237,10 +275,3 @@ function Clamp(value, min, max)
 }
 
 //#endregion
-
-var inputs = [
-    ["nameForm", "nameAlert"],
-    ["emailForm", "emailAlert"],
-    ["subjectForm", "subjectAlert"],
-    ["messageForm", "messageAlert"]
-];
