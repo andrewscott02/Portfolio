@@ -11,7 +11,7 @@ $("#GameViewport").on("click", ()=>{
     if(!$("#GameViewport").hasClass("game-running"))
     {
         //If game hasn't started, start game
-        $("#GameViewport").addClass("game-running")
+        $("#GameViewport").addClass("game-running");
         StartGame();
     }
     else
@@ -39,10 +39,12 @@ function StartGame()
     //Set a random interval to spawn objects
     //Random interval to track score
 
-    setInterval(()=>{Update();}, tick);
-    setInterval(()=>{DecreaseSpawnInterval();}, enemySpawnIncreaseInterval);
+    I_update = setInterval(()=>{Update();}, tick);
+
+    enemySpawnInterval = enemySpawnIntervalBase;
+    I_spawn = setInterval(()=>{DecreaseSpawnInterval();}, enemySpawnIncreaseInterval);
     
-    setTimeout(()=>{SpawnEnemy();}, enemySpawnInterval);
+    T_spawnIncrease = setTimeout(()=>{SpawnEnemy();}, enemySpawnInterval);
 }
 
 function Update()
@@ -55,20 +57,42 @@ function Update()
     EnemyMovement();
 }
 
+let I_update;
+let I_spawn;
+let T_spawnIncrease;
+
+function GameOver()
+{
+    clearInterval(I_update);
+    clearInterval(I_spawn);
+
+    clearTimeout(T_spawnIncrease);
+
+    //Clears all enemies
+    enemies.length = 0;
+    
+    //Clears board
+    context.clearRect(0, 0, board.width, board.height);
+
+    $("#GameViewport").removeClass("game-running");
+}
+
 //#endregion
 
 //#region Character
 
-let character = {
-    x: 0,
-    y: 40,
-    size : 10,
-    speed: 25,
-    target: 0
-}
+let character
 
 function InitializeCharacter()
 {
+    character = {
+        x: 0,
+        y: 40,
+        size : 10,
+        speed: 25,
+        target: 0
+    }
+
     character.y = board.height - character.y;
 }
 
@@ -100,6 +124,7 @@ function CharacterMovement()
         character.x = Clamp(character.x + movement, 0, board.width - character.size);
     }
 
+    //Draw character as green box
     context.fillStyle="green";
     context.fillRect(character.x, character.y, character.size, character.size);
 }
@@ -133,10 +158,9 @@ function SpawnEnemy()
     const spawnTrack = RandomRange(0, 3);
     const trackWidth = board.width/2;
     const spawnPos = spawnTrack * (trackWidth - (enemyValues.size/2));
-    console.log("Spawn enemy at: " + spawnPos + " current interval: " + enemySpawnInterval);
     enemies.push([spawnPos, 0]);
 
-    setTimeout(()=>{SpawnEnemy();}, enemySpawnInterval);
+    T_spawnIncrease = setTimeout(()=>{SpawnEnemy();}, enemySpawnInterval);
 }
 
 function EnemyMovement()
@@ -147,19 +171,51 @@ function EnemyMovement()
         let movement = enemyValues.speed;
         if (enemies[i][1] > board.height)
         {
+            //Removes enemies that fall offscreen
             enemiesToRemove ++;
         }
 
         //Clamps the value so character cannot move off the board
         enemies[i][1] = Clamp(enemies[i][1] + movement, 0, board.width - enemyValues.size);
+        
+        //Draw enemies as red boxes
         context.fillStyle="red";
         context.fillRect(enemies[i][0], enemies[i][1], enemyValues.size, enemyValues.size);
+
+        //Check collisions with player
+        CheckCollisions(i);
     }
 
     for(let i = 0; i < enemiesToRemove; i++)
     {
-        enemies.unshift();
+        //Removes enemies that fall offscreen
+        enemies.shift();
     }
+}
+
+function CheckCollisions(i)
+{
+    let enemy = {
+        x: enemies[i][0],
+        y: enemies[i][1],
+        size : enemyValues.size,
+    }
+
+    if (DetectCollision(character, enemy))
+    {
+        GameOver();
+    }
+}
+
+function DetectCollision(a, b)
+{
+    let xIntersects = a.x < b.x + b.size &&
+                        a.x + a.size > b.x;
+                        
+    let yIntersects = a.y < b.y + b.size &&
+                        a.y + a.size > b.y;
+
+    return  xIntersects && yIntersects;
 }
 
 //#endregion
