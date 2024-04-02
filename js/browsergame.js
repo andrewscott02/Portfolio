@@ -112,19 +112,19 @@ function UpdateScore()
 
 //#region Character
 
-let character
+const character = {
+    x: 0,
+    y: 40,
+    size : 10,
+    speed: 25,
+    target: 0
+}
 
 function InitializeCharacter()
 {
-    character = {
-        x: 0,
-        y: 40,
-        size : 10,
-        speed: 25,
-        target: 0
-    }
-
+    character.x = 0;
     character.y = board.height - character.y;
+    character.target = 0;
 }
 
 function Jump()
