@@ -15,6 +15,8 @@ $(document).ready(()=>{
 //Resizes the side panel when page is resized
 $(window).on("resize", ()=>{
     SetSidePanelSize();
+    //Resizes after a small delay to wait for the page to resize, due to transition ease
+    setTimeout(SetSidePanelSize, 500);
 });
 
 function SetSidePanelSize()
@@ -376,7 +378,13 @@ $(".codeSnippet").find("a").on("click", (event)=>{
 
 //#region Text Fade In and Out
 
-$(document).ready(CheckAllOpacities);
+$(document).ready(()=>{
+    //Adds relative positions to the elements, only if javascript is enabled
+    $(".project").css("position", "relative");
+    $(".achievement").css("position", "relative");
+
+    CheckAllOpacities();
+});
 
 $(window).on('resize scroll', CheckAllOpacities);
 
@@ -391,11 +399,15 @@ function CheckSelectorOpacities(selector)
     $(selector).each((index, element)=>{
         if (InViewport($(element), 40))
         {
+            //If in viewport, fade into view and move up slightly
             $(element).css("opacity", "1");
+            $(element).css("top", "0");
         }
         else
         {
+            //If in viewport, fade out of view and move down
             $(element).css("opacity", "0");
+            $(element).css("top", "10px");
         }
     });
 }
