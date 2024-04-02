@@ -88,6 +88,7 @@ $( document ).ready(()=>{
 
 //Hover
 $("#HeroImage").on("mouseenter", ()=>{
+    document.querySelector('video').play();
     ClearAllTimeouts()
     ScrambleText($("#HeroImage h1"), H_scrambleTime);
     ScrambleText($("#HeroImage p"), P_scrambleTime);
@@ -407,8 +408,6 @@ $(document).ready(()=>{
     document.querySelector('video').autoplay = true;
     document.querySelector('video').play();
 });
-
-
 
 //#endregion
 
