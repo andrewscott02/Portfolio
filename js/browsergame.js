@@ -165,10 +165,10 @@ function CharacterMovement()
 //#region Enemies
 
 const enemies = [];
-const enemySpawnIntervalBase = 3000;
+const enemySpawnIntervalBase = 1800;
 const enemySpawnIntervalMin = 400;
 const enemySpawnIncrease = 250;
-const enemySpawnIncreaseInterval = 5000;
+const enemySpawnIncreaseInterval = 7000;
 
 let enemySpawnInterval = enemySpawnIntervalBase;
 
