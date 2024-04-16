@@ -13,7 +13,17 @@
         {
             if ($item["type"] == $projectsFilter || $projectsFilter == "all")
             {
-                echo "<a class=\"project\" target=\"_blank\" href=\"projectpage.php?project=$key\">\n";
+                $available = $item["viewLink"] != "" && $item["available"];
+                $class = "comingsoon";
+                $href = "";
+                
+                if ($available)
+                {
+                    $class = "";
+                    $href = "href=\"projectpage.php?project=$key\"";
+                }
+
+                echo "<a class=\"project $class\" target=\"_blank\" $href>\n";
                 echo "<div class=\"project-media-container\">\n";
                 echo "<img src=" . $item["thumbnailSrc"] . ">\n";
                 echo "</div>\n";
