@@ -21,61 +21,18 @@
 
             <div id="Games">
                 <h2>My Games</h2>
-                <div class="project-collection">
-                    <a class="project" target="_blank" href="https://andrewjscott02.itch.io/enfabler">
-                        <div class="project-media-container">
-                            <img src="Images/Enfabler.png">
-                            <!-- <iframe src="https://www.youtube.com/embed/ih067YlZj24?si=Sk_3hSXb59XGTOYi&amp;controls=0&autoplay=1&mute=1&playsinline=1&playlist=ih067YlZj24&loop=1"></iframe> -->
-                        </div>
-                        <h3>Enfabler</h3>
-                        <p>Explore dungeons, defeat monsters and thwart villains to earn your place as a hero. Will you answer the call?</p>
-                        <div class="btn inline">View Project</div>
-                    </a>
-                    <a class="project" target="_blank" href="https://moonsoon-games.itch.io/corruption-of-arcana-reshuffled">
-                        <div class="project-media-container">
-                            <img src="Images/CoA.png">
-                            <!-- <iframe src="https://www.youtube.com/embed/r8M4nrsPlGo?si=FVnUo691n4NBjaYh&amp;controls=0&autoplay=1&mute=1&playsinline=1&playlist=r8M4nrsPlGo&loop=1"></iframe> -->
-                        </div>
-                        <h3>Corruption of Arcana</h3>
-                        <p>Gather your cards, weapons and potions because the corruption is growing stronger. Push into the heart of the realm and find the source of this terrible plague. </p>
-                        <div class="btn inline">View Project</div>
-                    </a>
-                    <a class="project" target="_blank" href="https://andrewjscott02.itch.io/creak">
-                        <div class="project-media-container">
-                            <img src="Images/Creak.png">
-                        </div>
-                        <h3>Creak</h3>
-                        <p>Creak is a 2D platformer where you can only see through sound. Collide your character with obstacles to create sound waves that allow you to see.</p>
-                        <div class="btn inline">View Project</div>
-                    </a>
-                    <a class="project" target="_blank" href="https://andrewjscott02.itch.io/overkill">
-                        <div class="project-media-container">
-                            <img src="Images/Overkill.png">
-                        </div>
-                        <h3>Overkill</h3>
-                        <p>Overkill is a turn-based game inspired by the settings of Doom and XCOM. But unlike those games, you play as the villains. Lead a raiding party of demons to take over the Earth for the forces of evil in this turn-based RPG with a twist.</p>
-                        <div class="btn inline">View Project</div>
-                    </a>
-                    <a class="project" target="_blank" href="https://eggchanted.itch.io/godsent">
-                        <div class="project-media-container">
-                            <img src="Images/Godsent.png">
-                        </div>
-                        <h3>Godsent</h3>
-                        <p>You are a nun granted powers by God to defeat the Seven Princes of Hell but you must decide how far you are willing to suffer for your faith or whether you will give into the allure of power.</p>
-                        <div class="btn inline">View Project</div>
-                    </a>
-                    <a class="project" href="javajump.html#BrowserGame">
-                        <div class="project-media-container">
-                            <img src="Images/JavaJump.png">
-                        </div>
-                        <h3>JavaJump</h3>
-                        <p>A small browser game made using JavaScript where you must jump to avoid obstacles</p>
-                        <div class="btn inline">View Project</div>
-                    </a>
-                </div>
+                <?php 
+                    $projectsFilter = "game";
+                    include("includes/projectgallery.php"); 
+                ?>
             </div>
             <div id="Projects">
                 <h2>My Projects</h2>
+                <?php 
+                    $projectsFilter = "project";
+                    include("includes/projectgallery.php"); 
+                ?>
+
                 <div class="project-collection">
                     <a class="project" target="_blank" href="https://andrewscott02.github.io/Netmatters-Homepage/">
                         <div class="project-media-container">

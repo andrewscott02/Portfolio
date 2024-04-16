@@ -1,16 +1,19 @@
 <?php
+include("includes/projectsdata.php");
 
-$projectTitle = $_GET["project"];
+$projectLink = $_GET["project"];
 
-switch ($projectTitle)
-{
-    case "enfabler":
-        $projectTitle = "Enfabler";
-        break;
-    default:
-        $projectTitle = ucwords($projectTitle);
-        break;
-}
+$projectTitle = $allProjects[$projectLink]["title"];
+
+// switch ($projectTitle)
+// {
+//     case "enfabler":
+//         $projectTitle = "Enfabler";
+//         break;
+//     default:
+//         $projectTitle = ucwords($projectTitle);
+//         break;
+// }
 
 ?>
 

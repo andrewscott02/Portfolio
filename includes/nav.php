@@ -4,5 +4,5 @@
     </a>
 </div>
 <nav id="Navigation" class="brk-m-g">
-    <?php include("navlinks.php"); ?>
+    <?php include("includes/navlinks.php"); ?>
 </nav>
