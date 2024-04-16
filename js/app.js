@@ -324,7 +324,6 @@ const urlEnd = window.location.href.substring(urlHIndex);
 const replaceAnchor = urlEnd == "#Games" ? "#Featured" : urlEnd;
 
 //When page is loaded, scroll down to section
-
 $(document).ready(()=>{
     if(replaceAnchor != null)
     {
