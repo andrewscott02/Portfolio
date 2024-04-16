@@ -20,10 +20,10 @@
                 if ($available)
                 {
                     $class = "";
-                    $href = "href=\"projectpage.php?project=$key\"";
+                    $href = "href=\"projectpage.php?project=$key#ProjectDetails\"";
                 }
 
-                echo "<a class=\"project $class\" target=\"_blank\" $href>\n";
+                echo "<a class=\"project $class\" $href>\n";
                 echo "<div class=\"project-media-container\">\n";
                 echo "<img src=" . $item["thumbnailSrc"] . ">\n";
                 echo "</div>\n";
