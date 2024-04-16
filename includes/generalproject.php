@@ -31,7 +31,7 @@ echo $project["thumbnailSrc"];
         echo 
         "<a href=\""
         . $project["viewLink"]
-        . "\" class=\"btn inline\">"
+        . "\" class=\"btn inline\" target=\"_blank\">"
         . $project["viewMessage"]
         . "</a>";
     }
@@ -41,7 +41,7 @@ echo $project["thumbnailSrc"];
         echo 
         "<a href=\""
         . $project["repoLink"]
-        . "\" class=\"btn inline\">View Project Files</a>";
+        . "\" class=\"btn inline\" target=\"_blank\">View Project Files</a>";
     }
 ?>
 
