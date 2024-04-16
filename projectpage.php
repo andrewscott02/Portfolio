@@ -17,6 +17,20 @@
         ?>
 
         <main id="Main">
+            <?php
+                include("includes/projectsdata.php");
+                $projectLink = $_GET["project"];
+                $project = $allProjects[$projectLink];
+                $type = $project["type"];
+                $type = ucwords($type);
+
+                echo "<a href=\"index.php#"
+                . $type
+                . "s\" class=\"btn inline\"> Return to "
+                . $type
+                . "s</a>";
+            ?>
+
             <div id="ProjectDetails">
                 <?php include("includes/generalproject.php"); ?>
             </div>

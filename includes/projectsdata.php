@@ -64,7 +64,7 @@
         "thumbnailSrc" => "Images/JavaJump.png",
         "available" => true,
 
-        "viewLink" => "javajump.html#BrowserGame",
+        "viewLink" => "javajump.php#BrowserGame",
         "viewMessage" => "Play JavaJump on my Website",
         "repoLink" => ""
     ];
