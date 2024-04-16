@@ -1,133 +1,24 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    
-    <!-- Style Sheets -->
-    <link rel="stylesheet" href="js/plugins/slick/slick.css">
-    <link rel="stylesheet" href="js/plugins/slick/slick-theme.css">
-    <link rel="stylesheet" href="css/application.css">
-
-    <link rel="apple-touch-icon" sizes="180x180" href="favicon/apple-touch-icon.png">
-    <link rel="icon" type="image/png" sizes="32x32" href="favicon/favicon-32x32.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="favicon/favicon-16x16.png">
-    <link rel="manifest" href="favicon/site.webmanifest">
-
-    <title>Andrew Scott - Portfolio</title>
+    <?php 
+        $pageTitle = "Andrew Scott - Portfolio";
+        include("includes/head.php"); 
+    ?>
 </head>
 <body>
-    <div id="SideMenu" class="brk-m-l">
-        <div class="sideMenu-container">
-            <div class="sideMenu">
-                <div class="sideMenu-items">
-                    <a href="about.html#About" class="nav-btn">About Me</a>
-                    <hr>
-                    <a href="index.html#Games" class="nav-btn">Portfolio</a>
-                    <!-- <a href="index.html#Projects" class="nav-btn">Projects</a> -->
-                    <a href="code.html#CodeSnippets" class="nav-btn">Code Snippets</a>
-                    <hr>
-                    <a href="scs.html#SCS" class="nav-btn">SCS Scheme</a>
-                    <hr>
-                    <a href="index.html#Contact" class="nav-btn">Contact</a>
-                    <hr>
-                    <div class="socials">
-                        <a target="_blank" href="https://github.com/andrewscott02" class="social-btn icon-github"></a>
-                        <a target="_blank" href="https://www.linkedin.com/in/andrew-scott-8ba2b518a/" class="social-btn icon-linkedin"></a>
-                        <a target="_blank" href="https://andrewjscott02.itch.io/" class="social-btn icon-itch-dot-io"></a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    <?php include("includes/sidemenu.php"); ?>
 
     <div id="MainContainer" class="container">
-        <header id="Header">
-            <a href="index.html" class="profilepic-lnk">
-                <img class="profilepic-img" src="Images/Banner_Character.jpg">
-            </a>
-        </header>
-        <div id="NavigationMobile" class="brk-m-l">
-            <a href="" class="nav-btn-mobile">
-                <div class="nav-btn-mobile-inner"></div>
-            </a>
-        </div>
-        <nav id="Navigation" class="brk-m-g">
-            <a href="about.html#About" class="nav-btn">About Me</a>
-            <hr>
-            <a href="index.html#Games" class="nav-btn">Portfolio</a>
-            <!-- <a href="index.html#Projects" class="nav-btn">Projects</a> -->
-            <a href="code.html#CodeSnippets" class="nav-btn">Code Snippets</a>
-            <hr>
-            <a href="scs.html#SCS" class="nav-btn">SCS Scheme</a>
-            <hr>
-            <a href="index.html#Contact" class="nav-btn">Contact</a>
-            <hr>
-            <div class="socials">
-                <a target="_blank" href="https://github.com/andrewscott02" class="social-btn icon-github"></a>
-                <a target="_blank" href="https://www.linkedin.com/in/andrew-scott-8ba2b518a/" class="social-btn icon-linkedin"></a>
-                <a target="_blank" href="https://andrewjscott02.itch.io/" class="social-btn icon-itch-dot-io"></a>
-            </div>
-        </nav>
-        <div id="HeroImage">
-            <div class="heroElements">
-                <div class="background-video">
-                    <video autoplay muted loop playsinline>
-                        <source src="Videos/Showreel - Andrew Scott (19_01_2024).mp4" type="video/mp4">
-                    </video>
-                </div>
-                <div class="hero-text">
-                    <h1>My Name is Andrew Scott</h1>
-                    <p>I'm a Games Programmer and Web Developer</p>
-                </div>
-            </div>
-        </div>
+        <?php 
+            include("includes/header.php");
+            include("includes/nav.php");
+            include("includes/heroimage.php"); 
+        ?>
 
         <main id="Main">
-            <div id="Featured">
-                <h2>Featured</h2>
-                <div class="featured-collection slides">
-                    <div> <!-- COA-->
-                        <div class="featured-item">
-                            <div class="featured-media-container">
-                                <iframe class="fit-vid" src="https://www.youtube.com/embed/r8M4nrsPlGo?si=FVnUo691n4NBjaYh&amp;controls=0&autoplay=1&mute=1&playsinline=1&playlist=r8M4nrsPlGo&loop=1"></iframe>
-                            </div>
-                            <div class="featured-info">
-                                <h3>Corruption of Arcana</h3>
+            <?php include("includes/featured.php"); ?>
 
-                                <div class="smallImages">
-                                    <img src="Images/finalist-rookie-awards.png">
-                                    <img src="Images/rookie-awards-goty-hc.png">
-                                </div>
-
-                                <p class="brk-xlt-l">Gather your cards, weapons and potions because the corruption is growing stronger. Push into the heart of the realm and find the source of this terrible plague... </p>
-                                <p class="brk-xlt-g">Gather your cards, weapons and potions because the corruption is growing stronger. Push into the heart of the realm and find the source of this terrible plague. </p>
-                                <p class="brk-xlt-g">Traverse the world in this 2.5D tarot-themed RPG card combat deck builder. Find new items and discover new lands.</p>
-                                <p class="brk-xlt-g">Anything is possible when fortune favours the bold.</p>
-                                
-                                <a class="btn inline" target="_blank" href="https://moonsoon-games.itch.io/corruption-of-arcana-reshuffled">View Project</a>
-                            </div>
-                        </div>
-                        <!-- Overlay - This only needs to be in the first item -->
-                        <div class="featured-overlay-container">
-                            <div class="featured-overlay"></div>
-                        </div>
-                    </div>
-                    <div> <!-- Enfabler-->
-                        <div class="featured-item">
-                            <div class="featured-media-container">
-                                <iframe class="fit-vid" src="https://www.youtube.com/embed/ih067YlZj24?si=Sk_3hSXb59XGTOYi&amp;controls=0&autoplay=1&mute=1&playsinline=1&playlist=ih067YlZj24&loop=1"></iframe>
-                            </div>
-                            <div class="featured-info">
-                                <h3>Enfabler</h3>
-                                <p class="brk-xlt-g">Follow the journey of a famed storyteller who is searching for the perfect hero for their next big story.  You play as aspiring heroes who have answered the call of adventure.</p>
-                                <p>Explore dungeons, defeat monsters and thwart villains to earn your place as a hero. Will you answer the call?</p>
-                                <a class="btn inline" target="_blank" href="https://andrewjscott02.itch.io/enfabler">View Project</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
             <div id="Games">
                 <h2>My Games</h2>
                 <div class="project-collection">
@@ -268,14 +159,10 @@
                 </form>
             </div>
         </aside>
-        <footer id="Footer">
-            <small>Made by Andrew Scott &copy;</small>
-        </footer>
+        
+        <?php include("includes/footer.php"); ?>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-    <script src="js/plugins/slick/slick.min.js"></script>
-    <script src="js/plugins/fitvids/jquery.fitvids.js"></script>
-    <script src="js/app.js"></script>
+    <?php include("includes/generalJS.php"); ?>
 </body>
 </html>
