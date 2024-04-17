@@ -141,6 +141,24 @@
 
     #endregion
 
+    function GetProjectDetails()
+    {
+        global $project;
+        
+        if (isset($_GET["project"]))
+        {
+            global $allProjects;
+            $projectLink = filter_input(INPUT_GET, "project", FILTER_SANITIZE_STRING);
+            $project = $allProjects[$projectLink];
+        }
+
+        if (empty($project))
+        {
+            header("location:index.php");
+            exit;
+        }
+    }
+
     // $allProjects[] = [
     //     "title" => "",
     //     "type" => "project",

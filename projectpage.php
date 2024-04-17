@@ -4,6 +4,8 @@
     <?php 
         $pageTitle = "Andrew Scott - SCS Scheme";
         include("includes/head.php"); 
+        include("includes/projectsdata.php");
+        GetProjectDetails();
     ?>
 </head>
 <body>
@@ -18,9 +20,6 @@
 
         <main id="Main">
             <?php
-                include("includes/projectsdata.php");
-                $projectLink = $_GET["project"];
-                $project = $allProjects[$projectLink];
                 $type = $project["type"];
                 $type = ucwords($type);
 

@@ -1,9 +1,4 @@
 <?php
-include("includes/projectsdata.php");
-
-$projectLink = $_GET["project"];
-
-$project = $allProjects[$projectLink];
 
 // switch ($projectTitle)
 // {
