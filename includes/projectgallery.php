@@ -4,7 +4,7 @@
         $projectsFilter = "all";
     }
 
-    include("includes/projectsdata.php");
+    include_once("includes/projectsdata.php");
 ?>
 
 <div class="project-collection">

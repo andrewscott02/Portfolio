@@ -2,6 +2,7 @@
     $allProjects = [];
 
     #region Games
+
     $allProjects["enfabler"] = [
         "title" => "Enfabler",
         "type" => "game",
@@ -68,6 +69,7 @@
         "viewMessage" => "Play JavaJump on my Website",
         "repoLink" => ""
     ];
+
     #endregion
     
     #region Projects
@@ -75,11 +77,11 @@
     $allProjects["nmhomepage"] = [
         "title" => "Netmatters Homepage",
         "type" => "project",
-        "description" => "A recreation of the Netmatters Homepage using HTML, CSS and JavaScript",
+        "description" => "A recreation of the Netmatters Homepage using HTML, CSS, JavaScript and PHP",
         "thumbnailSrc" => "Images/NM-heroimage.jpg",
         "available" => true,
 
-        "viewLink" => "https://andrewscott02.github.io/Netmatters-Homepage",
+        "viewLink" => "https://andrew-scott.netmatters-scs.co.uk/php-nm-homepage/",
         "viewMessage" => "Open Project",
         "repoLink" => ""
     ];

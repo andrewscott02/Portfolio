@@ -113,15 +113,4 @@
     margin: 5px;
 
     background-color: $bckgrndcol;
-
-    .nav-btn-mobile-inner
-    {
-        border-top: solid 4px $col;
-        border-bottom: solid 4px $col;
-    
-        &::before
-        {
-            background: $col;
-        }
-    }
 }

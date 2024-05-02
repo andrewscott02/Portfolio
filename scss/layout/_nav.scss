@@ -61,6 +61,34 @@
     {
         @include navbutton-mobile($color-primary, $color-tertiary);
     }
+
+    &.sideMenuOpen
+    {
+        .nav-lines::before,
+        .nav-lines::after
+        {    
+            top: 0;
+        }
+    }
+
+    &.sidepanel-open-rotate
+    {
+        .nav-lines
+        {
+            background: $transparent;
+            rotate: 180deg;
+        }
+        
+        .nav-lines::before
+        {    
+            rotate: 45deg;
+        }
+        
+        .nav-lines::after
+        {    
+            rotate: -45deg;
+        }
+    }
 }
 
 .nav-btn-mobile-inner
@@ -138,4 +166,44 @@
                     0 0 10px white,
                     0 0 20px white;
     }
+}
+
+.nav-lines
+{
+    transition: all 0.2s ease;
+    display: block;
+    content: '';
+    position: absolute;
+
+    width: 40px;
+    height: 4px;
+    background: white;
+    top: 45%;
+    left: 17%;
+    justify-content: center;
+}
+
+.nav-lines::before,
+.nav-lines::after
+{
+    transition: all 0.2s ease;
+    display: block;
+    content: '';
+    position: absolute;
+
+    width: 40px;
+    height: 4px;
+    background: white;
+
+    justify-content: center;
+}
+
+.nav-lines::before
+{
+    top: -12px;
+}
+
+.nav-lines::after
+{
+    top: 12px;
 }

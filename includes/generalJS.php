@@ -2,3 +2,4 @@
 <script src="js/plugins/slick/slick.min.js"></script>
 <script src="js/plugins/fitvids/jquery.fitvids.js"></script>
 <script src="js/app.js"></script>
+<script src="js/sidepanel.js"></script>
