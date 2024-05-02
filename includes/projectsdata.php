@@ -38,7 +38,6 @@
     }
 
     $allGames = [
-
         "enfabler" => new Project(
             "Enfabler", true, true,
             "Explore dungeons, defeat monsters and thwart villains to earn your place as a hero. Will you answer the call?", "Explore dungeons, defeat monsters and thwart villains to earn your place as a hero. Will you answer the call?",
@@ -75,94 +74,47 @@
             "Images/JavaJump.png", false,
             "javajump.php#BrowserGame", "Play JavaJump on my Website",""
         )
-        
     ];
 
-
-    #region Projects
+    $allProjects = [
+        "nm-homepage" => new Project(
+            "Netmatters Homepage", false, true,
+            "A recreation of the Netmatters Homepage using HTML, CSS, JavaScript and PHP", "A recreation of the Netmatters Homepage using HTML, CSS, JavaScript and PHP",
+            "Images/NM-heroimage.jpg", false,
+            "https://andrew-scott.netmatters-scs.co.uk/php-nm-homepage/", "Open Project",""
+        ),
+        "imagegenerator" => new Project(
+            "Random Image Generator", false, true,
+            "A random image generator that generates images from Lorem Picsum", "A random image generator that generates images from Lorem Picsum",
+            "Images/Image-Generator.png", false,
+            "https://andrewscott02.github.io/Random-Image-Generator", "Open Project",""
+        ),
+        "arduinocontroller" => new Project(
+            "TTRPG Controller", false, true,
+            "An arduino project where you can place pieces on a physical board to move pieces in a digital game", "An arduino project where you can place pieces on a physical board to move pieces in a digital game",
+            "Images/ArduinoController.webp", "https://www.youtube.com/embed/TVrhjMUS844?si=FVnUo691n4NBjaYh&amp;controls=0&autoplay=1&mute=1&playsinline=1&playlist=TVrhjMUS844&loop=1",
+            "https://www.youtube.com/watch?v=TVrhjMUS844&t=80s", "Watch Video",""
+        ),
+        "pmai" => new Project(
+            "Player Modelling Companion AI", false, true,
+            "A companion AI that uses player modelling techniques to adapt to player actions and respond with synergistic behaviour to better collaborate with them.", "A companion AI that uses player modelling techniques to adapt to player actions and respond with synergistic behaviour to better collaborate with them.",
+            "Images/PMAI.jpg", "https://www.youtube.com/embed/lme6oJXwc10?si=FVnUo691n4NBjaYh&amp;controls=0&autoplay=1&mute=1&playsinline=1&playlist=lme6oJXwc10&loop=1",
+            "https://www.youtube.com/embed/lme6oJXwc10", "Watch Video",""
+        ),
+        "turncombat" => new Project(
+            "Turn-Based Combat System", false, true,
+            "In my first programming project, I created a 2 player turn based game, modelled after TTRPG games. Players can take turns moving a character and casting spells.", "In my first programming project, I created a 2 player turn based game, modelled after TTRPG games. Players can take turns moving a character and casting spells.",
+            "Images/TurnCombat.jpg", "https://www.youtube.com/embed/lg1MPgQ8eVY?si=FVnUo691n4NBjaYh&amp;controls=0&autoplay=1&mute=1&playsinline=1&playlist=lg1MPgQ8eVY&loop=1",
+            "https://www.youtube.com/watch?v=lg1MPgQ8eVY&t=1s", "Watch Video",""
+        ),
+        "visualfx" => new Project(
+            "Visual FX Programming", false, false,
+            "Visual effects using custom shaders and procedural mesh elements.", "Visual effects using custom shaders and procedural mesh elements.",
+            "Images/GraphicsImages.png", false,
+            "", "Open Project",""
+        )
+    ];
     
-    // "nmhomepage" => [
-    //     "title" => "Netmatters Homepage",
-    //     "featured" => false,
-    //     "type" => "project",
-    //     "description" => "A recreation of the Netmatters Homepage using HTML, CSS, JavaScript and PHP",
-    //     "thumbnailSrc" => "Images/NM-heroimage.jpg",
-    //     "available" => true,
-
-    //     "videoLink" => false,
-    //     "viewLink" => "https://andrew-scott.netmatters-scs.co.uk/php-nm-homepage/",
-    //     "viewMessage" => "Open Project",
-    //     "repoLink" => ""
-    // ],
-    // "imagegenerator" => [
-    //     "title" => "Random Image Generator",
-    //     "featured" => false,
-    //     "type" => "project",
-    //     "description" => "A random image generator that generates images from Lorem Picsum",
-    //     "thumbnailSrc" => "Images/Image-Generator.png",
-    //     "available" => true,
-
-    //     "videoLink" => false,
-    //     "viewLink" => "https://andrewscott02.github.io/Random-Image-Generator",
-    //     "viewMessage" => "Open Project",
-    //     "repoLink" => ""
-    // ],
-    // "arduinocontroller" => [
-    //     "title" => "TTRPG Controller",
-    //     "featured" => false,
-    //     "type" => "project",
-    //     "description" => "An arduino project where you can place pieces on a physical board to move pieces in a digital game",
-    //     "thumbnailSrc" => "Images/ArduinoController.webp",
-    //     "available" => true,
-
-    //     "videoLink" => "https://www.youtube.com/embed/TVrhjMUS844?si=FVnUo691n4NBjaYh&amp;controls=0&autoplay=1&mute=1&playsinline=1&playlist=TVrhjMUS844&loop=1",
-    //     "viewLink" => "https://www.youtube.com/watch?v=TVrhjMUS844&t=80s",
-    //     "viewMessage" => "Watch Video",
-    //     "repoLink" => ""
-    // ],
-    // "pmai" => [
-    //     "title" => "Player Modelling Companion AI",
-    //     "featured" => false,
-    //     "type" => "project",
-    //     "description" => "A companion AI that uses player modelling techniques to adapt to player actions and respond with synergistic behaviour to better collaborate with them.",
-    //     "thumbnailSrc" => "Images/PMAI.jpg",
-    //     "available" => true,
-
-    //     "videoLink" => "https://www.youtube.com/embed/lme6oJXwc10?si=FVnUo691n4NBjaYh&amp;controls=0&autoplay=1&mute=1&playsinline=1&playlist=lme6oJXwc10&loop=1",
-    //     "viewLink" => "https://www.youtube.com/embed/lme6oJXwc10",
-    //     "viewMessage" => "Watch Video",
-    //     "repoLink" => ""
-    // ],
-    // "turncombat" => [
-    //     "title" => "Turn-Based Combat System",
-    //     "featured" => false,
-    //     "type" => "project",
-    //     "description" => "In my first programming project, I created a 2 player turn based game, modelled after TTRPG games. Players can take turns moving a character and casting spells.",
-    //     "thumbnailSrc" => "Images/TurnCombat.jpg",
-    //     "available" => true,
-
-    //     "videoLink" => "https://www.youtube.com/embed/lg1MPgQ8eVY?si=FVnUo691n4NBjaYh&amp;controls=0&autoplay=1&mute=1&playsinline=1&playlist=lg1MPgQ8eVY&loop=1",
-    //     "viewLink" => "https://www.youtube.com/watch?v=lg1MPgQ8eVY&t=1s",
-    //     "viewMessage" => "Watch Video",
-    //     "repoLink" => ""
-    // ],
-    // "visualfx" => [
-    //     "title" => "Visual FX Programming",
-    //     "featured" => false,
-    //     "type" => "project",
-    //     "description" => "Visual effects using custom shaders and procedural mesh elements.",
-    //     "thumbnailSrc" => "Images/GraphicsImages.png",
-    //     "available" => false,
-
-    //     "videoLink" => false,
-    //     "viewLink" => "",
-    //     "viewMessage" => "Open Project",
-    //     "repoLink" => ""
-    // ]
-
-    #endregion
-    
-
     function GetProjectDetails()
     {
         global $project;
