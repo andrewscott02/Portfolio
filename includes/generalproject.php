@@ -1,6 +1,6 @@
 <?php
 
-$projectObj = $allGames[$project];
+$projectObj = $allProjects[$project];
 
 ?>
 

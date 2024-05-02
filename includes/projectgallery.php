@@ -9,9 +9,9 @@
 
 <div class="project-collection">
     <?php
-        foreach($allGames as $key => $item)
+        foreach($allProjects as $key => $item)
         {
-            if (true /*$item["type"] == $projectsFilter || $projectsFilter == "all"*/)
+            if ($item->type == $projectsFilter || $projectsFilter == "all")
             {
                 $available = $item->viewLink != "" && $item->available;
                 $class = "comingsoon";
