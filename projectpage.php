@@ -20,7 +20,8 @@
 
         <main id="Main">
             <?php
-                $type = $project["type"];
+                // $type = $project["type"];
+                $type = "game";
                 $type = ucwords($type);
 
                 echo "<a href=\"index.php#"

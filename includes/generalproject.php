@@ -1,41 +1,41 @@
 <?php
 
-// switch ($projectTitle)
-// {
-//     case "enfabler":
-//         $projectTitle = "Enfabler";
-//         break;
-//     default:
-//         $projectTitle = ucwords($projectTitle);
-//         break;
-// }
+$projectObj = $allGames[$project];
 
 ?>
 
-<!-- <img src=<?php
-echo $project["thumbnailSrc"];
- ?>> -->
-
-<h2 id="ProjectDetails"><?php echo $project["title"] ?></h2>
-
-<p><?php echo $project["description"] ?></p>
+<h2 id="ProjectDetails"><?php echo $projectObj->title ?></h2>
 
 <?php
-    if ($project["viewLink"] != "")
+
+echo '<div class="project project-media-container show-vid">';
+echo '<img src="' . $projectObj->thumbnailSrc . '">';
+if ($projectObj->videoLink != false)
+{
+    echo '<iframe src="' . $projectObj->videoLink . '"></iframe>';
+}
+echo '</div>';
+
+?>
+
+<p><?php echo $projectObj->longDescription ?></p>
+
+<?php
+    if ($projectObj->viewLink != "")
     {
         echo 
         "<a href=\""
-        . $project["viewLink"]
+        . $projectObj->viewLink
         . "\" class=\"btn inline\" target=\"_blank\">"
-        . $project["viewMessage"]
+        . $projectObj->viewMessage
         . "</a>";
     }
     
-    if ($project["repoLink"] != "")
+    if ($projectObj->repoLink != "")
     {
         echo 
         "<a href=\""
-        . $project["repoLink"]
+        . $projectObj->repoLink
         . "\" class=\"btn inline\" target=\"_blank\">View Project Files</a>";
     }
 ?>
