@@ -57,20 +57,7 @@ if ($projectObj["repoLink"] != "")
         echo '<div id="CodeSnippets">';
         echo        '<h2>Code Snippets</h2>';
 
-        foreach($allCodeSnippets as $item)
-        {
-            $nameNoSpace = str_replace(" ", "", $item["name"]);
-
-            echo '<div id="codeID-' . $nameNoSpace . '" class="codeSnippet-Project">';
-            echo    '<h4>' . $item["name"] . '</h4>';
-            echo    '<div class="codeSnippet">';
-            echo        '<a href="#codeID-' . $nameNoSpace . '" class="btn requires-javascript">Show Code</a>';
-            echo        '<pre>';
-            echo        $item["code"];
-            echo        '</pre>';
-            echo    '</div>';
-            echo '</div>';
-        }
+        GenerateCodeSnippetsHTML($allCodeSnippets);
 
         echo '</div>';
     }

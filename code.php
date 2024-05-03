@@ -38,20 +38,7 @@
                             echo '</h3>';
                             echo '<p>Some of the code for ' . $project["title"] . ', ' . $project["codeDescription"] . '</p>'; //replace with unique code descriptions
 
-                            foreach($allCodeSnippets as $item)
-                            {
-                                $nameNoSpace = str_replace(" ", "", $item["name"]);
-
-                                echo '<div id="codeID-' . $nameNoSpace . '" class="codeSnippet-Project">';
-                                echo    '<h4>' . $item["name"] . '</h4>';
-                                echo    '<div class="codeSnippet">';
-                                echo        '<a href="#codeID-' . $nameNoSpace . '" class="btn requires-javascript">Show Code</a>';
-                                echo        '<pre>';
-                                echo        $item["code"];
-                                echo        '</pre>';
-                                echo    '</div>';
-                                echo '</div>';
-                            }
+                            GenerateCodeSnippetsHTML($allCodeSnippets);
 
                             echo '</div>';
                         }

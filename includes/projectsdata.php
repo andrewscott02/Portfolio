@@ -192,6 +192,25 @@
         return $codesnippets;
     }
 
+    function GenerateCodeSnippetsHTML($allCodeSnippets)
+    {
+        foreach($allCodeSnippets as $item)
+        {
+            $nameNoSpace = str_replace(" ", "", $item["name"]);
+
+            echo '<div id="codeID-' . $nameNoSpace . '" class="codeSnippet-Project">';
+            echo    '<h4>' . $item["name"] . '</h4>';
+            echo    '<p>' . $item["description"] . '</p>';
+            echo    '<div class="codeSnippet">';
+            echo        '<a href="#codeID-' . $nameNoSpace . '" class="btn requires-javascript">Show Code</a>';
+            echo        '<pre>';
+            echo        $item["code"];
+            echo        '</pre>';
+            echo    '</div>';
+            echo '</div>';
+        }
+    }
+
 
     // new Project(
     //     "", false, false,
