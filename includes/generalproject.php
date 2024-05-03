@@ -1,9 +1,3 @@
-<?php
-
-$projectObj = GetProjectByID(urlencode($projectId));
-
-?>
-
 <h2 id="ProjectDetails"><?php echo $projectObj["title"] ?></h2>
 
 <?php
@@ -21,6 +15,8 @@ echo '</div>';
 <p><?php echo $projectObj["longDescription"] ?></p>
 
 <?php
+    #region Basic Details
+
     if ($projectObj["viewLink"] != "")
     {
         echo 
@@ -37,6 +33,33 @@ echo '</div>';
         "<a href=\""
         . $projectObj["repoLink"]
         . "\" class=\"btn inline\" target=\"_blank\">View Project Files</a>";
+    }
+
+    #endregion
+
+    $allCodeSnippets = GetCodeSnippetsList($projectId);
+
+    if (count($allCodeSnippets) > 0)
+    {
+        echo '<div id="CodeSnippets">';
+        echo        '<h2>Code Snippets</h2>';
+
+        foreach($allCodeSnippets as $item)
+        {
+            $nameNoSpace = str_replace(" ", "", $item["name"]);
+
+            echo '<div id="codeID-' . $nameNoSpace . '" class="codeSnippet-Project">';
+            echo    '<h4>' . $item["name"] . '</h4>';
+            echo    '<div class="codeSnippet">';
+            echo        '<a href="#codeID' . $nameNoSpace . '" class="btn requires-javascript">Show Code</a>';
+            echo        '<pre>';
+            echo        $item["code"];
+            echo        '</pre>';
+            echo    '</div>';
+            echo '</div>';
+        }
+
+        echo '</div>';
     }
 ?>
 

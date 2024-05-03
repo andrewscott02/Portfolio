@@ -56,7 +56,7 @@
         }
 
         $sql = "
-            SELECT * FROM projects WHERE name = ?;
+            SELECT * FROM projects WHERE title = ?;
         ";
             
         try
@@ -119,6 +119,48 @@
         }
 
         return $projectLink;
+    }
+
+    function GetCodeSnippetsList($projectId = null)
+    {
+        global $db;
+
+        if($db == null)
+        {
+            echo "No database was found";
+            return false;
+        }
+
+        $sql = "
+            SELECT * FROM codesnippets
+        ";
+
+        if (isset($projectId))
+        {
+            $sql .= " WHERE projectId = ?";
+        }
+            
+        try
+        {
+            if (isset($projectId))
+            {
+                $results = $db->prepare($sql);
+                $results->bindValue(1, $projectId, PDO::PARAM_INT);
+                $results->execute();
+            }
+            else
+            {
+                $results = $db->query($sql);
+            }
+        }
+        catch (Exception $e)
+        {
+            echo "Error!: " . $e->getMessage() . "<br />";
+            return false;
+        }
+        
+        $codesnippets = ($results->fetchall(PDO::FETCH_ASSOC));
+        return $codesnippets;
     }
 
 

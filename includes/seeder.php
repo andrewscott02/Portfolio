@@ -39,6 +39,22 @@ class Project
     }
 }
 
+class CodeSnippet
+{
+    public $projectId = 0;
+    public $name = "";
+    public $description = "";
+    public $code = "";
+
+    public function __construct($projectId, $name, $description, $code)
+    {
+        $this->projectId = $projectId;
+        $this->name = $name;
+        $this->description = $description;
+        $this->code = $code;
+    }
+}
+
 $initialProjects = [
     "enfabler" => new Project(
         "Enfabler", "game", true, true,
@@ -114,6 +130,165 @@ $initialProjects = [
     )
 ];
 
+$initialCodeSnippets = [
+    new CodeSnippet("JavaJump", "Game Loop", "Code for the basic game loop", '
+        let enableInput = true;
+        
+        $("#GameViewport").on("click", ()=>{
+        if (!enableInput){return};
+        if(!$("#GameViewport").hasClass("game-running"))
+        {
+        //If game has not started, start game
+        $("#GameViewport").addClass("game-running");
+        StartGame();
+        }
+        else
+        {
+        //If game has started, make character jump
+        Jump();
+        }
+        })
+        
+        let board;
+        let context;
+        
+        const tick = 10;
+        
+        function StartGame()
+        {
+            board = document.getElementById("Board");
+            context = board.getContext("2d");
+            
+            score = 0;
+            
+            InitializeCharacter();
+            
+            I_update = setInterval(()=>{Update();}, tick);
+            
+            enemySpawnInterval = enemySpawnIntervalBase;
+            I_spawn = setInterval(()=>{DecreaseSpawnInterval();}, enemySpawnIncreaseInterval);
+            
+            T_spawnIncrease = setTimeout(()=>{SpawnEnemy();}, enemySpawnInterval);
+        }
+        
+        function Update()
+        {
+            //Clears board
+            context.clearRect(0, 0, board.width, board.height);
+            
+            CharacterMovement();
+            EnemyMovement();
+            UpdateScore();
+        }
+        
+        let I_update;
+        let I_spawn;
+        let T_spawnIncrease;
+        
+        function GameOver()
+        {
+            clearInterval(I_update);
+            clearInterval(I_spawn);
+            
+            clearTimeout(T_spawnIncrease);
+            
+            //Clears all enemies
+            enemies.length = 0;
+            
+            //Clears board
+            context.clearRect(0, 0, board.width, board.height);
+            
+            $("#GameViewport").removeClass("game-running");
+            
+            DisableInput();
+            
+            $(".gameTitle").html("
+            <h3>You got hit</h3>
+            <h3>Score: ${score}</h3>
+            <h3>Click or Tap to Play Again</h3>
+            ");
+        }
+    '),
+    new CodeSnippet("JavaJump", "Game Loop", "Code for the basic game loop", '
+        let enableInput = true;
+        
+        $("#GameViewport").on("click", ()=>{
+        if (!enableInput){return};
+        if(!$("#GameViewport").hasClass("game-running"))
+        {
+        //If game has not started, start game
+        $("#GameViewport").addClass("game-running");
+        StartGame();
+        }
+        else
+        {
+        //If game has started, make character jump
+        Jump();
+        }
+        })
+        
+        let board;
+        let context;
+        
+        const tick = 10;
+        
+        function StartGame()
+        {
+            board = document.getElementById("Board");
+            context = board.getContext("2d");
+            
+            score = 0;
+            
+            InitializeCharacter();
+            
+            I_update = setInterval(()=>{Update();}, tick);
+            
+            enemySpawnInterval = enemySpawnIntervalBase;
+            I_spawn = setInterval(()=>{DecreaseSpawnInterval();}, enemySpawnIncreaseInterval);
+            
+            T_spawnIncrease = setTimeout(()=>{SpawnEnemy();}, enemySpawnInterval);
+        }
+        
+        function Update()
+        {
+            //Clears board
+            context.clearRect(0, 0, board.width, board.height);
+            
+            CharacterMovement();
+            EnemyMovement();
+            UpdateScore();
+        }
+        
+        let I_update;
+        let I_spawn;
+        let T_spawnIncrease;
+        
+        function GameOver()
+        {
+            clearInterval(I_update);
+            clearInterval(I_spawn);
+            
+            clearTimeout(T_spawnIncrease);
+            
+            //Clears all enemies
+            enemies.length = 0;
+            
+            //Clears board
+            context.clearRect(0, 0, board.width, board.height);
+            
+            $("#GameViewport").removeClass("game-running");
+            
+            DisableInput();
+            
+            $(".gameTitle").html("
+            <h3>You got hit</h3>
+            <h3>Score: ${score}</h3>
+            <h3>Click or Tap to Play Again</h3>
+            ");
+        }
+    ')
+];
+
 function GetTableEntryCount($table)
 {
     global $db;
@@ -177,6 +352,72 @@ function AddProject($newProject)
     return true;
 }
 
+function AddCodeSnippet($newCodeSnippet)
+{
+    global $db;
+
+    if($db == null)
+    {
+        echo "No database was found";
+        return false;
+    }
+
+    $sql = "INSERT INTO codesnippets(projectId, name, description, code) VALUES(?, ?, ?, ?);";
+        
+    try
+    {
+        $results = $db->prepare($sql);
+        $results->bindValue(1, $newCodeSnippet->projectId, PDO::PARAM_STR);
+        $results->bindValue(2, $newCodeSnippet->name, PDO::PARAM_STR);
+        $results->bindValue(3, $newCodeSnippet->description, PDO::PARAM_STR);
+        $results->bindValue(4, htmlspecialchars($newCodeSnippet->code), PDO::PARAM_STR);
+        $results->execute();
+    }
+    catch (Exception $e)
+    {
+        echo "Error!: " . $e->getMessage() . "<br />";
+        return false;
+    }
+    
+    return true;
+}
+
+function UpdateCodeSnippet($codeSnippet, $newId)
+{
+    global $db;
+
+    if($db == null)
+    {
+        echo "No database was found";
+        return false;
+    }
+
+    $sql = "UPDATE codesnippets SET projectId = ? WHERE id = " . $codeSnippet["id"];
+        
+    try
+    {
+        $results = $db->prepare($sql);
+        $results->bindValue(1, $newId, PDO::PARAM_STR);
+        $results->execute();
+    }
+    catch (Exception $e)
+    {
+        echo "Error!: " . $e->getMessage() . "<br />";
+        return false;
+    }
+    
+    return true;
+}
+
+function ConvertNamesToID()
+{
+    global $initialCodeSnippets;
+    foreach($initialCodeSnippets as $item)
+    {
+        $item->projectId = GetProjectByName($item->projectId)["id"];
+    }
+}
+
 function TrySeedDatabases()
 {
     $projectsCount = GetTableEntryCount("projects");
@@ -184,6 +425,19 @@ function TrySeedDatabases()
     if ($projectsCount["count"] === 0)
     {
         SeedProjectsDatabase();
+    }
+
+    ConvertNamesToID();
+
+    $codeSnippetsCount = GetTableEntryCount("codeSnippets");
+
+    if ($codeSnippetsCount["count"] === 0)
+    {
+        SeedCodeSnippetsDatabase();
+    }
+    else
+    {
+        UpdateCodeSnippetsDatabase();
     }
 }
 
@@ -193,6 +447,25 @@ function SeedProjectsDatabase()
     foreach ($initialProjects as $item)
     {
         AddProject($item);
+    }
+}
+
+function SeedCodeSnippetsDatabase()
+{
+    global $initialCodeSnippets;
+    foreach ($initialCodeSnippets as $item)
+    {
+        AddCodeSnippet($item);
+    }
+}
+
+function UpdateCodeSnippetsDatabase()
+{
+    global $initialCodeSnippets;
+    $codeSnippets = GetCodeSnippetsList();
+    foreach ($codeSnippets as $key => $item)
+    {
+        UpdateCodeSnippet($item, $initialCodeSnippets[$key]->projectId);
     }
 }
 

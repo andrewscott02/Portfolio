@@ -3,7 +3,8 @@
 <head>
     <?php 
         $pageTitle = "Andrew Scott - Code Snippets";
-        include("includes/head.php"); 
+        include("includes/head.php");
+        include_once("includes/projectsdata.php"); 
     ?>
 </head>
 <body>
@@ -19,6 +20,28 @@
         <main id="Main">
             <div id="CodeSnippets">
                 <h2>Code Snippets</h2>
+
+                <?php
+                    $allCodeSnippets = GetCodeSnippetsList();
+
+                    foreach($allCodeSnippets as $item)
+                    {
+                        echo '<div id="test" class="codeSnippet-Project">';
+                        echo    '<h3>Test Game';
+                        echo        '<a class="btn" href="javajump.php#BrowserGame">Play Game Here</a>';
+                        echo    '</h3>';
+                        echo    '<p>Code for JavaJump, a browser game written in JavaScript</p>';
+                        echo    '<h4>' . $item["name"] . '</h4>';
+                        echo    '<div class="codeSnippet">';
+                        echo        '<a href="#JavaJump" class="btn requires-javascript">Show Code</a>';
+                        echo        '<pre>';
+                        echo        $item["code"];
+                        echo        '</pre>';
+                        echo    '</div>';
+                        echo '</div>';
+                    }
+                ?>
+
                 <div id="JavaJump" class="codeSnippet-Project">
                     <h3>JavaJump
                         <a class="btn" href="javajump.php#BrowserGame">Play Game Here</a>
