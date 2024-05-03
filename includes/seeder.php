@@ -131,6 +131,7 @@ $initialProjects = [
 ];
 
 $initialCodeSnippets = [
+    // JavaJump Code
     new CodeSnippet("JavaJump", "Game Loop", "Code for the basic game loop", '
         let enableInput = true;
         
@@ -209,82 +210,339 @@ $initialCodeSnippets = [
             ");
         }
     '),
-    new CodeSnippet("JavaJump", "Game Loop", "Code for the basic game loop", '
-        let enableInput = true;
-        
-        $("#GameViewport").on("click", ()=>{
-        if (!enableInput){return};
-        if(!$("#GameViewport").hasClass("game-running"))
-        {
-        //If game has not started, start game
-        $("#GameViewport").addClass("game-running");
-        StartGame();
+    new CodeSnippet("JavaJump", "Player", "Code for player", '
+        const character = {
+            x: 0,
+            y: 40,
+            size : 10,
+            speed: 25,
+            target: 0
         }
-        else
+        
+        function InitializeCharacter()
         {
-        //If game has started, make character jump
-        Jump();
+            character.x = 0;
+            character.y = board.height - character.y;
+            character.target = 0;
         }
-        })
-        
-        let board;
-        let context;
-        
-        const tick = 10;
-        
-        function StartGame()
+
+        function Jump()
         {
-            board = document.getElementById("Board");
-            context = board.getContext("2d");
-            
-            score = 0;
-            
-            InitializeCharacter();
-            
-            I_update = setInterval(()=>{Update();}, tick);
-            
-            enemySpawnInterval = enemySpawnIntervalBase;
-            I_spawn = setInterval(()=>{DecreaseSpawnInterval();}, enemySpawnIncreaseInterval);
-            
+            //Can only jump if character position is at either end of the board
+            const canJump = character.x === 0 || character.x === board.width - character.size;
+            if (!canJump)
+            {
+                return;
+            }
+
+            character.target = character.x === 0 ? board.width - character.size : 0;
+        }
+
+        function CharacterMovement()
+        {
+            //If character is not already at the jump target
+            if (character.x != character.target)
+            {
+                let movement = character.speed;
+                if (character.target < character.x)
+                {
+                    //Reverses speed if jump target is left of character
+                    movement *= -1;
+                }
+
+                //Clamps the value so character cannot move off the board
+                character.x = Clamp(character.x + movement, 0, board.width - character.size);
+            }
+
+            //Draw character as green box
+            context.fillStyle="green";
+            context.fillRect(character.x, character.y, character.size, character.size);
+        }
+    '),
+    new CodeSnippet("JavaJump", "Enemies", "Code for enemies", '
+        const enemies = [];
+        const enemySpawnIntervalBase = 3000;
+        const enemySpawnIntervalMin = 500;
+        const enemySpawnIncrease = 250;
+        const enemySpawnIncreaseInterval = 5000;
+
+        let enemySpawnInterval = enemySpawnIntervalBase;
+
+        let enemyValues = {
+            x: 0,
+            y: 0,
+            size : 15,
+            speed: 1
+        }
+
+        function DecreaseSpawnInterval()
+        {
+            enemySpawnInterval = Clamp(enemySpawnInterval - enemySpawnIncrease, enemySpawnIntervalMin, enemySpawnIntervalBase);
+        }
+
+        function SpawnEnemy()
+        {
+            const spawnTrack = RandomRange(0, 3);
+            const trackWidth = board.width/2;
+            const spawnPos = spawnTrack * (trackWidth - (enemyValues.size/2));
+            enemies.push([spawnPos, 0]);
+
             T_spawnIncrease = setTimeout(()=>{SpawnEnemy();}, enemySpawnInterval);
         }
-        
-        function Update()
+
+        function EnemyMovement()
         {
-            //Clears board
-            context.clearRect(0, 0, board.width, board.height);
+            let enemiesToRemove = 0;
+            for(let i = 0; i < enemies.length; i++)
+            {
+                let movement = enemyValues.speed;
+                if (enemies[i][1] > board.height)
+                {
+                    //Removes enemies that fall offscreen
+                    enemiesToRemove ++;
+                }
+
+                //Clamps the value so character cannot move off the board
+                enemies[i][1] = Clamp(enemies[i][1] + movement, 0, board.width - enemyValues.size);
+                
+                //Draw enemies as red boxes
+                context.fillStyle="red";
+                context.fillRect(enemies[i][0], enemies[i][1], enemyValues.size, enemyValues.size);
+
+                //Check collisions with player
+                CheckCollisions(i);
+            }
+
+            for(let i = 0; i < enemiesToRemove; i++)
+            {
+                //Removes enemies that fall offscreen
+                enemies.shift();
+            }
+        }
+
+        function CheckCollisions(i)
+        {
+            let enemy = {
+                x: enemies[i][0],
+                y: enemies[i][1],
+                size : enemyValues.size,
+            }
+
+            if (DetectCollision(character, enemy))
+            {
+                GameOver();
+            }
+        }
+
+        function DetectCollision(a, b)
+        {
+            let xIntersects = a.x < b.x + b.size &&
+                                a.x + a.size > b.x;
+                                
+            let yIntersects = a.y < b.y + b.size &&
+                                a.y + a.size > b.y;
+
+            return  xIntersects && yIntersects;
+        }
+    '),
+    new CodeSnippet("JavaJump", "Score and Helper Functions", "Code for other functions", '
+        let score = 0;
+
+        function UpdateScore()
+        {
+            score++;
+
+            context.fillStyle="black";
+            context.font="10px courier";
+            context.fillText(score, 15, board.height - 10);
+        }
+
+        /** Clamps a value in between given range
+        * 
+        * @param {*} value - Value to clamp
+        * @param {*} min - Minimum possible value
+        * @param {*} max - Maximum possible value
+        * @returns 
+        */
+        function Clamp(value, min, max)
+        {
+            if (value > max){return max;}
+            else if (value < min){return min;}
+            else {return value;}
+        }
+
+        /** Random Range Function
+        * @param {int} minRaw - Minimum value
+        * @param {int} maxRaw - Maximum value (exclusive)
+        * @returns {int} A random integer between the input values
+        */
+        function RandomRange(minRaw = 0, maxRaw = 0)
+        {
+            var min = parseInt(minRaw);
+            var max = parseInt(maxRaw);
             
-            CharacterMovement();
-            EnemyMovement();
-            UpdateScore();
+            var range = parseInt(max) - parseInt(min);
+            var result = Math.floor(Math.random() * range) + parseInt(min);
+            return result;
+        }
+    '),
+    new CodeSnippet("Netmatters Homepage", "Cookies", "Code for the cookies popup", '
+        /** Checks whether the Cookies Popup menu should appear
+         * 
+         * @returns {bool} Boolean value of whether cookies popup should appear
+         */
+        function CheckCookiesData()
+        {
+            if (!document.cookie.toString().includes("cookiesAccepted=true"))
+            {
+                OpenCookies();
+                return true;
+            }
+            else
+            {
+                console.log("Cookies data is " + document.cookie);
+                return false;
+            }
         }
         
-        let I_update;
-        let I_spawn;
-        let T_spawnIncrease;
-        
-        function GameOver()
+        /**Opens Cookies Popup */
+        function OpenCookies()
         {
-            clearInterval(I_update);
-            clearInterval(I_spawn);
+            console.log("Opening Cookies Popup, data is " + document.cookie);
+        
+            $("body").addClass("stop-scrolling");
+            $("#CookiesPopup").show();
+        }
+        
+        //Add click event to accept cookies button
+        $("#AcceptCookies").on("click", ()=>{
+            CloseCookies();
+        });
+        
+        /**Closes Cookies Popup */
+        function CloseCookies()
+        {
+            //Send cookies closed via AJAX
+            console.log("Closing Cookies Popup");
+            SetCookiesData(true);
+        
+            $("body").removeClass("stop-scrolling");
+            $("#CookiesPopup").hide();
+        
+            console.log("Cookies data is " + document.cookie);
+        }
+        
+        /** Sets Cookies Accepted Value
+         * 
+         * @param {bool} value Boolean value for if the cookies have been accepted
+         * 
+         * @returns {string} String value representing the new cookies data
+         */
+        function SetCookiesData(value)
+        {
+            document.cookie = `cookiesAccepted=${value}`;
+            return document.cookie;
+        }
+        
+        /** Deletes all cookies generated
+         *  || Not called here, intended to be used in console
+         */
+        function DeleteAllCookies()
+        {
+            const cookies = document.cookie.split(";");
+        
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i];
+                const eqPos = cookie.indexOf("=");
+                const name = eqPos > -1 ? cookie.substr(0, eqPos) : cookie;
+        
+                //Sets expiry date in past so it will be deleted
+                document.cookie = name + "=;expires=Thu, 01 Jan 1970 00:00:00 GMT";
+            }
+        }
+    '),
+    new CodeSnippet("Netmatters Homepage", "Sticky Header", "Code for the sticky header", '
+        const navThreshold = 250;
+
+        let prevScroll = 0;
+        let stickyHeaderActive = true;
+        
+        let scrollUpTimeout;
+        
+        //Adds CheckScroll to scroll event
+        $(".maincontent-inner").on("scroll", CheckScroll);
+        
+        //Determines whether header should be sticky when scrolling
+        function CheckScroll(event)
+        {
+            let scroll = $(".maincontent-inner").scrollTop();
+        
+            //Checks if scroll direction was up or down
+            if (scroll > prevScroll)
+            {
+                //Show header
+                console.log("scroll down");
+        
+                if (scroll > navThreshold)
+                {
+                    if (stickyHeaderActive)
+                    {
+                        stickyHeaderActive = false;
+                        AnimateHeader(false, 1.3);
             
-            clearTimeout(T_spawnIncrease);
-            
-            //Clears all enemies
-            enemies.length = 0;
-            
-            //Clears board
-            context.clearRect(0, 0, board.width, board.height);
-            
-            $("#GameViewport").removeClass("game-running");
-            
-            DisableInput();
-            
-            $(".gameTitle").html("
-            <h3>You got hit</h3>
-            <h3>Score: ${score}</h3>
-            <h3>Click or Tap to Play Again</h3>
-            ");
+                        scrollUpTimeout = setTimeout(() => {
+                            $(".sticky-header").removeClass("sticky");
+                        }, 500);
+                    }
+                }
+                else
+                {
+                    $(".sticky-header").removeClass("sticky");
+                }
+            }
+            else
+            {
+                //Hide header
+                console.log("scroll up");
+        
+                if (scroll > navThreshold)
+                {
+                    if (!stickyHeaderActive)
+                    {
+                        stickyHeaderActive = true;
+                        clearTimeout(scrollUpTimeout);
+        
+                        $(".sticky-header").addClass("sticky");
+                        AnimateHeader(true, 0.6);
+                    }
+                }
+                else
+                {
+                    $(".sticky-header").removeClass("sticky");
+                }
+            }
+        
+            prevScroll = scroll;
+        }
+        
+        //Animates the header so it slides up or down
+        function AnimateHeader(down, transitionTime)
+        {
+            from = "0";
+            to = "-100%";
+            if (down)
+            {
+                from = $(".sticky-header").css("top");
+                to = "0";
+            }
+        
+            $(".sticky-header").css("transition", "all 0s");
+            $(".sticky-header").css("top", from);
+        
+            setTimeout(() => {
+                $(".sticky-header").css("transition", `all ${transitionTime}s`);
+                $(".sticky-header").css("top", to);
+            }, 200);
         }
     ')
 ];

@@ -37,6 +37,8 @@ echo '</div>';
 
     #endregion
 
+    #region Code Snippets
+
     $allCodeSnippets = GetCodeSnippetsList($projectId);
 
     if (count($allCodeSnippets) > 0)
@@ -51,7 +53,7 @@ echo '</div>';
             echo '<div id="codeID-' . $nameNoSpace . '" class="codeSnippet-Project">';
             echo    '<h4>' . $item["name"] . '</h4>';
             echo    '<div class="codeSnippet">';
-            echo        '<a href="#codeID' . $nameNoSpace . '" class="btn requires-javascript">Show Code</a>';
+            echo        '<a href="#codeID-' . $nameNoSpace . '" class="btn requires-javascript">Show Code</a>';
             echo        '<pre>';
             echo        $item["code"];
             echo        '</pre>';
@@ -61,5 +63,7 @@ echo '</div>';
 
         echo '</div>';
     }
+
+    #endregion
 ?>
 
