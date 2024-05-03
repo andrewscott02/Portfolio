@@ -105,11 +105,21 @@
 
 .smallImages
 {
+    display: flex;
+    justify-content: center;
+    margin-top: 10px;
+
     img
     {
         display: inline-block;
         max-width: 10%;
+    }
+}
 
+.featured-info .smallImages
+{
+    img
+    {
         @media #{$brk-xl-true}
         {
             max-width: 25%;
