@@ -82,7 +82,7 @@ $initialProjects = [
         "Gather your cards, weapons and potions because the corruption is growing stronger. Push into the heart of the realm and find the source of this terrible plague.  Traverse the world in this 2.5D tarot-themed RPG card combat deck builder. Find new items and discover new lands.  Anything is possible when fortune favours the bold.",
         "Images/CoA.png", "https://www.youtube.com/embed/r8M4nrsPlGo?si=FVnUo691n4NBjaYh&amp;controls=0&autoplay=1&mute=1&playsinline=1&playlist=r8M4nrsPlGo&loop=1",
         "https://moonsoon-games.itch.io/corruption-of-arcana-reshuffled", "Play Corruption of Arcana on Itch","",
-        "an tarot-themed RPG deckbuilder made with Unity and C#"
+        "a tarot-themed RPG deckbuilder made with Unity and C#"
     ),
     "creak" => new Project(
         "Creak", "game", false, true,

@@ -38,7 +38,9 @@
                             echo '</h3>';
                             echo '<p>Some of the code for ' . $project["title"] . ', ' . $project["codeDescription"] . '</p>'; //replace with unique code descriptions
 
-                            GenerateCodeSnippetsHTML($allCodeSnippets);
+                            $codeSnippets = GenerateCodeSnippetsHTML($allCodeSnippets);
+                            $codeSnippets = str_replace("<h4>", "<h4>(" . $project['title'] . ") ", $codeSnippets);
+                            echo $codeSnippets;
 
                             echo '</div>';
                         }

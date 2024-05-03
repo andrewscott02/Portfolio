@@ -1,11 +1,11 @@
-<h2 id="ProjectDetails"><?php echo $projectObj["title"] ?></h2>
+<h1 id="ProjectDetails"><?php echo $projectObj["title"] ?></h1>
 
 <?php
 
 #region Basic Details
 
-echo '<div class="project project-media-container show-vid">';
-echo '<img src="' . $projectObj["thumbnailSrc"] . '">';
+echo '<div class="project project-media-container show-vid general-project-page">';
+echo    '<img src="' . $projectObj["thumbnailSrc"] . '">';
 if ($projectObj["videoLink"] != false)
 {
     echo '<iframe src="' . $projectObj["videoLink"] . '"></iframe>';
@@ -57,7 +57,7 @@ if ($projectObj["repoLink"] != "")
         echo '<div id="CodeSnippets">';
         echo        '<h2>Code Snippets</h2>';
 
-        GenerateCodeSnippetsHTML($allCodeSnippets);
+        echo GenerateCodeSnippetsHTML($allCodeSnippets);
 
         echo '</div>';
     }
