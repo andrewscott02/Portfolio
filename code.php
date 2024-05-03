@@ -32,13 +32,11 @@
 
                         if (count($allCodeSnippets) > 0)
                         {
-                            $lowercaseDesc = lcfirst($project["shortDescription"]);
-
                             echo '<div id="projectID-' . $project["id"] . '" class="codeSnippet-Project">';
                             echo '<h3>' . $project["title"];
                             echo    '<a class="btn" target="_blank" href="' . $project["viewLink"] . '">' . $project["viewMessage"] . '</a>';
                             echo '</h3>';
-                            echo '<p>Code for ' . $project["title"] . ', ' . $lowercaseDesc . '</p>'; //replace with unique code descriptions
+                            echo '<p>Some of the code for ' . $project["title"] . ', ' . $project["codeDescription"] . '</p>'; //replace with unique code descriptions
 
                             foreach($allCodeSnippets as $item)
                             {
@@ -61,7 +59,7 @@
 
                     #endregion
                 ?>
-                
+
             </div>
         </main>
 

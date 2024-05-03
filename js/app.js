@@ -15,7 +15,7 @@ $("#Featured").addClass("java-enabled");
 $(".slides").slick({
     //fade:true,
     autoplay: true,
-    autoplaySpeed: 15000,
+    autoplaySpeed: 7000,
     arrows: false,
     dots: true
 });

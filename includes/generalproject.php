@@ -10,9 +10,11 @@ if ($projectObj["videoLink"] != false)
 }
 echo '</div>';
 
+$longDescription = str_replace("  ", "<br><br>", $projectObj["longDescription"]);
+
 ?>
 
-<p><?php echo $projectObj["longDescription"] ?></p>
+<p><?php echo $longDescription; ?></p>
 
 <?php
     #region Basic Details
