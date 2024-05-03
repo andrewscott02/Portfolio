@@ -3,7 +3,7 @@
     include_once("includes/connection.php");
     include_once("includes/seeder.php");
     
-    function GetProjectDetails($typeFilter = null)
+    function GetProjectsList($typeFilter = null)
     {
         global $db;
 
@@ -45,7 +45,7 @@
         return $projects;
     }
     
-    function GetSingleProjectDetails($projectName)
+    function GetProjectByName($projectName)
     {
         global $db;
 
@@ -71,8 +71,54 @@
             return false;
         }
         
-        $projects = ($results->fetchall(PDO::FETCH_ASSOC));
-        return $projects;
+        $project = ($results->fetch(PDO::FETCH_ASSOC));
+        return $project;
+    }
+
+    function GetProjectByID($projectId)
+    {
+        global $db;
+
+        if($db == null)
+        {
+            echo "No database was found";
+            return false;
+        }
+
+        $sql = "
+            SELECT * FROM projects WHERE id = ?;
+        ";
+            
+        try
+        {
+            $results = $db->prepare($sql);
+            $results->bindValue(1, $projectId, PDO::PARAM_INT);
+            $results->execute();
+        }
+        catch (Exception $e)
+        {
+            echo "Error!: " . $e->getMessage() . "<br />";
+            return false;
+        }
+        
+        $project = ($results->fetch(PDO::FETCH_ASSOC));
+        return $project;
+    }
+
+    function GetProjectIDFromLink()
+    {
+        if (isset($_GET["project"]))
+        {
+            $projectLink = filter_input(INPUT_GET, "project", FILTER_SANITIZE_STRING);
+        }
+
+        if (!isset($projectLink))
+        {
+            header("location:index.php");
+            exit;
+        }
+
+        return $projectLink;
     }
 
 

@@ -5,7 +5,8 @@
         $pageTitle = "Andrew Scott - SCS Scheme";
         include("includes/head.php"); 
         include("includes/projectsdata.php");
-        GetProjectDetails();
+        $projectId = GetProjectIDFromLink();
+        $projectObj = GetProjectByID(urlencode($projectId));
     ?>
 </head>
 <body>
@@ -20,8 +21,7 @@
 
         <main id="Main">
             <?php
-                // $type = $project["type"];
-                $type = "game";
+                $type = $projectObj["type"];
                 $type = ucwords($type);
 
                 echo "<a href=\"index.php#"

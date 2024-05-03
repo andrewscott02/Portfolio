@@ -9,9 +9,9 @@
 
 <div class="project-collection">
     <?php
-        $allProjects = GetProjectDetails($projectsFilter == "all" ? null : $projectsFilter);
+        $allProjects = GetProjectsList($projectsFilter == "all" ? null : $projectsFilter);
 
-        foreach($allProjects as $key => $item)
+        foreach($allProjects as $item)
         {
             $available = $item["viewLink"] != "" && $item["available"];
             $class = "comingsoon";
@@ -20,7 +20,7 @@
             if ($available)
             {
                 $class = "";
-                $href = "href=\"projectpage.php?project=$key#ProjectDetails\"";
+                $href = "href=\"projectpage.php?project=" . $item["id"] . "#ProjectDetails\"";
             }
 
             echo "<a class=\"project $class\" $href>\n";
