@@ -31,7 +31,7 @@ function CloseSidePanel()
     $(".nav-btn-mobile").removeClass("sidepanel-open-rotate"); //Shows/hides navbar
     setTimeout(()=>{
         $(".nav-btn-mobile").removeClass("sideMenuOpen");
-    }, 150)
+    }, 250)
 }
 
 function OpenSidePanel()
@@ -43,12 +43,22 @@ function OpenSidePanel()
     $(".nav-btn-mobile").addClass("sideMenuOpen"); //Shows/hides navbar
     setTimeout(()=>{
         $(".nav-btn-mobile").addClass("sidepanel-open-rotate");
-    }, 150)
+    }, 200)
 }
+
+let canClickBtn = true;
 
 //When the mobile nav button is clicked
 $(".nav-btn-mobile").on("click", (event)=>{
     event.preventDefault(); //Prevents the page from scrolling to the top
+
+    if (!canClickBtn)
+    {
+        return false;
+    }
+
+    canClickBtn = false;
+
     $("#SideMenu").toggleClass("sideMenuOpen"); //Shows/hides navbar
 
     if ($("#SideMenu").hasClass("sideMenuOpen"))
@@ -59,6 +69,10 @@ $(".nav-btn-mobile").on("click", (event)=>{
     {
         CloseSidePanel();
     }
+
+    setTimeout(()=>{
+        canClickBtn = true;
+    }, 350)
 })
 
 //#endregion
