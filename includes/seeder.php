@@ -65,7 +65,7 @@ $initialProjects = [
     "enfabler" => new Project(
         "Enfabler", "game", true, true,
         "Explore dungeons, defeat monsters and thwart villains to earn your place as a hero. Will you answer the call?",
-        "Follow the journey of a famed storyteller who is searching for the perfect hero for their next big story.  You play as aspiring heroes who have answered the call of adventure. Explore dungeons, defeat monsters and thwart villains to earn your place as a hero.",
+        "Follow the journey of a famed storyteller who is searching for the perfect hero for their next big story.  You play as aspiring heroes who have answered the call of adventure. Explore dungeons, defeat monsters and thwart villains to earn your place as a hero. Will you answer the call?",
         "Images/Enfabler.png", "https://www.youtube.com/embed/ih067YlZj24?si=Sk_3hSXb59XGTOYi&amp;controls=0&autoplay=1&mute=1&playsinline=1&playlist=ih067YlZj24&loop=1",
         "https://andrewjscott02.itch.io/enfabler", "Play Enfabler on Itch","https://github.com/andrewscott02/Enfabler",
         "a procedural dungeon crawler made with Unity and C#"

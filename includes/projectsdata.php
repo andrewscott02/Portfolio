@@ -44,6 +44,35 @@
         $projects = ($results->fetchall(PDO::FETCH_ASSOC));
         return $projects;
     }
+
+    function GetFeaturedProjects()
+    {
+        global $db;
+
+        if($db == null)
+        {
+            echo "No database was found";
+            return false;
+        }
+
+        $sql = "
+            SELECT * FROM projects WHERE featured = true ORDER BY title;
+        ";
+            
+        try
+        {
+            $results = $db->prepare($sql);
+            $results->execute();
+        }
+        catch (Exception $e)
+        {
+            echo "Error!: " . $e->getMessage() . "<br />";
+            return false;
+        }
+        
+        $projects = ($results->fetchAll(PDO::FETCH_ASSOC));
+        return $projects;
+    }
     
     function GetProjectByName($projectName)
     {

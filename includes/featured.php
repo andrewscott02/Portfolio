@@ -1,44 +1,87 @@
-<div id="Featured">
-    <h2>Featured</h2>
-    <div class="featured-collection slides">
-        <div> <!-- COA-->
-            <div class="featured-item">
-                <div class="featured-media-container">
-                    <iframe class="fit-vid" src="https://www.youtube.com/embed/r8M4nrsPlGo?si=FVnUo691n4NBjaYh&amp;controls=0&autoplay=1&mute=1&playsinline=1&playlist=r8M4nrsPlGo&loop=1"></iframe>
-                </div>
-                <div class="featured-info">
-                    <h3>Corruption of Arcana</h3>
+<?php
+    include_once("includes/projectsdata.php"); 
+    $featuredProjects = GetFeaturedProjects();
+    $baseDescriptionCharLimit = 200;
+    // var_dump($featuredProjects);
+?>
 
-                    <div class="smallImages">
-                        <img src="Images/finalist-rookie-awards.png">
-                        <img src="Images/rookie-awards-goty-hc.png">
-                    </div>
+<?php
+    if(count($featuredProjects) > 0)
+    {
+        //Start featured slides
+        ?>
+        <div id="Featured">
+            <h2>Featured</h2>
+            <div class="featured-collection slides">
+        <?php
 
-                    <p class="brk-xlt-l">Gather your cards, weapons and potions because the corruption is growing stronger. Push into the heart of the realm and find the source of this terrible plague... </p>
-                    <p class="brk-xlt-g">Gather your cards, weapons and potions because the corruption is growing stronger. Push into the heart of the realm and find the source of this terrible plague. </p>
-                    <p class="brk-xlt-g">Traverse the world in this 2.5D tarot-themed RPG card combat deck builder. Find new items and discover new lands.</p>
-                    <p class="brk-xlt-g">Anything is possible when fortune favours the bold.</p>
-                    
-                    <a class="btn inline" target="_blank" href="https://moonsoon-games.itch.io/corruption-of-arcana-reshuffled">View Project</a>
-                </div>
-            </div>
-            <!-- Overlay - This only needs to be in the first item -->
-            <div class="featured-overlay-container">
-                <div class="featured-overlay"></div>
+        #region Featured Projects
+
+        $first = true;
+
+        foreach($featuredProjects as $project)
+        {
+            $href = "projectpage.php?project=" . $project["id"] . "#ProjectDetails\"";
+            $longDescription = str_replace("  ", "<br><br>", $project["longDescription"]);
+            
+            $descriptionCharLimit = $baseDescriptionCharLimit;
+
+            if ($project["title"] == "Corruption of Arcana")
+            {
+                $descriptionCharLimit = $baseDescriptionCharLimit * 0.75;
+            }
+
+            $cutDescription = $project["longDescription"];
+            if (strlen($cutDescription) >= $descriptionCharLimit) 
+            {
+                $lastword = strpos($cutDescription, " ", $descriptionCharLimit);
+                $cutDescription = substr($cutDescription, 0, $lastword) . "...";
+            }
+
+            var_dump($cutDescription);
+
+            echo '<div>';
+            echo    '<div class="featured-item">';
+            echo        '<div class="featured-media-container">';
+            echo            '<iframe class="fit-vid" src="' . $project["videoLink"] . '"></iframe>';
+            echo        '</div>';
+            echo        '<div class="featured-info">';
+            echo            '<h3>' . $project["title"] . '</h3>';
+
+            if ($project["title"] == "Corruption of Arcana")
+            {
+                echo            '<div class="smallImages">';
+                echo                '<img src="Images/finalist-rookie-awards.png">';
+                echo                '<img src="Images/rookie-awards-goty-hc.png">';
+                echo            '</div>';
+            }
+
+            echo            '<p class="brk-xlt-l">' . $cutDescription . '</p>';
+            echo            '<p class="brk-xlt-g">' . $longDescription . '</p>';
+            echo            '<a class="btn inline" href="' . $href . '">View Project</a>';
+            echo        '</div>';
+            echo    '</div>';
+
+            if ($first)
+            {
+                //Overlay - This only needs to be in the first item
+                echo '<div class="featured-overlay-container">';
+                echo    '<div class="featured-overlay"></div>';
+                echo '</div>';
+            }
+            
+            $first = false;
+
+            echo '</div>';
+        }
+
+        #endregion
+
+        //End featured slides
+        ?>
             </div>
         </div>
-        <div> <!-- Enfabler-->
-            <div class="featured-item">
-                <div class="featured-media-container">
-                    <iframe class="fit-vid" src="https://www.youtube.com/embed/ih067YlZj24?si=Sk_3hSXb59XGTOYi&amp;controls=0&autoplay=1&mute=1&playsinline=1&playlist=ih067YlZj24&loop=1"></iframe>
-                </div>
-                <div class="featured-info">
-                    <h3>Enfabler</h3>
-                    <p class="brk-xlt-g">Follow the journey of a famed storyteller who is searching for the perfect hero for their next big story.  You play as aspiring heroes who have answered the call of adventure.</p>
-                    <p>Explore dungeons, defeat monsters and thwart villains to earn your place as a hero. Will you answer the call?</p>
-                    <a class="btn inline" target="_blank" href="https://andrewjscott02.itch.io/enfabler">View Project</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
+        <?php
+    }
+?>
