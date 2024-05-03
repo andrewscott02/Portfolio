@@ -32,14 +32,14 @@
 
                         if (count($allCodeSnippets) > 0)
                         {
-                            echo '<div id="projectID-' . $project["id"] . '" class="codeSnippet-Project">';
+                            echo '<div id="projectID-' . $project["id"] . '">';
                             echo '<h3>' . $project["title"];
                             echo    '<a class="btn" target="_blank" href="' . $project["viewLink"] . '">' . $project["viewMessage"] . '</a>';
                             echo '</h3>';
                             echo '<p>Some of the code for ' . $project["title"] . ', ' . $project["codeDescription"] . '</p>'; //replace with unique code descriptions
 
                             $codeSnippets = GenerateCodeSnippetsHTML($allCodeSnippets);
-                            $codeSnippets = str_replace("<h4>", "<h4>(" . $project['title'] . ") ", $codeSnippets);
+                            $codeSnippets = str_replace("<h3>", "<h3>(" . $project['title'] . ") ", $codeSnippets);
                             echo $codeSnippets;
 
                             echo '</div>';

@@ -196,9 +196,17 @@
     {
         $html = "";
         
+        $previousTag = "";
+
         foreach($allCodeSnippets as $item)
         {
             $nameNoSpace = str_replace(" ", "", $item["name"]);
+
+            if ($item["tag"] != $previousTag)
+            {
+                $previousTag = $item["tag"];
+                $html .=    '<h3>' . $item["tag"] . '</h3>';
+            }
 
             $html .= '<div id="codeID-' . $nameNoSpace . '" class="codeSnippet-Project">';
             $html .=    '<h4>' . $item["name"] . '</h4>';

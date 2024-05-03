@@ -57,6 +57,14 @@ if ($projectObj["repoLink"] != "")
         echo '<div id="CodeSnippets">';
         echo        '<h2>Code Snippets</h2>';
 
+        $codeTitle = $projectObj["title"];
+        if ($projectObj["type"] == "project")
+        {
+            $codeTitle = "the " . $codeTitle;
+        }
+
+        echo        "<p>Here's some of the code I've written for " . $codeTitle . "</p>";
+
         echo GenerateCodeSnippetsHTML($allCodeSnippets);
 
         echo '</div>';

@@ -13,7 +13,7 @@
 
         foreach($allProjects as $item)
         {
-            $available = $item["viewLink"] != "" && $item["available"];
+            $available = $item["available"];
             $class = "comingsoon";
             $href = "";
             

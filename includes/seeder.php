@@ -53,13 +53,15 @@ class CodeSnippet
     public $name = "";
     public $description = "";
     public $code = "";
+    public $tag = "";
 
-    public function __construct($projectId, $name, $description, $code)
+    public function __construct($projectId, $tag, $name, $description, $code)
     {
         $this->projectId = $projectId;
         $this->name = $name;
         $this->description = $description;
         $this->code = $code;
+        $this->tag = $tag;
     }
 }
 
@@ -150,7 +152,7 @@ $initialProjects = [
         "a turn-based combat system made using Unreal Engine 4"
     ),
     "visualfx" => new Project(
-        "Visual FX Programming", "project", false, false,
+        "Visual FX Programming", "project", false, true,
         "Visual effects using custom shaders and procedural mesh elements.", "Visual effects using custom shaders and procedural mesh elements.",
         "Images/GraphicsImages.png", false,
         "", "Open Project","",
@@ -162,7 +164,7 @@ $initialCodeSnippets = [
     #region Enfabler Code
 
     //Enfabler Combat Code
-    new CodeSnippet("Enfabler", "Health", "Code that manages character or object health", '
+    new CodeSnippet("Enfabler", "Health", "Health Class", "Code that manages character or object health", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -430,7 +432,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Enfabler", "Health Interfaces", "Interfaces that allow objects to be damaged and healed", '
+    new CodeSnippet("Enfabler", "Health", "Health Interfaces", "Interfaces that allow objects to be damaged and healed", '
         public interface IDamageable
         {
             MonoBehaviour GetScript();
@@ -446,7 +448,7 @@ $initialCodeSnippets = [
             void Heal(int heal);
         }
     '),
-    new CodeSnippet("Enfabler", "Hitbox Modifier", "Code for specific hitboxes that modifies incoming damage", '
+    new CodeSnippet("Enfabler", "Health", "Hitbox Modifier", "Code for specific hitboxes that modifies incoming damage", '
         using Enfabler.Attacking;
         using System.Collections;
         using System.Collections.Generic;
@@ -515,7 +517,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Enfabler", "Health Threshold Events", "Code that triggers specific events when health reaches a certain threshold", '
+    new CodeSnippet("Enfabler", "Health", "Health Threshold Events", "Code that triggers specific events when health reaches a certain threshold", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -595,7 +597,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Enfabler", "Example: Teleport on Health Threshold", "Child class that extends the health threshold class to teleport the character when their health reaches a certain threshold", '
+    new CodeSnippet("Enfabler", "Health", "Example: Teleport on Health Threshold", "Child class that extends the health threshold class to teleport the character when their health reaches a certain threshold", '
         using Enfabler.Attacking;
         using System.Collections;
         using System.Collections.Generic;
@@ -649,76 +651,8 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Enfabler", "Phase", "Code that allows characters to phase through other characters and objects when using specific attacks", '
-        using System.Collections;
-        using System.Collections.Generic;
-        using UnityEngine;
-        using UnityEngine.AI;
-        
-        public class Phase : MonoBehaviour
-        {
-            int defaultLayer;
-            public int phaseLayer;
-        
-            public Transform attach;
-        
-            public Object phaseEffect;
-            public Object flashEffect;
-            ParticleSystem phaseParticle;
-        
-            NavMeshObstacle navMeshObstacle;
-            NavMeshAgent navMeshAgent;
-        
-            // Start is called before the first frame update
-            void Start()
-            {
-                defaultLayer = gameObject.layer;
-        
-                CharacterCombat combat = GetComponent<CharacterCombat>();
-                combat.phaseDelegate += ActivatePhase;
-        
-                navMeshObstacle = GetComponent<NavMeshObstacle>();
-                navMeshAgent = GetComponent<NavMeshAgent>();
-            }
-        
-            void ActivatePhase(bool activate)
-            {
-                //Debug.Log("Phasing: " + activate);
-                gameObject.layer = activate ? phaseLayer : defaultLayer;
-        
-                StartParticles(activate);
-        
-                if (navMeshObstacle != null)
-                    navMeshObstacle.enabled = !activate;
-        
-                if (navMeshAgent != null)
-                    navMeshAgent.enabled = !activate;
-            }
-        
-            void StartParticles(bool activate)
-            {
-                Transform flashSpawn = attach == null ? transform : attach;
-                Instantiate(flashEffect, flashSpawn.position, flashSpawn.rotation);
-        
-                if (!activate)
-                    return;
-        
-                if (phaseParticle == null)
-                {
-                    GameObject go = Instantiate(phaseEffect, attach == null ? transform : attach) as GameObject;
-                    phaseParticle = go.GetComponent<ParticleSystem>();
-                    return;
-                }
-        
-                phaseParticle.gameObject.SetActive(true);
-                phaseParticle.Simulate(0, true, true);
-        
-                phaseParticle.Play();
-            }
-        }
-    '),
     //Enfabler AI Code
-    new CodeSnippet("Enfabler", "Enemy Behaviour Tree", "Behaviour tree for enemies to determine their behaviours", '
+    new CodeSnippet("Enfabler", "Enemy AI", "Enemy Behaviour Tree", "Behaviour tree for enemies to determine their behaviours", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -748,7 +682,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Enfabler", "Ranged Enemy Behaviour Tree", "Behaviour tree for ranged enemies to keep their distance while attacking", '
+    new CodeSnippet("Enfabler", "Enemy AI", "Ranged Enemy Behaviour Tree", "Behaviour tree for ranged enemies to keep their distance while attacking", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -778,7 +712,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Enfabler", "Base Behaviours", "Base Behaviours for common actions that are used in behaviour trees to avoid repetition", '
+    new CodeSnippet("Enfabler", "Enemy AI", "Base Behaviours", "Base Behaviours for common actions that are used in behaviour trees to avoid repetition", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -1031,7 +965,7 @@ $initialCodeSnippets = [
         }
     '),
     //Enfabler Quests Code
-    new CodeSnippet("Enfabler", "Quest Setup", "Code for the quest class and enums used to make quests", '
+    new CodeSnippet("Enfabler", "Quests", "Basic Quest Class and Quest States enum", "Code for the quest class and enums used to make quests", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -1350,7 +1284,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Enfabler", "Quest Progress", "Code for the base progress quest class", '
+    new CodeSnippet("Enfabler", "Quests", "Quest Progress", "Code for the base progress quest class", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -1454,7 +1388,7 @@ $initialCodeSnippets = [
             OnTriggerEnter, OnTriggerExit, OnHit,
         }
     '),
-    new CodeSnippet("Enfabler", "Example: Quest Progress on Interact", "Child class that extends the progress quest class to progress quests when interacting with an object", '
+    new CodeSnippet("Enfabler", "Quests", "Example: Quest Progress on Interact", "Child class that extends the progress quest class to progress quests when interacting with an object", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -1475,7 +1409,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Enfabler", "Example: Quest Progress when hit", "Child class that extends the progress quest class to progress quests when object is hit", '
+    new CodeSnippet("Enfabler", "Quests", "Example: Quest Progress when hit", "Child class that extends the progress quest class to progress quests when object is hit", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -1509,7 +1443,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Enfabler", "Quest Update", "Code for updating game objects when quest is progressed", '
+    new CodeSnippet("Enfabler", "Quests", "Quest Update", "Code for updating game objects when quest is progressed", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -1565,7 +1499,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Enfabler", "Example: Enable Interaction on Quest Progression", "Child class that extends the quest update class to enable object interaction when specified quest is progressed", '
+    new CodeSnippet("Enfabler", "Quests", "Example: Enable Interaction on Quest Progression", "Child class that extends the quest update class to enable object interaction when specified quest is progressed", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -1589,7 +1523,7 @@ $initialCodeSnippets = [
         }
     '),
     //Enfabler Spells Code
-    new CodeSnippet("Enfabler", "Base Spell Class", "Code for the base spell class that manages what happens when a spell of any type is cast", '
+    new CodeSnippet("Enfabler", "Combat", "Base Spell Class", "Code for the base spell class that manages what happens when a spell of any type is cast", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -1619,7 +1553,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Enfabler", "Summon Spell Class", "Child class that extends the spell stats class to add functionality for summon spells", '
+    new CodeSnippet("Enfabler", "Combat", "Summon Spell Class", "Child class that extends the spell stats class to add functionality for summon spells", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -1674,12 +1608,80 @@ $initialCodeSnippets = [
             }
         }
     '),
+    new CodeSnippet("Enfabler", "Combat", "Phase", "Code that allows characters to phase through other characters and objects when using specific attacks", '
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        using UnityEngine.AI;
+        
+        public class Phase : MonoBehaviour
+        {
+            int defaultLayer;
+            public int phaseLayer;
+        
+            public Transform attach;
+        
+            public Object phaseEffect;
+            public Object flashEffect;
+            ParticleSystem phaseParticle;
+        
+            NavMeshObstacle navMeshObstacle;
+            NavMeshAgent navMeshAgent;
+        
+            // Start is called before the first frame update
+            void Start()
+            {
+                defaultLayer = gameObject.layer;
+        
+                CharacterCombat combat = GetComponent<CharacterCombat>();
+                combat.phaseDelegate += ActivatePhase;
+        
+                navMeshObstacle = GetComponent<NavMeshObstacle>();
+                navMeshAgent = GetComponent<NavMeshAgent>();
+            }
+        
+            void ActivatePhase(bool activate)
+            {
+                //Debug.Log("Phasing: " + activate);
+                gameObject.layer = activate ? phaseLayer : defaultLayer;
+        
+                StartParticles(activate);
+        
+                if (navMeshObstacle != null)
+                    navMeshObstacle.enabled = !activate;
+        
+                if (navMeshAgent != null)
+                    navMeshAgent.enabled = !activate;
+            }
+        
+            void StartParticles(bool activate)
+            {
+                Transform flashSpawn = attach == null ? transform : attach;
+                Instantiate(flashEffect, flashSpawn.position, flashSpawn.rotation);
+        
+                if (!activate)
+                    return;
+        
+                if (phaseParticle == null)
+                {
+                    GameObject go = Instantiate(phaseEffect, attach == null ? transform : attach) as GameObject;
+                    phaseParticle = go.GetComponent<ParticleSystem>();
+                    return;
+                }
+        
+                phaseParticle.gameObject.SetActive(true);
+                phaseParticle.Simulate(0, true, true);
+        
+                phaseParticle.Play();
+            }
+        }
+    '),
     
     #endregion
 
     #region COA Code
 
-    new CodeSnippet("Corruption of Arcana", "Card Class", "Class that activates spell effects and updates card art depending on it's stats", '
+    new CodeSnippet("Corruption of Arcana", "Cards Drag and Drop", "Card Class", "Class that activates spell effects and updates card art depending on it's stats", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -1907,7 +1909,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Corruption of Arcana", "Card Drag 2D Class", "Class that enables cards to be dragged around and applies various transforms to animate the card", '
+    new CodeSnippet("Corruption of Arcana", "Cards Drag and Drop", "Card Drag 2D Class", "Class that enables cards to be dragged around and applies various transforms to animate the card", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -2357,7 +2359,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Corruption of Arcana", "Deck 2D Class", "Class that adds functionality for decks, which are spaces cards can be dragged onto", '
+    new CodeSnippet("Corruption of Arcana", "Cards Drag and Drop", "Deck 2D Class", "Class that adds functionality for decks, which are spaces cards can be dragged onto", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -2707,7 +2709,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Corruption of Arcana", "Spellcasting AI Class", "Class for enemies to determine which spells to cast using a utilit-based AI approach, which estimates the spell effect based on stats like damage, healing and status effects to determine which spell has the best effect", '
+    new CodeSnippet("Corruption of Arcana", "Enemy AI", "Spellcasting AI Class", "Class for enemies to determine which spells to cast using a utilit-based AI approach, which estimates the spell effect based on stats like damage, healing and status effects to determine which spell has the best effect", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -3037,7 +3039,7 @@ $initialCodeSnippets = [
 
     #region Creak
     
-    new CodeSnippet("Creak", "Player Controller", "Classs for controlling the main character", '
+    new CodeSnippet("Creak", "Movement", "Player Controller", "Classs for controlling the main character", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -3144,7 +3146,45 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Creak", "Impulse Class", "Class that spawns soundwaves when colliding with another object with enough velocity and increases impulse strength based on velocity", '
+    new CodeSnippet("Creak", "Movement", "Sticky Platform Class", "Class that sticks objects when entering collision, used when player steps on moving platform so they move with the platform", '
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        
+        public class StickyPlatform : MonoBehaviour
+        {
+            private void OnTriggerEnter(Collider other)
+            {
+                if (other.CompareTag("Player") || other.CompareTag("Moveable"))
+                {
+                    //Debug.Log("Collide with " + other.name);
+        
+                    other.transform.parent = transform;
+                }
+            }
+        
+            private void OnTriggerStay(Collider other)
+            {
+                if (other.CompareTag("Player") || other.CompareTag("Moveable"))
+                {
+                    //Debug.Log("Stay with " + other.name);
+                    if (other.transform.parent == this.transform) return;
+                    other.transform.parent = transform;
+                }
+            }
+        
+            private void OnTriggerExit(Collider other)
+            {
+                if (other.CompareTag("Player") || other.CompareTag("Moveable"))
+                {
+                    //Debug.Log("Stopped colliding with " + other.name);
+        
+                    other.transform.parent = null;
+                }
+            }
+        }
+    '),
+    new CodeSnippet("Creak", "Sound Impulses", "Impulse Class", "Class that spawns soundwaves when colliding with another object with enough velocity and increases impulse strength based on velocity", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -3171,7 +3211,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Creak", "Soundwave Class", "Class that animates the soundwave size, which is based on the initial impact strength (from impulse class) and then shrinks soundwave size", '
+    new CodeSnippet("Creak", "Sound Impulses", "Soundwave Class", "Class that animates the soundwave size, which is based on the initial impact strength (from impulse class) and then shrinks soundwave size", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -3224,50 +3264,12 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Creak", "Sticky Platform Class", "Class that sticks objects when entering collision, used when player steps on moving platform so they move with the platform", '
-        using System.Collections;
-        using System.Collections.Generic;
-        using UnityEngine;
-        
-        public class StickyPlatform : MonoBehaviour
-        {
-            private void OnTriggerEnter(Collider other)
-            {
-                if (other.CompareTag("Player") || other.CompareTag("Moveable"))
-                {
-                    //Debug.Log("Collide with " + other.name);
-        
-                    other.transform.parent = transform;
-                }
-            }
-        
-            private void OnTriggerStay(Collider other)
-            {
-                if (other.CompareTag("Player") || other.CompareTag("Moveable"))
-                {
-                    //Debug.Log("Stay with " + other.name);
-                    if (other.transform.parent == this.transform) return;
-                    other.transform.parent = transform;
-                }
-            }
-        
-            private void OnTriggerExit(Collider other)
-            {
-                if (other.CompareTag("Player") || other.CompareTag("Moveable"))
-                {
-                    //Debug.Log("Stopped colliding with " + other.name);
-        
-                    other.transform.parent = null;
-                }
-            }
-        }
-    '),
 
     #endregion
 
     #region JavaJump Code
 
-    new CodeSnippet("JavaJump", "Game Loop", "Code for the basic game loop", '
+    new CodeSnippet("JavaJump", "Game Logic", "Game Loop", "Code for the basic game loop", '
         let enableInput = true;
         
         $("#GameViewport").on("click", ()=>{
@@ -3345,7 +3347,48 @@ $initialCodeSnippets = [
             ");
         }
     '),
-    new CodeSnippet("JavaJump", "Player", "Code for player", '
+    new CodeSnippet("JavaJump", "Game Logic", "Score and Helper Functions", "Code for other functions", '
+        let score = 0;
+
+        function UpdateScore()
+        {
+            score++;
+
+            context.fillStyle="black";
+            context.font="10px courier";
+            context.fillText(score, 15, board.height - 10);
+        }
+
+        /** Clamps a value in between given range
+        * 
+        * @param {*} value - Value to clamp
+        * @param {*} min - Minimum possible value
+        * @param {*} max - Maximum possible value
+        * @returns 
+        */
+        function Clamp(value, min, max)
+        {
+            if (value > max){return max;}
+            else if (value < min){return min;}
+            else {return value;}
+        }
+
+        /** Random Range Function
+        * @param {int} minRaw - Minimum value
+        * @param {int} maxRaw - Maximum value (exclusive)
+        * @returns {int} A random integer between the input values
+        */
+        function RandomRange(minRaw = 0, maxRaw = 0)
+        {
+            var min = parseInt(minRaw);
+            var max = parseInt(maxRaw);
+            
+            var range = parseInt(max) - parseInt(min);
+            var result = Math.floor(Math.random() * range) + parseInt(min);
+            return result;
+        }
+    '),
+    new CodeSnippet("JavaJump", "Characters", "Player", "Code for player", '
         const character = {
             x: 0,
             y: 40,
@@ -3394,7 +3437,7 @@ $initialCodeSnippets = [
             context.fillRect(character.x, character.y, character.size, character.size);
         }
     '),
-    new CodeSnippet("JavaJump", "Enemies", "Code for enemies", '
+    new CodeSnippet("JavaJump", "Characters", "Enemies", "Code for enemies", '
         const enemies = [];
         const enemySpawnIntervalBase = 3000;
         const enemySpawnIntervalMin = 500;
@@ -3480,53 +3523,12 @@ $initialCodeSnippets = [
             return  xIntersects && yIntersects;
         }
     '),
-    new CodeSnippet("JavaJump", "Score and Helper Functions", "Code for other functions", '
-        let score = 0;
-
-        function UpdateScore()
-        {
-            score++;
-
-            context.fillStyle="black";
-            context.font="10px courier";
-            context.fillText(score, 15, board.height - 10);
-        }
-
-        /** Clamps a value in between given range
-        * 
-        * @param {*} value - Value to clamp
-        * @param {*} min - Minimum possible value
-        * @param {*} max - Maximum possible value
-        * @returns 
-        */
-        function Clamp(value, min, max)
-        {
-            if (value > max){return max;}
-            else if (value < min){return min;}
-            else {return value;}
-        }
-
-        /** Random Range Function
-        * @param {int} minRaw - Minimum value
-        * @param {int} maxRaw - Maximum value (exclusive)
-        * @returns {int} A random integer between the input values
-        */
-        function RandomRange(minRaw = 0, maxRaw = 0)
-        {
-            var min = parseInt(minRaw);
-            var max = parseInt(maxRaw);
-            
-            var range = parseInt(max) - parseInt(min);
-            var result = Math.floor(Math.random() * range) + parseInt(min);
-            return result;
-        }
-    '),
 
     #endregion
 
     #region Netmatters Homepage Code
 
-    new CodeSnippet("Netmatters Homepage", "Cookies", "Code for the cookies popup", '
+    new CodeSnippet("Netmatters Homepage", "JavaScript Features", "Cookies", "Code for the cookies popup", '
         /** Checks whether the Cookies Popup menu should appear
          * 
          * @returns {bool} Boolean value of whether cookies popup should appear
@@ -3601,7 +3603,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Netmatters Homepage", "Sticky Header", "Code for the sticky header", '
+    new CodeSnippet("Netmatters Homepage", "JavaScript Features", "Sticky Header", "Code for the sticky header", '
         const navThreshold = 250;
 
         let prevScroll = 0;
@@ -3690,7 +3692,7 @@ $initialCodeSnippets = [
 
     #region Random Image Generator Code
 
-    new CodeSnippet("Random Image Generator", "Image Generation", "", '
+    new CodeSnippet("Random Image Generator", "JavaScript Features", "Image Generation", "", '
         $(document).ready(()=>{
             GenerateImage();
         })
@@ -3748,7 +3750,7 @@ $initialCodeSnippets = [
             currentSrc = imgSRC;
         }
     '),
-    new CodeSnippet("Random Image Generator", "Drop List", "", '
+    new CodeSnippet("Random Image Generator", "JavaScript Features", "Drop List", "", '
         function AddToDropLists(newEmail)
         {
             AddToShowCollectionDropList(newEmail);
@@ -3825,7 +3827,7 @@ $initialCodeSnippets = [
             $("select").removeClass("open");
         });
     '),
-    new CodeSnippet("Random Image Generator", "Collection", "", '
+    new CodeSnippet("Random Image Generator", "JavaScript Features", "Collection", "", '
         const collection = []; //TODO: Basic collection, need to assign to profiles
 
         function AddToCollection(email)
@@ -3944,7 +3946,7 @@ $initialCodeSnippets = [
             }
         })
     '),
-    new CodeSnippet("Random Image Generator", "Form Validation", "", '
+    new CodeSnippet("Random Image Generator", "JavaScript Features", "Form Validation", "", '
         $(".form-sbmt").on("click", (event)=>{
             CheckFormFields(event);
         })
@@ -4086,7 +4088,7 @@ $initialCodeSnippets = [
 
     #region VFX Code
 
-    new CodeSnippet("Visual FX Programming", "Generate Plane Mesh Class", "Code that generates a mesh plane using vertices, and can also apply a sine wave effect to create a basic water effect", '
+    new CodeSnippet("Visual FX Programming", "Mesh Generation", "Generate Plane Mesh Class", "Code that generates a mesh plane using vertices, and can also apply a sine wave effect to create a basic water effect", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -4324,7 +4326,7 @@ $initialCodeSnippets = [
             #endregion
         }
     '),
-    new CodeSnippet("Visual FX Programming", "Sword Trail Class", "Class that generates a sword using vertices, uses a quatratic lerp function to smoothly align vertices", '
+    new CodeSnippet("Visual FX Programming", "Mesh Generation", "Sword Trail Class", "Class that generates a sword using vertices, uses a quatratic lerp function to smoothly align vertices", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -4618,7 +4620,7 @@ function AddCodeSnippet($newCodeSnippet)
         return false;
     }
 
-    $sql = "INSERT INTO codesnippets(projectId, name, description, code) VALUES(?, ?, ?, ?);";
+    $sql = "INSERT INTO codesnippets(projectId, name, description, code, tag) VALUES(?, ?, ?, ?, ?);";
         
     try
     {
@@ -4627,6 +4629,7 @@ function AddCodeSnippet($newCodeSnippet)
         $results->bindValue(2, $newCodeSnippet->name, PDO::PARAM_STR);
         $results->bindValue(3, $newCodeSnippet->description, PDO::PARAM_STR);
         $results->bindValue(4, htmlspecialchars($newCodeSnippet->code), PDO::PARAM_STR);
+        $results->bindValue(5, htmlspecialchars($newCodeSnippet->tag), PDO::PARAM_STR);
         $results->execute();
     }
     catch (Exception $e)
