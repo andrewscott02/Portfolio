@@ -35,11 +35,11 @@ else
     $canSubmit = false;
 }
 
-$user_subject = "";
+$user_subject = "A message from my portfolio";
 
-if (isset($_POST["user_subject"]))
+if (isset($_POST["user_subject"]) && !empty($_POST["user_subject"]))
 {
-    $user_subject .= filter_input(INPUT_POST, "user_subject", FILTER_SANITIZE_STRING);
+    $user_subject = filter_input(INPUT_POST, "user_subject", FILTER_SANITIZE_STRING);
 }
 
 $user_message = "The following message was sent by: " . $user_email . "\n \n \n \n";
@@ -56,7 +56,7 @@ else
 
 #endregion
 
-function SendEmail($user_name, $user_email, $user_message, $user_subject = "From my Portfolio")
+function SendEmail($user_name, $user_email, $user_subject, $user_message)
 {
     global $env;
 
@@ -106,7 +106,7 @@ function SetStatus($submit_status, $submit_message)
     $_SESSION["submit_message"] = $submit_message;
 }
 
-SendEmail($user_name, $user_email, $user_message, $user_subject);
+SendEmail($user_name, $user_email, $user_subject, $user_message);
 
 header("Location: index.php");
 exit();

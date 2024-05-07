@@ -47,9 +47,6 @@ function CheckFormFields(event)
 
 function DisplaySubmitStatus(message, status)
 {
-    console.log(status);
-    let statusMessage = status ? "Success" : "Failed";
-
     $(".form-status-message").html(message);
     $(".form-status").removeClass("hidden")
 
