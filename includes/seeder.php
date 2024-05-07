@@ -4589,8 +4589,8 @@ function AddProject($newProject)
         $results = $db->prepare($sql);
         $results->bindValue(1, $newProject->title, PDO::PARAM_STR);
         $results->bindValue(2, $newProject->type, PDO::PARAM_STR);
-        $results->bindValue(3, $newProject->featured, PDO::PARAM_STR);
-        $results->bindValue(4, $newProject->available, PDO::PARAM_STR);
+        $results->bindValue(3, $newProject->featured, PDO::PARAM_BOOL);
+        $results->bindValue(4, $newProject->available, PDO::PARAM_BOOL);
         $results->bindValue(5, $newProject->shortDescription, PDO::PARAM_STR);
         $results->bindValue(6, $newProject->longDescription, PDO::PARAM_STR);
         $results->bindValue(7, $newProject->thumbnailSrc, PDO::PARAM_STR);
@@ -4688,7 +4688,7 @@ function TrySeedDatabases()
 
     ConvertNamesToID();
 
-    $codeSnippetsCount = GetTableEntryCount("codeSnippets");
+    $codeSnippetsCount = GetTableEntryCount("codesnippets");
 
     if ($codeSnippetsCount["count"] === 0)
     {

@@ -1,5 +1,4 @@
 <?php
-session_start();
 
 include_once("includes/connection.php");
 
@@ -85,11 +84,11 @@ function SendEmail($user_name, $user_email, $user_message, $user_subject = "From
         $mail->Body    = $user_message;
 
         $mail->send();
-        echo 'Message has been sent';
+        return 'Message has been sent';
     }
     catch (Exception $e)
     {
-        echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        return "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
 }
 
