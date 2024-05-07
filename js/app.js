@@ -165,7 +165,6 @@ $("input").on("keypress", (event)=>{
 
 function CheckFormFields(event)
 {
-    event.preventDefault();
     let canSubmit = true;
     let message = "Please fill out all required form fields";
 
@@ -191,16 +190,41 @@ function CheckFormFields(event)
         }
     });
 
-    if (canSubmit)
+    if (!canSubmit)
     {
-        //TODO: Submit form
-        alert("Form submission is not available yet");
-        ClearFormFields();
+        event.preventDefault();
+        DisplaySubmitStatus(message, false);
+    }
+}
+
+function DisplaySubmitStatus(message, status)
+{
+    let statusMessage = status ? "Success" : "Failed"
+    alert(statusMessage + ": " + message);
+
+    return;
+
+    $(".form-status-message").html(message);
+    $(".form-status").removeClass("hidden")
+
+    if (status)
+    {
+        $(".form-status").removeClass("form-status-error");
     }
     else
     {
-        alert(message);
+        $(".form-status").addClass("form-status-error");
     }
+
+    setTimeout(() => {
+        location.hash = "";
+        location.hash = "#Contact";
+        ForceRemoveHeader();
+    }, 50);
+    
+    setTimeout(() => {
+        ForceRemoveHeader();
+    }, 100);
 }
 
 function ClearFormFields()
