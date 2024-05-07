@@ -1,9 +1,13 @@
+<?php
+    session_start();
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <?php 
         $pageTitle = "Andrew Scott - Portfolio";
         include("includes/head.php"); 
+        include("includes/formstatus.php"); 
     ?>
 </head>
 <body>
@@ -38,6 +42,12 @@
             <div id="Contact">
                 <form action="sendemail.php" method="post">
                     <h3>Get In Touch</h3>
+
+                    <div class="form-status hidden">
+                        <p class="form-status-message">Your message has been sent!</p>
+                        <button class="close-status">x</button>
+                    </div>
+
                     <fieldset>
                         <div class="form-name">
                             <label for="name" class="required">Your Name:</label>
@@ -67,5 +77,44 @@
     </div>
 
     <?php include("includes/generalJS.php"); ?>
+    <script>
+        let statusSet = <?php 
+                        if ($submit_status)
+                        {
+                            echo "true";
+                        }
+                        else
+                        {
+                            echo "false";
+                        }
+                     ?>;
+    
+        let status = <?php 
+                        if ($submit_status)
+                        {
+                            echo "'" . $submit_status . "'";
+                        }
+                        else
+                        {
+                            echo "false";
+                        }
+                     ?>;
+
+        let message = <?php 
+                        if ($submit_message)
+                        {
+                            echo "'" . $submit_message . "'";
+                        }
+                        else
+                        {
+                            echo "false";
+                        }
+                     ?>;
+
+        if (statusSet !== false && message != false)
+        {
+            DisplaySubmitStatus(message, status);
+        }
+    </script>
 </body>
 </html>

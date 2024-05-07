@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 include_once("includes/connection.php");
 
@@ -84,12 +85,25 @@ function SendEmail($user_name, $user_email, $user_message, $user_subject = "From
         $mail->Body    = $user_message;
 
         $mail->send();
+        SetStatus("true", "Your message has been sent");
         return 'Message has been sent';
     }
     catch (Exception $e)
     {
+        SetStatus("false", "There was an error with sending your message, please try again");
         return "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
     }
+}
+
+function SetStatus($submit_status, $submit_message)
+{
+    $status = [
+        "sbmt_status" => $submit_status,
+        "sbmt_message" => $submit_message
+    ];
+
+    $_SESSION["submit_status"] = $submit_status;
+    $_SESSION["submit_message"] = $submit_message;
 }
 
 SendEmail($user_name, $user_email, $user_message, $user_subject);

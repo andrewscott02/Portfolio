@@ -111,3 +111,51 @@ textarea:focus, input:focus
     color: red;
     content: " *"
 }
+
+.form-status
+{
+    padding: 15px;
+    margin: 0 0.75em 10px;
+    width: auto;
+
+    border-radius: 5px;
+
+    color: white;
+    background: #0cdf64;
+
+    p
+    {
+        margin: 0;
+        display: inline;
+    }
+}
+
+.form-status-error
+{
+    background-color: #a12020;
+    border-color: #ebccd1;
+}
+
+.close-status
+{
+    display: inline;
+    float: right;
+
+    background: transparent;
+    border: none;
+
+    color: black;
+    text-shadow: 0 1px 0 #fff;
+    opacity: 0.5;
+    font-size: 24px;
+    font-weight: 700;
+
+    position: relative;
+    bottom: 5px;
+
+    &:hover
+    {
+        cursor: pointer;
+        opacity: 1;
+    }
+}
