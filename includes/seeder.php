@@ -1523,7 +1523,7 @@ $initialCodeSnippets = [
         }
     '),
     //Enfabler Spells Code
-    new CodeSnippet("Enfabler", "Combat", "Base Spell Class", "Code for the base spell class that manages what happens when a spell of any type is cast", '
+    new CodeSnippet("Enfabler", "Combat", "Base Spell Scriptable Object", "Code for the base spell class that manages what happens when a spell of any type is cast", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -1553,7 +1553,7 @@ $initialCodeSnippets = [
             }
         }
     '),
-    new CodeSnippet("Enfabler", "Combat", "Summon Spell Class", "Child class that extends the spell stats class to add functionality for summon spells", '
+    new CodeSnippet("Enfabler", "Combat", "Summon Spell Scriptable Object", "Child class that extends the spell stats class to add functionality for summon spells", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;
@@ -2709,6 +2709,1250 @@ $initialCodeSnippets = [
             }
         }
     '),
+    new CodeSnippet("Corruption of Arcana", "Combat", "Spell Scriptable Object", "Class used for the spells that characters can cast, manages if the spell can be used and determines the effect it has when cast", '
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        using UnityEngine.UI;
+        
+        /// <summary>
+        /// Authored & Written by Andrew Scott andrewscott@icloud.com
+        /// 
+        /// Use by NPS is allowed as a collective, for external use, please contact me directly
+        /// </summary>
+        namespace Necropanda
+        {
+            [CreateAssetMenu(fileName = "NewSpell", menuName = "Combat/Spells", order = 0)]
+            public class Spell : ScriptableObject
+            {
+                #region Setup
+        
+                #region Basic Info
+        
+                [Header("Basic Info")]
+                public string spellName;
+                public Sprite nameImage;
+                [TextArea(3, 10)]
+                public string flavourText; // Flavour text
+                [TextArea(2, 10)]
+                public string spellDescription; // Basic desciption of spell effect
+                public Sprite cardImage;
+                public Sprite cardImageLowOpacity;
+                public Sprite background;
+                public E_CardTypes cardType = E_CardTypes.Cards;
+        
+                public Spell previousTier;
+                public Spell nextTier;
+        
+                #endregion
+        
+                #region Timeline Icon
+        
+                [Header("Timeline Colour")]
+                public bool overrideColor;
+                public Color timelineColor = new Color(0, 0, 0, 255);
+                public Sprite timelineIcon;
+        
+                #endregion
+        
+                #region Spell Logic
+        
+                [Header("Spell Logic")]
+                public float speed;
+                public int loadoutCost;
+                public int arcanaCost;
+                public int potionCost;
+                public float shieldCost;
+                public E_PotionType potionType;
+        
+                [Header("Advanced Logic")]
+                public bool burnOnDiscard = false;
+                public bool discardAfterCasting = false;
+                public bool discardAfterTurn = false;
+                public Spell drawCard;
+                public bool discardCards = false;
+                public bool returnDiscardPile = false;
+                public bool removeStatuses = false;
+        
+                [Header("Module Logic")]
+                public float multihitDelay = 0.1f;
+                public float moduleDelay = 0f;
+                public CombatHelperFunctions.SpellModule[] spellModules;
+        
+                #endregion
+        
+                #region FX
+        
+                [Header("FX")]
+                //Visual effects for projectile
+                public Object castObject;
+                public Object projectileObject;
+                public float projectileSpeed = 0.6f;
+                public E_ProjectilePoints[] projectilePoints;
+                public Object impactObject;
+                public Object projectileFXObject;
+                public Color trailColor;
+                public bool screenShake;
+                public E_SpellTargetType idealTarget = E_SpellTargetType.Target;
+        
+                //Visual effects for hit effect
+        
+                //Sound effects for preparing the spell
+        
+                #endregion
+        
+                #endregion
+        
+                #region Spellcasting
+        
+                #region Cast Time
+        
+                /// <summary>
+                /// Checks the delay between casting the spell and the visual projectile(s) hitting the target
+                /// </summary>
+                /// <param name="target">The initial target the spell was cast on</param>
+                /// <param name="caster">The character that cast the spell</param>
+                /// <param name="spawnPosition">The spawn position of the projectile</param>
+                /// <returns>Time taken for the last projectile to hit the target</returns>
+                public float QuerySpellCastTime(Character target, Character caster, float projectileSpeed)
+                {
+                    float time = 0;
+        
+                    foreach (CombatHelperFunctions.SpellModule module in spellModules)
+                    {
+                        float hitDelay = module.hitCount * multihitDelay;
+                        float moduleTime = 0;
+        
+                        bool playerTeam = caster.GetManager() == CombatManager.instance.playerTeamManager;
+                        Vector2[] points = VFXManager.instance.GetProjectilePoints(projectilePoints, caster, target);
+                        moduleTime = VFXManager.instance.QueryTime(points, projectileSpeed) + hitDelay + time;
+        
+                        time += moduleDelay + moduleTime;
+                    }
+        
+                    return time;
+                }
+        
+                #endregion
+        
+                #region Casting Spell
+        
+                /// <summary>
+                /// Applies the effects of the spell on the caster and targets
+                /// </summary>
+                /// <param name="target">The initial target the spell was cast on</param>
+                /// <param name="caster">The character that cast the spell</param>
+                /// <param name="spawnPosition">The spawn position of the projectile</param>
+                /// <param name="empowered">Whether the spell is empowered</param>
+                /// <param name="weakened">Whether the spell is weakened</param>
+                /// <param name="hand">The hand from which this spell was cast</param>
+                public void CastSpell(Character target, Character caster, Deck2D hand, int cardsInHand)
+                {
+                    if (caster.CanCast() == false)
+                        return;
+        
+                    List<Character> allCharacters = HelperFunctions.CombineLists(CombatManager.instance.playerTeamManager.team, CombatManager.instance.enemyTeamManager.team);
+                    
+                    int removedStatusCount = Timeline.instance.StatusCount(target);
+                    float time = 0;
+        
+                    TeamManager targetTeamManager = target.GetManager();
+        
+                    int shieldRemoved = caster.GetHealth().GetShieldRemovedPercentage(1 - shieldCost);
+        
+                    if (shieldCost > 0)
+                    {
+                        caster.GetHealth().SetShieldPercentage(1 - shieldCost);
+                    }
+        
+                    foreach (CombatHelperFunctions.SpellModule module in spellModules)
+                    {
+                        for (int i = 0; i < module.hitCount; i++)
+                        {
+                            float hitDelay = i * this.multihitDelay;
+                            //May need additional checks to see if target is still valid in case they are killed by the multihit effect, speficially for the lists
+        
+                            Timeline.instance.StartSpellCoroutine(this, target, caster, hand, cardsInHand,
+                            module, removedStatusCount, shieldRemoved, time, hitDelay, targetTeamManager, allCharacters);
+        
+                            time += moduleDelay;
+                        }
+                    }
+        
+                    if (discardCards)
+                    {
+                        Timeline.instance.discardCards = true;
+                    }
+        
+                    if (removeStatuses)
+                    {
+                        Timeline.instance.clearStatusChars.Add(target);
+                    }
+        
+                    if (returnDiscardPile)
+                    {
+                        DeckManager.instance.DiscardPileToDeck(true, false);
+                    }
+        
+                    if (potionCost > 0)
+                    {
+                        PotionManager.instance.ChangePotion(potionType, -potionCost);
+                    }
+                }
+        
+                public IEnumerator IDetermineTarget(Character target, Character caster, Deck2D hand, int cardsInHand,
+                    CombatHelperFunctions.SpellModule module, int removedStatusCount, int shieldRemoved, float time, float hitDelay,
+                    TeamManager targetTeamManager, List<Character> allCharacters)
+                {
+                    yield return new WaitForSeconds(hitDelay + time);
+        
+                    Character randTarget;
+                    TeamManager opposingTeam = CombatManager.instance.GetOpposingTeam(caster.GetManager());
+                    E_DamageTypes trueEffectType = CombatHelperFunctions.ReplaceRandomDamageType(module.effectType);
+                    float delay;
+        
+                    switch (module.target)
+                    {
+                        case E_SpellTargetType.Caster:
+                            if (caster.GetHealth().dying == false)
+                                VFXManager.instance.AffectSelfDelay(this, caster, module, trueEffectType, cardsInHand, removedStatusCount, shieldRemoved, 0f);
+                            break;
+                        case E_SpellTargetType.Target:
+                            if (target.GetHealth().dying == false)
+                                VFXManager.instance.AffectTargetDelay(this, caster, target, module, trueEffectType, cardsInHand, removedStatusCount, shieldRemoved, 0f);
+                            break;
+                        case E_SpellTargetType.Chain:
+                            delay = targetTeamManager.team.Count * this.multihitDelay;
+                            foreach (Character character in targetTeamManager.team)
+                            {
+                                if (character.GetHealth().dying == false)
+                                    VFXManager.instance.AffectTargetDelay(this, caster, character, module, trueEffectType, cardsInHand, removedStatusCount, shieldRemoved, delay);
+                            }
+                            break;
+                        case E_SpellTargetType.Cleave:
+                            delay = targetTeamManager.team.Count * this.multihitDelay;
+                            foreach (Character character in targetTeamManager.team)
+                            {
+                                if (character.GetHealth().dying == false)
+                                    VFXManager.instance.AffectTargetDelay(this, caster, character, module, trueEffectType, cardsInHand, removedStatusCount, shieldRemoved, delay);
+                            }
+                            break;
+                        case E_SpellTargetType.RandomEnemyTeam:
+                            randTarget = CombatHelperFunctions.ReplaceRandomTarget(opposingTeam.team);
+                            if (randTarget != null && randTarget.GetHealth().dying == false)
+                                VFXManager.instance.AffectTargetDelay(this, caster, randTarget, module, trueEffectType, cardsInHand, removedStatusCount, shieldRemoved, 0f);
+                            break;
+                        case E_SpellTargetType.RandomAll:
+                            randTarget = CombatHelperFunctions.ReplaceRandomTarget(allCharacters);
+                            if (randTarget != null && randTarget.GetHealth().dying == false)
+                                VFXManager.instance.AffectTargetDelay(this, caster, randTarget, module, trueEffectType, cardsInHand, removedStatusCount, shieldRemoved, 0f);
+                            break;
+                        case E_SpellTargetType.All:
+                            delay = targetTeamManager.team.Count * this.multihitDelay;
+                            foreach (Character character in allCharacters)
+                            {
+                                if (character.GetHealth().dying == false)
+                                    VFXManager.instance.AffectTargetDelay(this, caster, character, module, trueEffectType, cardsInHand, removedStatusCount, shieldRemoved, delay);
+                            }
+                            break;
+                        case E_SpellTargetType.AllEnemies:
+                            delay = targetTeamManager.team.Count * this.multihitDelay;
+                            foreach (Character character in opposingTeam.team)
+                            {
+                                if (character.GetHealth().dying == false)
+                                    VFXManager.instance.AffectTargetDelay(this, caster, character, module, trueEffectType, cardsInHand, removedStatusCount, shieldRemoved, delay);
+                            }
+                            break;
+                    }
+        
+                    if (screenShake)
+                    {
+                        VFXManager.instance.ScreenShake();
+                    }
+                }
+        
+                #endregion
+        
+                #region Affect Characters
+        
+                /// <summary>
+                /// Applies the effect of an individual spell module on the caster
+                /// </summary>
+                /// <param name="caster">The character that cast the spell</param>
+                /// <param name="spell">The individual spell module being applied</param>
+                /// <param name="cardsDiscarded">The number of cards discarded</param>
+                /// <param name="empowered">Whether the spell is empowered</param>
+                /// <param name="weakened">Whether the spell is weakened</param>
+                public void AffectSelf(Character caster, CombatHelperFunctions.SpellModule spell, E_DamageTypes effectType, int cardsDiscarded, int removedStatusCount, int shieldRemoved)
+                {
+                    if (caster != null)
+                    {
+                        //Modifies the value if the spell is empowered or scales with how many cards are discarded
+                        int value = spell.value + (spell.valueScalingPerDiscard * cardsDiscarded) + (spell.valueScalingPerStatus * removedStatusCount) + (int)(spell.valueScalingShieldCost * shieldRemoved) + (int)(spell.valueScalingDamageTaken * caster.GetDamageTakenThisTurn());
+                        value = EmpowerWeakenValue(caster.stats, value, caster.empowerDeck, caster.weakenDeck);
+        
+                        if (spell.effectType == E_DamageTypes.Summon && spell.summon != null)
+                        {
+                            if (spell.value > 0)
+                            {
+                                //bool playerTeam = caster.GetManager() == CombatManager.instance.playerTeamManager;
+                                Vector2[] points = VFXManager.instance.GetProjectilePoints(projectilePoints, caster, caster);
+                                for (int i = 0; i < spell.value; i++)
+                                    LoadCombatManager.instance.AddEnemy(spell.summon, caster, points, projectileObject, projectileSpeed, impactObject, projectileFXObject, trailColor);
+                            }
+                        }
+                        else
+                        {
+                            //Debug.Log("Spell cast: " + spellName + " at " + caster.stats.characterName);
+                            //Debug.Log("Affect " + target.characterName + " with " + value + " " + effectType);
+                            caster.GetHealth().ChangeHealth(effectType, value, caster);
+                        }
+        
+                        for (int i = 0; i < spell.statuses.Length; i++)
+                        {
+                            int statusValue = spell.statuses[i].valueSuccess;
+                            statusValue = EmpowerWeakenValue(caster.stats, statusValue, caster.empowerDeck, caster.weakenDeck);
+        
+                            if (spell.statuses[i].remove)
+                            {
+                                if (Timeline.instance.CheckStatusAgainstTarget(spell.statuses[i].status, caster))
+                                {
+                                    //remove status i on target
+                                    spell.statuses[i].status.Remove(caster);
+                                    caster.GetHealth().ChangeHealth(effectType, statusValue, caster);
+                                }
+                            }
+                            else 
+                            {
+                                if (CombatHelperFunctions.ApplyEffect(caster, spell.statuses[i]))
+                                {
+                                    //apply status i on target
+                                    spell.statuses[i].status.Apply(caster, spell.statuses[i].duration);
+                                    caster.GetHealth().ChangeHealth(effectType, statusValue, caster);
+                                }
+                            }
+                        }
+        
+                        if (caster.GetHealth().GetHealth() < 1)
+                        {
+                            caster.CheckOverlay();
+                        }
+                    }
+                }
+        
+                /// <summary>
+                /// Applies the effect of an individual spell module on the caster
+                /// </summary>
+                /// <param name="caster">The character that cast the spell</param>
+                /// <param name="target">The character that the module is affecting</param>
+                /// <param name="spell">The individual spell module being applied</param>
+                /// <param name="cardsDiscarded">The number of cards discarded</param>
+                /// <param name="empowered">Whether the spell is empowered</param>
+                /// <param name="weakened">Whether the spell is weakened</param>
+                public void AffectTarget(Character caster, Character target, CombatHelperFunctions.SpellModule spell, E_DamageTypes effectType, int cardsDiscarded, int removedStatusCount, int shieldRemoved)
+                {
+                    if (target != null)
+                    {
+                        //Modifies the value if the spell is empowered or scales with how many cards are discarded
+                        int value = spell.value + (spell.valueScalingPerDiscard * cardsDiscarded) + (spell.valueScalingPerStatus * removedStatusCount) + (int)(spell.valueScalingShieldCost * shieldRemoved) + (int)(spell.valueScalingDamageTaken * caster.GetDamageTakenThisTurn());
+                        value = EmpowerWeakenValue(caster.stats, value, target.empowerDeck, target.weakenDeck);
+        
+                        if (spell.effectType == E_DamageTypes.Summon && spell.summon != null)
+                        {
+                            if (target == caster)
+                            {
+                                if (spell.value > 0)
+                                {
+                                    //bool playerTeam = caster.GetManager() == CombatManager.instance.playerTeamManager;
+                                    Vector2[] points = VFXManager.instance.GetProjectilePoints(projectilePoints, caster, caster);
+                                    for (int i = 0; i < spell.value; i++)
+                                        LoadCombatManager.instance.AddEnemy(spell.summon, caster, points, projectileObject, projectileSpeed, impactObject, projectileFXObject, trailColor);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            target.GetHealth().ChangeHealth(effectType, value, caster);
+                        }
+        
+                        for (int i = 0; i < spell.statuses.Length; i++)
+                        {
+                            int statusValue = spell.statuses[i].valueSuccess;
+                            statusValue = EmpowerWeakenValue(caster.stats, statusValue, target.empowerDeck, target.weakenDeck);
+        
+                            if (spell.statuses[i].remove)
+                            {
+                                if (Timeline.instance.CheckStatusAgainstTarget(spell.statuses[i].status, target))
+                                {
+                                    //remove status i on target
+                                    spell.statuses[i].status.Remove(target);
+                                    target.GetHealth().ChangeHealth(effectType, statusValue, caster);
+                                }
+                            }
+                            else
+                            {
+                                if (CombatHelperFunctions.ApplyEffect(target, spell.statuses[i]))
+                                {
+                                    //apply status i on target
+                                    spell.statuses[i].status.Apply(target, spell.statuses[i].duration);
+                                    target.GetHealth().ChangeHealth(effectType, statusValue, caster);
+                                }
+                            }
+                        }
+        
+                        if (target.GetHealth().GetHealthPercentage() < spell.executeThreshold)
+                        {
+                            //Kill target if they are below the execute threshold
+                            target.GetHealth().ChangeHealth(E_DamageTypes.Perforation, 9999999, caster);
+                        }
+        
+                        if (target.GetHealth().GetHealth() < 1)
+                        {
+                            target.CheckOverlay();
+                        }
+        
+                        //Hit effects here
+                    }
+                }
+        
+                /// <summary>
+                /// Takes a value and modifies it depending on if the spell is empowered or weakened
+                /// </summary>
+                /// <param name="originalValue">The original value of the spell</param>
+                /// <param name="empowered">Whether the spell is empowered</param>
+                /// <param name="weakened">Whether the spell is weakened</param>
+                /// <returns>The empowered or weakened value</returns>
+                int EmpowerWeakenValue(CharacterStats caster, int originalValue, bool empowered, bool weakened)
+                {
+                    float floatValue = originalValue;
+                    int value = originalValue;
+        
+                    if (caster.usesArcana)
+                    {
+                        if (empowered && !weakened)
+                        {
+                            Debug.Log(spellName + " is empowered " + floatValue + " to " + (floatValue * 1.5f));
+                            floatValue = (floatValue * 1.5f);
+                        }
+                        else if (weakened && !empowered)
+                        {
+                            Debug.Log(spellName + " is weakened " + floatValue + " to " + (floatValue * 0.5f));
+                            floatValue = (floatValue * 0.5f);
+                        }
+                        value = (int)Mathf.Round(floatValue);
+                    }
+        
+                    return value;
+                }
+        
+                #endregion
+        
+                #region Simulate Spell
+        
+                /// <summary>
+                /// Simulates the effects of the spell on the caster and targets without applying them
+                /// </summary>
+                /// <param name="target">The initial target the spell was cast on</param>
+                /// <param name="caster">The character that cast the spell</param>
+                /// <param name="empowered">Whether the spell is empowered</param>
+                /// <param name="weakened">Whether the spell is weakened</param>
+                /// <param name="hand">The hand from which this spell was cast</param>
+                public void SimulateSpellValues(Character player, Character target, Character caster, int cardsInHand)
+                {
+                    if (Timeline.instance.ShowSpells(caster) == false)
+                    {
+                        return;
+                    }
+        
+                    int removedStatusCount = Timeline.instance.StatusCount(target);
+                    //Debug.Log("simulated found " + removedStatusCount + "statuses on " + target.stats.characterName);
+        
+                    foreach (CombatHelperFunctions.SpellModule module in spellModules)
+                    {
+                        if (module.effectType == E_DamageTypes.Summon)
+                            break;
+        
+                        TeamManager targetTeamManager = target.GetManager();
+                        TeamManager casterTeamManager = caster.GetManager();
+                        List<Character> allCharacters = HelperFunctions.CombineLists(CombatManager.instance.playerTeamManager.team, CombatManager.instance.enemyTeamManager.team);
+                        int shieldRemoved = caster.GetHealth().GetShieldRemovedPercentage(1 - shieldCost);
+        
+                        for (int i = 0; i < module.hitCount; i++)
+                        {
+                            float x = 0;
+                            //May need additional checks to see if target is still valid in case they are killed by the multihit effect, speficially for the lists
+                            switch (module.target)
+                            {
+                                case E_SpellTargetType.Caster:
+                                    Simulate(caster, caster, false, module, cardsInHand, removedStatusCount, shieldRemoved);
+                                    break;
+                                case E_SpellTargetType.Target:
+                                    Simulate(caster, target, false, module, cardsInHand, removedStatusCount, shieldRemoved);
+                                    break;
+                                case E_SpellTargetType.Chain:
+                                    foreach (Character character in targetTeamManager.team)
+                                    {
+                                        Simulate(caster, character, false, module, cardsInHand, removedStatusCount, shieldRemoved);
+                                    }
+                                    break;
+                                case E_SpellTargetType.Cleave:
+                                    foreach (Character character in targetTeamManager.team)
+                                    {
+                                        Simulate(caster, character, false, module, cardsInHand, removedStatusCount, shieldRemoved);
+                                    }
+                                    break;
+                                case E_SpellTargetType.RandomEnemyTeam:
+                                    foreach (Character character in targetTeamManager.team)
+                                    {
+                                        Simulate(caster, character, true, module, cardsInHand, removedStatusCount, shieldRemoved);
+                                    }
+                                    break;
+                                case E_SpellTargetType.RandomAll:
+                                    foreach (Character character in allCharacters)
+                                    {
+                                        Simulate(caster, character, true, module, cardsInHand, removedStatusCount, shieldRemoved);
+                                    }
+                                    break;
+                                case E_SpellTargetType.All:
+                                    foreach (Character character in allCharacters)
+                                    {
+                                        Simulate(caster, character, false, module, cardsInHand, removedStatusCount, shieldRemoved);
+                                    }
+                                    break;
+                            }
+                        }
+                    }
+                }
+        
+                /// <summary>
+                /// Checks the effect of an individual spell module
+                /// </summary>
+                /// <param name="caster">The character that cast the spell</param>
+                /// <param name="target">The initial target the spell was cast on</param>
+                /// <param name="spell">The individual spell module being checked</param>
+                /// <param name="cardsDiscarded">The number of cards discarded</param>
+                /// <param name="empowered">Whether the spell is empowered</param>
+                /// <param name="weakened">Whether the spell is weakened</param>
+                public void Simulate(Character caster, Character target, bool rand, CombatHelperFunctions.SpellModule spell, int cardsDiscarded, int statusesCleared, int shieldRemoved)
+                {
+                    Vector2Int damage = new Vector2Int(0, 0);
+                    int shield = 0;
+        
+                    if (target != null && target.GetHealth().dying == false)
+                    {
+                        int value = spell.value + (spell.valueScalingPerDiscard * cardsDiscarded) + (spell.valueScalingPerStatus * statusesCleared) + (int)(spell.valueScalingShieldCost * shieldRemoved) + (int)(spell.valueScalingDamageTaken * caster.GetDamageTakenThisTurn());
+                        value = EmpowerWeakenValue(caster.stats, value, target.empowerDeck, target.weakenDeck);
+        
+                        //Debug.Log("Spell cast: " + spellName + " at " + caster.stats.characterName);
+                        //Debug.Log("Affect " + target.characterName + " with " + value + " " + effectType);
+        
+                        switch (spell.effectType)
+                        {
+                            case E_DamageTypes.Healing:
+                                if (rand)
+                                {
+                                    damage.x += value;
+                                }
+                                else
+                                {
+                                    damage.x += value;
+                                    damage.y += value;
+                                }
+                                break;
+                            case E_DamageTypes.Shield:
+                                shield += value;
+                                break;
+                            case E_DamageTypes.Arcana:
+                                break;
+                            default:
+                                if (rand)
+                                {
+                                    damage.y -= value;
+                                }
+                                else
+                                {
+                                    damage.x -= value;
+                                    damage.y -= value;
+        
+                                    if (value > 0)
+                                        Timeline.instance.SimulateHitStatuses(target, caster);
+                                }
+                                break;
+                        }
+        
+                        for (int i = 0; i < spell.statuses.Length; i++)
+                        {
+                            int statusValue = spell.statuses[i].valueSuccess;
+                            statusValue = EmpowerWeakenValue(caster.stats, statusValue, target.empowerDeck, target.weakenDeck);
+        
+                            if (spell.statuses[i].remove)
+                            {
+                                if (Timeline.instance.CheckStatusAgainstTarget(spell.statuses[i].status, target))
+                                    switch (spell.effectType)
+                                    {
+                                        case E_DamageTypes.Healing:
+                                            if (rand)
+                                            {
+                                                damage.x += statusValue;
+                                            }
+                                            else
+                                            {
+                                                damage.x += statusValue;
+                                                damage.y += statusValue;
+                                            }
+                                            break;
+                                        case E_DamageTypes.Shield:
+                                            shield += statusValue;
+                                            break;
+                                        case E_DamageTypes.Arcana:
+                                            break;
+                                        default:
+                                            if (rand)
+                                            {
+                                                damage.y -= statusValue;
+                                            }
+                                            else
+                                            {
+                                                damage.x -= statusValue;
+                                                damage.y -= statusValue;
+        
+                                                if (statusValue > 0)
+                                                    Timeline.instance.SimulateHitStatuses(target, caster);
+                                            }
+                                            break;
+                                    }
+                            }
+                            else
+                            {
+                                if (CombatHelperFunctions.ApplyEffect(target, spell.statuses[i]))
+                                {
+                                    //apply status i on target
+                                    spell.statuses[i].status.SimulateStatusValues(target);
+                                    switch (spell.effectType)
+                                    {
+                                        case E_DamageTypes.Healing:
+                                            if (rand)
+                                            {
+                                                damage.x += statusValue;
+                                            }
+                                            else
+                                            {
+                                                damage.x += statusValue;
+                                                damage.y += statusValue;
+                                            }
+                                            break;
+                                        case E_DamageTypes.Shield:
+                                            shield += statusValue;
+                                            break;
+                                        case E_DamageTypes.Arcana:
+                                            break;
+                                        default:
+                                            if (rand)
+                                            {
+                                                damage.y -= statusValue;
+                                            }
+                                            else
+                                            {
+                                                damage.x -= statusValue;
+                                                damage.y -= statusValue;
+        
+                                                if (statusValue > 0)
+                                                    Timeline.instance.SimulateHitStatuses(target, caster);
+                                            }
+                                            break;
+                                    }
+                                }
+                            }
+                        }
+        
+                        foreach (var item in spell.statuses)
+                        {
+                            if (CombatHelperFunctions.ApplyEffect(target, item))
+                            {
+                                item.status.SimulateStatusValues(target);
+                            }
+                        }
+                    }
+        
+                    target.SimulateValues(damage, shield, spell.executeThreshold);
+                }
+        
+                #endregion
+        
+                #endregion
+        
+                #region Construct Card Icons
+        
+                public List<CombatHelperFunctions.SpellIconConstruct> SpellIcons()
+                {
+                    //Debug.Log(spellName + " is generating icons");
+                    List<CombatHelperFunctions.SpellIconConstruct> iconConstructs = new List<CombatHelperFunctions.SpellIconConstruct>();
+        
+                    float highestExecute = 0;
+        
+                    foreach (CombatHelperFunctions.SpellModule module in spellModules)
+                    {
+                        if (module.value == 0)
+                            break;
+        
+                        CombatHelperFunctions.SpellIconConstruct moduleConstruct = new CombatHelperFunctions.SpellIconConstruct();
+        
+                        moduleConstruct.value = module.value;
+                        moduleConstruct.effectType = module.effectType;
+                        moduleConstruct.hitCount = module.hitCount;
+                        moduleConstruct.discardScaling = module.valueScalingPerDiscard;
+                        moduleConstruct.cleanseScaling = module.valueScalingPerStatus;
+                        moduleConstruct.target = module.target;
+        
+                        //Debug.Log("Module: " + moduleConstruct.value + " X " + moduleConstruct.hitCount + " " + moduleConstruct.effectType + " on " + moduleConstruct.target.ToString());
+        
+                        iconConstructs.Add(moduleConstruct);
+                    }
+        
+                    return iconConstructs;
+                }
+        
+                public List<CombatHelperFunctions.StatusIconConstruct> EffectIcons()
+                {
+                    //Debug.Log(spellName + " is generating icons");
+                    List<CombatHelperFunctions.StatusIconConstruct> iconConstructs = new List<CombatHelperFunctions.StatusIconConstruct>();
+        
+                    foreach (CombatHelperFunctions.SpellModule module in spellModules)
+                    {
+                        foreach (CombatHelperFunctions.StatusStruct status in module.statuses)
+                        {
+                            CombatHelperFunctions.StatusIconConstruct effectConstruct = new CombatHelperFunctions.StatusIconConstruct();
+        
+                            effectConstruct.effect = status.status;
+                            effectConstruct.applyOverShield = status.applyOverShield;
+                            effectConstruct.effectIcon = status.status.effectIcon;
+                            effectConstruct.duration = status.duration;
+                            effectConstruct.target = module.target;
+        
+                            //Debug.Log("Module: " + moduleConstruct.value + " X " + moduleConstruct.hitCount + " " + moduleConstruct.effectType + " on " + moduleConstruct.target.ToString());
+        
+                            iconConstructs.Add(effectConstruct);
+                        }
+                    }
+        
+                    return iconConstructs;
+                }
+        
+                public CombatHelperFunctions.ExecuteIconConstruct ExecuteIcons()
+                {
+                    //Debug.Log(spellName + " is generating icons");
+                    CombatHelperFunctions.ExecuteIconConstruct moduleConstruct = new CombatHelperFunctions.ExecuteIconConstruct();
+        
+                    float highestExecute = 0;
+        
+                    foreach (CombatHelperFunctions.SpellModule module in spellModules)
+                    {
+                        if (module.executeThreshold > highestExecute)
+                        {
+                            moduleConstruct.threshold = module.executeThreshold;
+                            moduleConstruct.target = module.target;
+                        }
+                    }
+        
+                    return moduleConstruct;
+                }
+        
+                public Dictionary<CharacterStats, int> SummonIcons()
+                {
+                    //Debug.Log(spellName + " is generating icons");
+        
+                    Dictionary<CharacterStats, int> moduleDictionary = new Dictionary<CharacterStats, int>();
+        
+                    foreach (var module in spellModules)
+                    {
+                        if (module.effectType == E_DamageTypes.Summon)
+                        {
+                            moduleDictionary.Add(module.summon, module.value);
+                        }
+                    }
+        
+                    return moduleDictionary;
+                }
+        
+                #endregion
+
+                #region Upgrading
+
+                public Spell GetUpgrade()
+                {
+                    if (nextTier == null)
+                        return this;
+                    else
+                        return nextTier;
+                }
+
+                [ContextMenu("SetupTiers")]
+                public void SetupOtherTiers()
+                {
+                    loadoutCost = 2;
+                    previousTier.nextTier = this;
+                    previousTier.loadoutCost = 1;
+                    nextTier.previousTier = this;
+                    nextTier.loadoutCost = 3;
+                }
+
+                #endregion
+            }
+        }
+    '),
+    new CodeSnippet("Corruption of Arcana", "Combat", "Status Effect Scriptable Object", "Class used for the status effects that can be applied by spells", '
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        
+        /// <summary>
+        /// Authored & Written by Andrew Scott andrewscott@icloud.com
+        /// 
+        /// Use by NPS is allowed as a collective, for external use, please contact me directly
+        /// </summary>
+        namespace Necropanda
+        {
+            [CreateAssetMenu(fileName = "NewStatusEffects", menuName = "Combat/Status Effects", order = 1)]
+            public class StatusEffects : ScriptableObject
+            {
+                #region Setup
+        
+                [Header("Basic Info")]
+                public string effectName;
+                [TextArea(3, 10)]
+                public string effectDescription; // Basic desciption of spell effect
+                public Object effectIcon;
+                public Object applyEffect;
+                public Sprite iconSprite;
+        
+                public CombatHelperFunctions.StatusModule[] effectModules;
+        
+                #endregion
+        
+                #region Applying and Removing
+        
+                public void Apply(Character target, int duration)
+                {
+                    if (target.GetHealth().dying)
+                        return;
+        
+                    //Apply status effect on target, add to character list
+                    CombatHelperFunctions.StatusInstance instance = new CombatHelperFunctions.StatusInstance();
+                    instance.SetStatusInstance(this, target, duration);
+                    bool applied = Timeline.instance.AddStatusInstance(instance);
+        
+                    if (applied)
+                    {
+                        Vector3 spawnPos = target.transform.position;
+                        spawnPos.z = VFXManager.instance.transform.position.z;
+                        VFXManager.instance.SpawnImpact(applyEffect, spawnPos);
+        
+                        foreach (CombatHelperFunctions.StatusModule module in effectModules)
+                        {
+                            switch (module.target)
+                            {
+                                case E_StatusTargetType.Self:
+                                    ModifyStats(true, target, module.effectType, module.statModifier);
+                                    TurnModifiers(true, target, module.status);
+                                    break;
+                                case E_StatusTargetType.Team:
+                                    TeamManager targetTeamManager = target.GetManager();
+                                    foreach (Character character in targetTeamManager.team)
+                                    {
+                                        ModifyStats(true, character, module.effectType, module.statModifier);
+                                        TurnModifiers(true, character, module.status);
+                                    }
+                                    break;
+                                case E_StatusTargetType.OpponentTeam:
+                                    TeamManager opponentTeamManager = CombatManager.instance.GetOpposingTeam(target.GetManager());
+                                    foreach (Character character in opponentTeamManager.team)
+                                    {
+                                        ModifyStats(true, character, module.effectType, module.statModifier);
+                                        TurnModifiers(true, character, module.status);
+                                    }
+                                    break;
+                                default:
+                                    //do nothing
+                                    break;
+                            }
+                        }
+                    }
+                }
+        
+                public void Remove(Character target)
+                {
+                    if (target.GetHealth().dying)
+                        return;
+        
+                    //Remove status effect on target, remove from character list
+                    //Apply status effect on target, add to character list
+                    CombatHelperFunctions.StatusInstance instance = new CombatHelperFunctions.StatusInstance();
+                    instance.SetStatusInstance(this, target, 0);
+                    Timeline.instance.RemoveStatusInstance(instance);
+        
+                    foreach (CombatHelperFunctions.StatusModule module in effectModules)
+                    {
+                        switch (module.target)
+                        {
+                            case E_StatusTargetType.Self:
+                                ModifyStats(false, target, module.effectType, module.statModifier);
+                                TurnModifiers(false, target, module.status);
+                                break;
+                            case E_StatusTargetType.Team:
+                                TeamManager targetTeamManager = target.GetManager();
+                                foreach (Character character in targetTeamManager.team)
+                                {
+                                    ModifyStats(false, character, module.effectType, module.statModifier);
+                                    TurnModifiers(false, character, module.status);
+                                }
+                                break;
+                            case E_StatusTargetType.OpponentTeam:
+                                TeamManager opponentTeamManager = CombatManager.instance.GetOpposingTeam(target.GetManager());
+                                foreach (Character character in opponentTeamManager.team)
+                                {
+                                    ModifyStats(false, character, module.effectType, module.statModifier);
+                                    TurnModifiers(false, character, module.status);
+                                }
+                                break;
+                            default:
+                                //do nothing
+                                break;
+                        }
+                    }
+                }
+        
+                #endregion
+        
+                #region While Active
+        
+                #region Resistances and Stats
+        
+                void ModifyStats(bool apply, Character target, E_DamageTypes damageType, float value)
+                {
+                    if (apply)
+                    {
+                        target.GetHealth().ModifyResistanceModifier(damageType, value);
+                        if (damageType == E_DamageTypes.Arcana)
+                        {
+                            ArcanaManager manager = target.GetComponent<ArcanaManager>();
+                            if (manager != null)
+                            {
+                                //Debug.Log("Haste");
+                                int arcanaValue = (int)value;
+                                manager.AdjustArcanaMax(arcanaValue);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        Debug.Log("Reverse stat adjustment");
+                        target.GetHealth().ModifyResistanceModifier(damageType, -value);
+                        if (damageType == E_DamageTypes.Arcana)
+                        {
+                            ArcanaManager manager = target.GetComponent<ArcanaManager>();
+                            if (manager != null)
+                            {
+                                int arcanaValue = (int)value;
+                                manager.AdjustArcanaMax(-arcanaValue);
+                            }
+                        }
+                    }
+                }
+        
+                #endregion
+        
+                #region Turn Modifiers
+        
+                public void ActivateTurnModifiers(Character target)
+                {
+                    if (target.GetHealth().dying)
+                        return;
+        
+                    //Apply effects when timeline ends
+                    foreach (CombatHelperFunctions.StatusModule module in effectModules)
+                    {
+                        //May need additional checks to see if target is still valid in case they are killed by the multihit effect, speficially for the lists
+                        switch (module.target)
+                        {
+                            case E_StatusTargetType.Self:
+                                TurnModifiers(true, target, module.status);
+                                break;
+                            case E_StatusTargetType.Team:
+                                TeamManager targetTeamManager = target.GetManager();
+                                foreach (Character character in targetTeamManager.team)
+                                {
+                                    TurnModifiers(true, character, module.status);
+                                }
+                                break;
+                            case E_StatusTargetType.OpponentTeam:
+                                TeamManager opponentTeamManager = CombatManager.instance.GetOpposingTeam(target.GetManager());
+                                foreach (Character character in opponentTeamManager.team)
+                                {
+                                    TurnModifiers(true, character, module.status);
+                                }
+                                break;
+                            default:
+                                //do nothing
+                                break;
+                        }
+                    }
+                }
+        
+                void TurnModifiers(bool apply, Character target, E_Statuses modifier)
+                {
+                    if (target.GetHealth().dying == false)
+                        target.ApplyStatus(apply, modifier);
+                }
+        
+                #endregion
+        
+                #region Health Adjustments
+        
+                public void ActivateEffect(Character target)
+                {
+                    if (target.GetHealth().dying)
+                        return;
+        
+                    //Apply effects when timeline ends
+                    foreach (CombatHelperFunctions.StatusModule module in effectModules)
+                    {
+                        //May need additional checks to see if target is still valid in case they are killed by the multihit effect, speficially for the lists
+                        switch (module.target)
+                        {
+                            case E_StatusTargetType.Self:
+                                AffectTarget(target, module.effectType, module.effect, module.value);
+                                break;
+                            case E_StatusTargetType.Team:
+                                TeamManager targetTeamManager = target.GetManager();
+                                foreach (Character character in targetTeamManager.team)
+                                {
+                                    if (character.GetHealth().dying == false)
+                                        AffectTarget(character, module.effectType, module.effect, module.value);
+                                }
+                                break;
+                            case E_StatusTargetType.OpponentTeam:
+                                TeamManager opponentTeamManager = CombatManager.instance.GetOpposingTeam(target.GetManager());
+                                foreach (Character character in opponentTeamManager.team)
+                                {
+                                    if (character.GetHealth().dying == false)
+                                        AffectTarget(character, module.effectType, module.effect, module.value);
+                                }
+                                break;
+                            default:
+                                //do nothing
+                                break;
+                        }
+                    }
+                }
+        
+                void AffectTarget(Character target, E_DamageTypes effectType, Object effect, int value)
+                {
+                    if (target != null)
+                    {
+                        if (target.GetHealth().dying)
+                            return;
+        
+                        Vector3 spawnPos = target.transform.position;
+                        spawnPos.z = VFXManager.instance.transform.position.z;
+                        VFXManager.instance.SpawnImpact(effect, spawnPos);
+        
+                        //Debug.Log("Affect " + target.characterName + " with " + value + " " + effectType);
+                        E_DamageTypes realEffectType = CombatHelperFunctions.ReplaceRandomDamageType(effectType);
+        
+                        target.GetHealth().ChangeHealth(realEffectType, value, null);
+        
+                        if (target.GetHealth().GetHealth() < 1)
+                        {
+                            target.CheckOverlay();
+                        }
+        
+                        //Sound effects here
+                    }
+                }
+        
+                public void HitEffect(Character target, Character attacker)
+                {
+                    if (target.GetHealth().dying)
+                        return;
+        
+                    //Apply effects when timeline ends
+                    foreach (CombatHelperFunctions.StatusModule module in effectModules)
+                    {
+                        //May need additional checks to see if target is still valid in case they are killed by the multihit effect, speficially for the lists
+                        switch (module.target)
+                        {
+                            case E_StatusTargetType.SelfHit:
+                                if (attacker != null)
+                                {
+                                    AffectTarget(target, module.effectType, module.effect, module.value);
+                                }
+                                break;
+                            case E_StatusTargetType.Reflect:
+                                if (attacker != null)
+                                {
+                                    AffectTarget(attacker, module.effectType, module.effect, module.value);
+                                }
+                                break;
+                            default:
+                                //do nothing
+                                break;
+                        }
+                    }
+                }
+        
+                #endregion
+        
+                #endregion
+        
+                #region Simulate Status
+        
+                /// <summary>
+                /// Simulates the effects of the spell on the caster and targets without applying them
+                /// </summary>
+                /// <param name="target">The initial target the spell was cast on</param>
+                /// <param name="caster">The character that cast the spell</param>
+                /// <param name="empowered">Whether the spell is empowered</param>
+                /// <param name="weakened">Whether the spell is weakened</param>
+                /// <param name="hand">The hand from which this spell was cast</param>
+                public void SimulateStatusValues(Character target)
+                {
+                    foreach (CombatHelperFunctions.StatusModule module in effectModules)
+                    {
+                        TeamManager targetTeamManager = target.GetManager();
+                        TeamManager opponentTeamManager = CombatManager.instance.GetOpposingTeam(targetTeamManager);
+        
+                        //May need additional checks to see if target is still valid in case they are killed by the multihit effect, speficially for the lists
+                        switch (module.target)
+                        {
+                            case E_StatusTargetType.Self:
+                                Simulate(target, module);
+                                break;
+                            case E_StatusTargetType.Team:
+                                foreach (Character character in targetTeamManager.team)
+                                {
+                                    Simulate(character, module);
+                                }
+                                break;
+                            case E_StatusTargetType.OpponentTeam:
+                                foreach (Character character in opponentTeamManager.team)
+                                {
+                                    Simulate(character, module);
+                                }
+                                break;
+                        }
+                    }
+                }
+        
+                /// <summary>
+                /// Simulates the effects of the spell on the caster and targets without applying them
+                /// </summary>
+                /// <param name="target">The initial target the spell was cast on</param>
+                /// <param name="caster">The character that cast the spell</param>
+                /// <param name="empowered">Whether the spell is empowered</param>
+                /// <param name="weakened">Whether the spell is weakened</param>
+                /// <param name="hand">The hand from which this spell was cast</param>
+                public void SimulateHitValues(Character target, Character attacker)
+                {
+                    foreach (CombatHelperFunctions.StatusModule module in effectModules)
+                    {
+                        //May need additional checks to see if target is still valid in case they are killed by the multihit effect, speficially for the lists
+                        switch (module.target)
+                        {
+                            case E_StatusTargetType.SelfHit:
+                                Simulate(target, module);
+                                break;
+                            case E_StatusTargetType.Reflect:
+                                Simulate(attacker, module);
+                                break;
+                        }
+                    }
+                }
+        
+                /// <summary>
+                /// Checks the effect of an individual spell module
+                /// </summary>
+                /// <param name="target">The initial target the spell was cast on</param>
+                void Simulate(Character target, CombatHelperFunctions.StatusModule status)
+                {
+                    Vector2Int damage = new Vector2Int(0, 0);
+                    int shield = 0;
+        
+                    if (target != null && target.GetHealth().dying == false)
+                    {
+                        int value = status.value;
+        
+                        //Debug.Log("Spell cast: " + spellName + " at " + caster.stats.characterName);
+                        //Debug.Log("Affect " + target.characterName + " with " + value + " " + effectType);
+        
+                        switch (status.effectType)
+                        {
+                            case E_DamageTypes.Healing:
+                                damage.x += value;
+                                damage.y += value;
+                                break;
+                            case E_DamageTypes.Shield:
+                                shield += value;
+                                break;
+                            case E_DamageTypes.Arcana:
+                                break;
+                            default:
+                                damage.x -= value;
+                                damage.y -= value;
+                                break;
+                        }
+                    }
+        
+                    target.SimulateValues(damage, shield, 0);
+                }
+        
+                #endregion
+            }
+        }
+    '),
+    new CodeSnippet("Corruption of Arcana", "Combat", "Weapon Scriptable Object", "Class used for the weapons, which deretmine some of the base spell cards the player has in their deck", '
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        using UnityEditor;
+        
+        /// <summary>
+        /// Authored & Written by <NAME/TAG/SOCIAL LINK>
+        /// 
+        /// Use by NPS is allowed as a collective, for external use, please contact me directly
+        /// </summary>
+        namespace Necropanda
+        {
+            [CreateAssetMenu(fileName = "NewWeapon", menuName = "Combat/Weapons", order = 4)]
+            public class Weapon : ScriptableObject
+            {
+                public string weaponName;
+                [TextArea(3, 10)]
+                public string description;
+                public Sprite image;
+                public int power;
+                public List<Spell> spells;
+                public List<Spell> upgradeSpells;
+        
+                public void Equip()
+                {
+                    if (DeckManager.instance == null) { return; }
+        
+                    DeckManager.instance.EquipWeapon(this);
+                }
+        
+                [ContextMenu("Upgrade1Tier")]
+                public void UpgradeCards()
+                {
+                    upgradeSpells.Clear();
+        
+                    foreach(var item in spells)
+                    {
+                        upgradeSpells.Add(item.GetUpgrade());
+                    }
+                }
+            }
+        }
+    '),
     new CodeSnippet("Corruption of Arcana", "Enemy AI", "Spellcasting AI Class", "Class for enemies to determine which spells to cast using a utilit-based AI approach, which estimates the spell effect based on stats like damage, healing and status effects to determine which spell has the best effect", '
         using System.Collections;
         using System.Collections.Generic;
@@ -3261,6 +4505,202 @@ $initialCodeSnippets = [
                 returnT = 0;
         
                 setup = true;
+            }
+        }
+    '),
+
+    #endregion
+
+    #region Overkill
+
+    new CodeSnippet("Overkill", "Abilities", "Action Scriptable Object", "Class used for the actions that characters can use, manages if the action can be used and determines the effect it has when cast", '
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        
+        [CreateAssetMenu(fileName = "NewAction", menuName = "Units/Action", order = 0)]
+        public class Action : ScriptableObject
+        {
+            public string actionName;
+            public bool selfOnly = false;
+            public int apCost;
+            public float moveCost;
+            public bool resetArmour;
+            public Object castFX;
+            public Object projectileFX;
+        
+            public int damage = 0;
+            public int armourScaling;
+            public int changeArmour = 0;
+            public int changeMovement = 0;
+            public float range = 20;
+        
+            public Animations castAnimation = Animations.Attack;
+            public AudioClip audioClip;
+        
+            public StatusEffect[] statuses;
+        
+            [TextArea(3, 10)]
+            public string description;
+        
+            public void PrepareAction(Controller character)
+            {
+                character.PrepareAction(this);
+            }
+        
+            public void CancelAction(Controller character)
+            {
+                character.PrepareAction(null);
+            }
+        
+            public void UseAction(Controller character, Vector3 castPos, Health target = null)
+            {
+                string message = "Used " + name + " action";
+        
+                Health casterHealth = character.GetComponent<Health>();
+        
+                if (selfOnly)
+                {
+                    target = casterHealth;
+                    castPos = character.transform.position;
+                }
+        
+                if (target != null)
+                {
+                    message += " on " + target.gameObject.name;
+                    castPos = target.transform.position;
+        
+                    //Apply logic for action
+                    int trueDamage = (int)((damage + (armourScaling * casterHealth.armour)) * casterHealth.GetDamageScaling());
+                    message += " for " + trueDamage;
+                    target.Hit(trueDamage, changeArmour);
+        
+                    foreach(var item in statuses)
+                    {
+                        item.ApplyStatus(target);
+                    }
+                }
+        
+                Debug.Log(message);
+        
+                //Spawn fx at cast pos
+                GameObject projectileObj = Instantiate(projectileFX, character.transform.position + character.castOffset, new Quaternion(0, 0, 0, 0)) as GameObject;
+                ProjectileMovement projMovement = projectileObj.GetComponent<ProjectileMovement>();
+        
+                AudioManager.instance.PlaySoundEffect(audioClip);
+        
+                if (projMovement != null)
+                {
+                    projMovement.StartMovement(castPos, 30, 1, castFX);
+                }
+                else
+                {
+                    Destroy(projectileObj);
+                }
+        
+                //Animation
+                if (character.animController != null)
+                    character.animController.SetTrigger(castAnimation.ToString());
+        
+                if (resetArmour)
+                    character.GetComponent<Health>().ResetArmour();
+        
+                character.UseAP(apCost);
+                character.UseMovement(moveCost - changeMovement);
+        
+                character.PrepareAction(null);
+            }
+        }
+        
+        public enum Animations
+        {
+            Attack, Cast
+        }
+    '),
+    new CodeSnippet("Overkill", "Abilities", "Status Scriptable Object", "Class used for the status effects that can be applied by actions", '
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        
+        [CreateAssetMenu(fileName = "NeStatus", menuName = "Units/Status", order = 1)]
+        public class StatusEffect : ScriptableObject
+        {
+            public int duration = 0;
+            public int armourOnHit;
+            public float damageScaling;
+            public float moveScaling;
+        
+            public void ApplyStatus(Health target)
+            {
+                if (target.ApplyStatus(this))
+                {
+                    target.OnHit += OnHit;
+                    Debug.Log("Added delegate");
+                }
+            }
+        
+            public void RemoveStatus(Health target)
+            {
+                target.OnHit -= OnHit;
+            }
+        
+            public void OnHit(Health target)
+            {
+                target.Hit(0, armourOnHit, true);
+            }
+        }
+    '),
+    new CodeSnippet("Overkill", "Abilities", "Action Select Class", "Class that assigns actions to the hotbar and prepares them when the action is clicked", '
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        using TMPro;
+        
+        public class ActionSelect : MonoBehaviour
+        {
+            CharacterSelect characterSelect;
+            Action[] actions;
+            public TextMeshProUGUI[] buttonTexts;
+        
+            private void Start()
+            {
+                characterSelect = GameObject.FindAnyObjectByType<CharacterSelect>();
+            }
+        
+            public void ActionList()
+            {
+                actions = characterSelect.GetSelectedCharacter().actions;
+        
+                for (int i = 0; i < actions.Length; i++)
+                {
+                    buttonTexts[i].text = actions[i].actionName;
+                }
+            }
+        
+            public void SelectAction(int index)
+            {
+                if (!EndTurn.playerTurn) return;
+        
+                InputManager.inputAvailable = false;
+        
+                characterSelect.GetSelectedCharacter().PrepareAction(actions[index]);
+        
+                Invoke("ResetInput", 0.5f);
+            }
+        
+            public void ShowAction(int index)
+            {
+                ActionUI.instance.ShowActionInfo(actions[index]);
+            }
+        
+            public void HideAction()
+            {
+                ActionUI.instance.HideActionInfo();
+            }
+        
+            void ResetInput()
+            {
+                InputManager.inputAvailable = true;
             }
         }
     '),
