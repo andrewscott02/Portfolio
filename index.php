@@ -37,7 +37,7 @@
         <aside id="Aside">
             <div id="Contact">
                 <form action="sendemail.php" method="post">
-                    <h3 class="comingsoon">Get In Touch</h3>
+                    <h3>Get In Touch</h3>
                     <fieldset>
                         <div class="form-name">
                             <label for="name" class="required">Your Name:</label>
