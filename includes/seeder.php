@@ -4283,7 +4283,7 @@ $initialCodeSnippets = [
 
     #region Creak
     
-    new CodeSnippet("Creak", "Movement", "Player Controller", "Classs for controlling the main character", '
+    new CodeSnippet("Creak", "Movement", "Player Controller", "Class for controlling the main character", '
         using System.Collections;
         using System.Collections.Generic;
         using UnityEngine;

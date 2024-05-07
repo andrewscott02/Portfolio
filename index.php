@@ -64,7 +64,7 @@
                         <div class="form-message">
                             <label for="message" class="required">Message:</label>
                             <div>
-                                <textarea id="message" name="user_message">Hey there, I'm sending you and email about...</textarea>
+                                <textarea id="message" name="user_message">Hello, I'm sending you an email about...</textarea>
                             </div>
                         </div>
                     </fieldset>

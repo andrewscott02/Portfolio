@@ -34,7 +34,7 @@
                         {
                             echo '<div id="projectID-' . $project["id"] . '">';
                             echo '<h3>' . $project["title"];
-                            echo    '<a class="btn" target="_blank" href="' . $project["viewLink"] . '">' . $project["viewMessage"] . '</a>';
+                            echo    '<a class="btn" href="projectpage.php?project=' . $project["id"] . '#ProjectDetails">View Project</a>';
                             echo '</h3>';
                             echo '<p>Some of the code for ' . $project["title"] . ', ' . $project["codeDescription"] . '</p>'; //replace with unique code descriptions
 

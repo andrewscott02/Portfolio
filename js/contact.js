@@ -38,6 +38,18 @@ function CheckFormFields(event)
         }
     });
 
+    $("textarea").each((index, element)=>{
+        if ($(element).parent().prev().hasClass("required"))
+        {
+            const content = $(element).val();
+            
+            if (content == "")
+            {
+                canSubmit = false;
+            }
+        }
+    });
+
     if (!canSubmit)
     {
         event.preventDefault();
@@ -58,16 +70,9 @@ function DisplaySubmitStatus(message, status)
     {
         $(".form-status").addClass("form-status-error");
     }
-
-    setTimeout(() => {
-        location.hash = "";
-        location.hash = "#Contact";
-        ForceRemoveHeader();
-    }, 50);
     
-    setTimeout(() => {
-        ForceRemoveHeader();
-    }, 100);
+    location.hash = "";
+    location.hash = "#Contact";
 }
 
 function ClearFormFields()
@@ -84,6 +89,13 @@ const emailChecks =
         message: "'.' is used at the wrong position in the email address",
         regexCheck: [/\.$/, /@+\./],
         required: false
+    },
+
+    //Includes .
+    {
+        message: "Please include a '.' after the '@' in the email address",
+        regexCheck: [/\S+\./],
+        required: true
     },
 
     //Text after @

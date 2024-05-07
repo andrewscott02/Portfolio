@@ -14,7 +14,7 @@ $canSubmit = true;
 
 $user_name = "";
 
-if (isset($_POST["user_name"]))
+if (isset($_POST["user_name"]) && !empty($_POST["user_name"]))
 {
     $user_name = filter_input(INPUT_POST, "user_name", FILTER_SANITIZE_STRING);
 }
@@ -25,9 +25,9 @@ else
 
 $user_email = "";
 
-if (isset($_POST["user_email"]))
+if (isset($_POST["user_email"]) && !empty($_POST["user_email"]))
 {
-    $user_email = filter_input(INPUT_POST, "user_email", FILTER_SANITIZE_STRING);
+    $user_email = filter_input(INPUT_POST, "user_email", FILTER_SANITIZE_EMAIL);
     // $user_email .= " via Andrew Scott's Portfolio";
 }
 else
@@ -43,11 +43,13 @@ if (isset($_POST["user_subject"]) && !empty($_POST["user_subject"]))
 }
 
 $user_message = "The following message was sent by: " . $user_email . "\n \n \n \n";
+$html_message = "<h2>The following message was sent by: " . $user_email . "</h2> <br> <br>";
 
-if (isset($_POST["user_message"]))
+if (isset($_POST["user_message"]) && !empty($_POST["user_message"]))
 {
-    $user_message .= filter_input(INPUT_POST, "user_message", FILTER_SANITIZE_STRING);
-    // $user_message = $_POST["user_message"];
+    $filteredInput = filter_input(INPUT_POST, "user_message", FILTER_SANITIZE_STRING);
+    $user_message .= $filteredInput;
+    $html_message .= "<p>" . $filteredInput . "</p>";
 }
 else
 {
@@ -56,7 +58,7 @@ else
 
 #endregion
 
-function SendEmail($user_name, $user_email, $user_subject, $user_message)
+function SendEmail($user_name, $user_email, $user_subject, $user_message, $html_message)
 {
     global $env;
 
@@ -80,9 +82,10 @@ function SendEmail($user_name, $user_email, $user_subject, $user_message)
         $mail->addReplyTo($user_email, $user_name);
 
         //Content
-        $mail->isHTML(false);
+        $mail->isHTML(true);
         $mail->Subject = $user_subject;
-        $mail->Body    = $user_message;
+        $mail->Body = $html_message;
+        $mail->AltBody = $user_message;
 
         $mail->send();
         SetStatus("true", "Your message has been sent");
@@ -106,7 +109,7 @@ function SetStatus($submit_status, $submit_message)
     $_SESSION["submit_message"] = $submit_message;
 }
 
-SendEmail($user_name, $user_email, $user_subject, $user_message);
+SendEmail($user_name, $user_email, $user_subject, $user_message, $html_message);
 
 header("Location: index.php");
 exit();
