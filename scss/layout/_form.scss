@@ -10,16 +10,17 @@
     display: grid;
     grid-template-columns: 1fr;
     grid-auto-rows: auto;
-    grid-gap: 5px;
+    grid-row-gap: 5px;
     grid-template-areas:
-        "form-name"
-        "form-email"
-        "form-subject"
-        "form-message";
+        "form-name . "
+        "form-email . "
+        "form-subject . "
+        "form-message form-message";
 
     @media #{$brk-l}
     {
         grid-template-columns: 1fr 1fr;
+        grid-gap: 5px;
         grid-template-areas:
             "form-name form-email"
             "form-subject form-subject"
@@ -63,7 +64,7 @@ aside
 {
     width: 100%;
 
-    input
+    input, textarea
     {
         font-size: 1.2em;
         width: 100%;
@@ -73,9 +74,10 @@ aside
 
 .form-message
 {
-    input
+    textarea
     {
-        height: 6em;
+        max-width: 100%;
+        min-height: 4em;
     }
 }
 

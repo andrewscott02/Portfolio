@@ -4086,6 +4086,325 @@ $initialCodeSnippets = [
     
     #endregion
 
+    #region TTRPG Controller
+
+    new CodeSnippet("TTRPG Controller", "Board", "Full Board Class", "Script that manages the full board for players and enemies", '
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        
+        public class FullBoard : MonoBehaviour
+        {
+            #region Setup
+        
+            #region Variables
+        
+            public Board playerBoard;
+            public Board enemyBoard;
+        
+            public GameObject[] spaces;
+        
+            #endregion
+        
+            private void Awake()
+            {
+                GameObject[] playerSpaces = playerBoard.spaces;
+                GameObject[] enemySpaces = enemyBoard.spaces;
+        
+                spaces = new GameObject[playerSpaces.Length + enemySpaces.Length];
+                
+                for (int n = 0; n < enemySpaces.Length; n++)
+                {
+                    spaces[n] = enemySpaces[n];
+                }
+        
+                for (int n = 0; n < playerSpaces.Length; n++)
+                {
+                    spaces[n + enemySpaces.Length] = playerSpaces[n];
+                }
+            }
+        
+            #endregion
+        
+            #region Space Checks
+        
+            public Transform GetSpace(int space)
+            {
+                if (IsSpaceValid(space))
+                {
+                    return spaces[space].transform.Find("Anchor");
+                }
+                return null;
+            }
+        
+            public bool IsSpaceValid(int space)
+            {
+                return space >= 0 && space < (spaces.Length - 2);
+            }
+        
+            #endregion
+        
+            #region Highlight Spaces
+        
+            public void HighlightSpace(int space, int damage, int heal)
+            {
+                //Debug.Log("highlight");
+                if (IsSpaceValid(space))
+                {
+                    Space spaceScript = spaces[space].GetComponent<Space>();
+                    spaceScript.SetHighlight(damage, heal);
+                }
+            }
+        
+            public void ResetHighlight()
+            {
+                //Debug.Log("resethighlight");
+                foreach (var space in spaces)
+                {
+                    Space spaceScript = space.GetComponent<Space>();
+                    spaceScript.damage = 0;
+                    spaceScript.heal = 0;
+        
+                    spaceScript.ResetHighlight();
+                }
+            }
+        
+            #endregion
+        
+            public void Attack(int space, int damage)
+            {
+                if (IsSpaceValid(space))
+                {
+                    Space spaceScript = spaces[space].GetComponent<Space>();
+                    spaceScript.Attack(damage);
+                }
+            }
+        
+            public void Heal(int space, int heal)
+            {
+                if (IsSpaceValid(space))
+                {
+                    Space spaceScript = spaces[space].GetComponent<Space>();
+                    spaceScript.Heal(heal);
+                }
+            }
+        
+            public void Stun(int space)
+            {
+                if (IsSpaceValid(space))
+                {
+                    Space spaceScript = spaces[space].GetComponent<Space>();
+                    spaceScript.Stun();
+                }
+            }
+        }
+    '),
+    new CodeSnippet("TTRPG Controller", "Board", "Board Class", "Script that manages the available spaces for a single player", '
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        
+        public class Board : MonoBehaviour
+        {
+            public int width = 3;
+            public int height = 3;
+            private int boardSize;
+        
+            public GameObject[] spaces;
+        
+            private void Awake()
+            {
+                boardSize = height * width;
+            }
+        
+            public Transform GetSpace(int space)
+            {
+                return spaces[space].transform.Find("Anchor");
+            }
+        }
+    '),
+    new CodeSnippet("TTRPG Controller", "Board", "Space Class", "Script that manages a single space, which applies spell effects on the character on this space when it is targetted", '
+        using System.Collections;
+        using System.Collections.Generic;
+        using UnityEngine;
+        
+        public class Space : MonoBehaviour
+        {
+            #region Setup
+        
+            #region Variables
+        
+            public GameObject character;
+            private Health health;
+        
+            public bool idle = false;
+        
+            private FullBoard board;
+        
+            public int damage = 0;
+            public int heal = 0;
+        
+            public Transform anchor;
+        
+            public Object attackHighlight;
+            public Object healHighlight;
+            public Object bothHighlight;
+        
+            public Object attackEffect;
+            public Object healEffect;
+        
+            private List<GameObject> highlights = new List<GameObject>();
+        
+            #endregion
+        
+            private void Start()
+            {
+                board = GameObject.Find("Board").GetComponent<FullBoard>();
+        
+                if (character != null)
+                {
+                    health = character.GetComponent<Health>();
+                }
+            }
+        
+            #endregion
+        
+            #region Space Selection
+        
+            public bool GetSpace()
+            {
+                if (character == null)
+                    return true;
+        
+                return false;
+            }
+        
+            public void SetSpace(GameObject newCharacter)
+            {
+                character = newCharacter;
+        
+                if (character != null)
+                {
+                    health = character.GetComponent<Health>();
+                }
+            }
+        
+            #endregion
+        
+            #region Highlight
+        
+            public void SetHighlight(int newDamage, int newHeal)
+            {
+                //ResetHighlight();
+        
+                damage += newDamage;
+        
+                heal += newHeal;
+                
+                if (heal > 0 && damage > 0)
+                {
+                    ResetHighlight();
+        
+                    int lowest = heal;
+        
+                    if (damage < heal)
+                        lowest = damage;
+        
+                    for (int n = 0; n < lowest; n++)
+                    {
+                        //add heal highlight
+                        GameObject effect = Instantiate(bothHighlight, anchor) as GameObject;
+                        effect.transform.position = anchor.position;
+                        highlights.Add(effect);
+                    }
+                }
+                else if (heal > 0 && !(damage > 0))
+                {
+                    for (int n = 0; n < heal; n++)
+                    {
+                        //add heal highlight
+                        GameObject health = Instantiate(healHighlight, anchor) as GameObject;
+                        health.transform.position = anchor.position;
+                        highlights.Add(health);
+                    }
+                }
+                else if (damage > 0 && !(heal > 0))
+                {
+                    for (int n = 0; n < damage; n++)
+                    {
+                        //add damage highlight
+                        GameObject attack = Instantiate(attackHighlight, anchor) as GameObject;
+                        attack.transform.position = anchor.position;
+                        highlights.Add(attack);
+                    }
+                }
+            }
+        
+            public void ResetHighlight()
+            {
+                foreach (var item in highlights)
+                {
+                    if (item != null)
+                    {
+                        Destroy(item);
+                    }
+                }
+        
+                highlights.Clear();
+            }
+        
+            public void HighlightColour(Color colour)
+            {
+                Material mat = GetComponentInChildren<MeshRenderer>().material;
+                mat.SetColor("_Color", colour);
+            }
+        
+            #endregion
+        
+            #region Activate Abilities
+        
+            public void Attack(int damage)
+            {
+                Instantiate(attackEffect, transform);
+        
+                if (character != null)
+                {
+                    health = character.GetComponent<Health>();
+        
+                    health.TakeDamage(damage);
+                }
+            }
+        
+            public void Heal(int heal)
+            {
+                Instantiate(healEffect, transform);
+        
+                if (character != null)
+                {
+                    health = character.GetComponent<Health>();
+        
+                    health.Heal(heal);
+                }
+            }
+        
+            public void Stun()
+            {
+                Instantiate(healEffect, transform);
+        
+                if (character != null)
+                {
+                    EnemyController controller = character.GetComponent<EnemyController>();
+        
+                    controller.Stun();
+                }
+            }
+        
+            #endregion
+        }
+    '),
+
+    #endregion
+
     #region VFX Code
 
     new CodeSnippet("Visual FX Programming", "Mesh Generation", "Generate Plane Mesh Class", "Code that generates a mesh plane using vertices, and can also apply a sine wave effect to create a basic water effect", '

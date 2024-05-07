@@ -48,7 +48,7 @@
                         <button class="close-status">x</button>
                     </div>
 
-                    <fieldset>
+                    <fieldset class="fieldset-grid">
                         <div class="form-name">
                             <label for="name" class="required">Your Name:</label>
                             <input type="text" id="name" name="user_name">
@@ -63,7 +63,9 @@
                         </div>
                         <div class="form-message">
                             <label for="message" class="required">Message:</label>
-                            <input type="text" id="message" name="user_message">
+                            <div>
+                                <textarea id="message" name="user_message">Hey there, I'm sending you and email about...</textarea>
+                            </div>
                         </div>
                     </fieldset>
                     <div class="form-sbmt">
